@@ -491,3 +491,11 @@ Depois da correção:
 > Quando uma distinção descoberta manualmente for reutilizável, transforme-a em capacidade estruturada.
 
 > Toda infraestrutura operacional relevante deve nascer com fronteiras diagnósticas suficientes para tornar seu primeiro incidente investigável.
+
+# Disciplina de timeout e backpressure MCP
+
+Após timeout ou BUSY/CHANNEL_DEGRADED, faça uma única consulta de System Health para localizar a fronteira. Distinga workloadGovernor ADMISSION_REFUSED (execução não admitida) de EXECUTION_FAILED (trabalho realmente executado e falho); observe lane, activeOperationId, estado DEGRADED/HALF_OPEN e retryAfterMs. Não repita discover, inspect ou read_code para diagnosticar o próprio canal degradado.
+
+Siga recommendedAction e retryability: SAFE_AFTER_BACKOFF permite uma nova tentativa após retryAfterMs; SAME_OPERATION_ID exige recuperar a mutação com o operationId original e argumentos idênticos; AFTER_STATE_REFRESH exige nova observação; NOT_SAFE impede retry cego. PREPARED/OPERATION_OUTCOME_UNKNOWN exige reconciliação; nunca crie outro operationId apenas para repetir uma mutação incerta.
+
+Se a primeira localização não permitir avanço pelo canal normal, siga nextBestEvidence ou o break-glass já delimitado. Não amplie timeout nem pressione a lane enquanto a operação anterior permanecer ativa. Uma tentativa half-open é suficiente para avaliar recuperação; nova recusa/degradação encerra a insistência até evidência materialmente diferente.

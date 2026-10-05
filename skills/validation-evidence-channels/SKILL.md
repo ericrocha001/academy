@@ -475,3 +475,11 @@ A sequência preferida é:
 Validação não é acumular checks.
 
 É reduzir incerteza com evidência adequada.
+
+# Cadência de Validation Execution remoto
+
+Quando a superfície remota for necessária, execute provas em série e mantenha um único runId em acompanhamento. start_validation retorna runId, status e retryAfterMs; VALIDATION_BUSY retorna activeRunId e FOLLOW_ACTIVE_RUN: acompanhe essa execução em vez de iniciar outra.
+
+Consulte get_validation_run com waitMs dentro do limite publicado (até 15000 ms); o servidor limita a espera também pelo deadline seguro do transporte. Se ainda RUNNING, aguarde retryAfterMs antes da próxima consulta. Em estado terminal, use o proofId já produzido, sem registrar prova duplicada. Não faça polling agressivo nem consultas concorrentes da mesma run.
+
+Diante de BUSY, CHANNEL_DEGRADED ou timeout, respeite a orientação operacional e use system-health-debugging para uma única localização quando necessária. As consultas leves de run, Ledger e identidade podem continuar independentes da navegação CodeScope; não inicie trabalho adicional para inferir o resultado do trabalho existente.

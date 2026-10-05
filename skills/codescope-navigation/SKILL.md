@@ -572,3 +572,9 @@ Depois disso, contexto adicional tende a diminuir signal density.
 > Source confirma a implementação.
 
 > Quando CodeScope depender da própria região quebrada, use break-glass.
+
+## Stop rule por degradação do canal
+
+BUSY, CHANNEL_DEGRADED ou REQUEST_TIMEOUT interrompe novas chamadas caras de CodeScope. Use system-health-debugging para uma única localização e respeite recommendedAction/retryability/retryAfterMs; não alterne discover, inspect e read_code como retries equivalentes. Após backoff, permita uma única tentativa half-open. Se persistir a recusa ou degradação, use somente nextBestEvidence ou break-glass no escopo comprovado.
+
+Chamadas repetidas que aumentam pressão operacional sem reduzir o espaço da próxima decisão são sinal negativo, mesmo quando seus argumentos diferem. Não compense indisponibilidade com maior paralelismo, polling ou dumps. Runtime Identity, System Health e evidências leves continuam sendo caminhos independentes quando a navegação está ocupada.
