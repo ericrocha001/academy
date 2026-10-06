@@ -122,12 +122,18 @@ Nunca use intenção implícita equivalente a “add all” quando existirem mud
 
 Fluxo preferido:
 
-`get_git_changes`
-→ selecionar paths explícitos
-→ `stage_git_changes`
-→ `get_git_state`
-→ confirmar staged/indexRevision
-→ `commit_git_changes`.
+`get_git_state`
+→ descobrir e selecionar paths explícitos com `get_git_changes` quando necessário
+→ gerar `operationId` antes da primeira tentativa
+→ `stage_git_changes` com `mode`, `paths`, `expectedIndexRevision`, `expectedWorktreeRevision` do snapshot observado e `operationId`
+→ confirmar receipt e staged/indexRevision no resultado ou em `get_git_state`
+→ `commit_git_changes` com `expectedHead`, `expectedIndexRevision` inspecionado e seu próprio `operationId`.
+
+STAGE e UNSTAGE exigem as duas revisões e identidade de operação. Uma falha antes da publicação do índice preserva o índice inteiro; UNSTAGE preserva os arquivos do worktree. `GIT_STATE_CHANGED` exige atualizar o snapshot e redecidir.
+
+Mesma `operationId` e mesmos argumentos recuperam o resultado com `replayed: true`, sem nova mutação. Argumentos diferentes retornam `IDEMPOTENCY_CONFLICT`.
+
+Em `OPERATION_OUTCOME_UNKNOWN`, preserve a `operationId`; `retryability: NOT_SAFE` e `recommendedAction: RECONCILE_OPERATION` proíbem uma nova tentativa de mutação às cegas. Reconcile o estado sem assumir sucesso ou falha. Reutilizar os mesmos argumentos e ID recupera um receipt completo, mas PREPARED continua UNKNOWN e nunca reexecuta.
 
 O commit deve representar exatamente o índice inspecionado.
 
