@@ -1,6 +1,6 @@
 ---
 name: otimizacao-de-ui
-description: Use para transformar uma UI existente, crua, desorganizada, visualmente fraca ou difícil de usar em uma interface profissional, preservando seus contratos funcionais. Diagnostique arquitetura de informação, hierarquia, layout, scroll, densidade, estados, responsividade e sistema visual antes de estilizar; use mockups ou referências visuais quando a direção ainda não estiver resolvida e exija inspeção visual do runtime real antes de considerar o trabalho validado. Não use para decidir se uma nova UI deve existir, nem para redesenhar backend ou comportamento de produto sem necessidade.
+description: Use sempre que o trabalho pedir otimizar, repaginar, redesenhar, modernizar, profissionalizar, reorganizar ou melhorar visualmente uma UI existente, preservando seus contratos funcionais. Diagnostique arquitetura de informação, hierarquia, layout, scroll, densidade, estados, responsividade e sistema visual antes de estilizar. Quando a direção visual estiver aberta ou o usuário pedir uma referência visual/mockup, acione `mockup-design`. Exija inspeção visual do runtime real antes de considerar o trabalho validado. Não use para decidir se uma nova UI deve existir, nem para redesenhar backend ou comportamento de produto sem necessidade.
 ---
 
 # Otimização de UI
