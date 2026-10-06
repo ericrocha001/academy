@@ -1,6 +1,6 @@
 ---
 name: git-operations
-description: Use para operar Git com segurança através das ferramentas MCP do Code Awareness: inspecionar estado e mudanças, manter a higiene do worktree, preparar commits, gerenciar branches, sincronizar remoto, fazer merge/revert, preservar trabalho com shelves, resolver conflitos tipados e recuperar mutações por operationId. Use quando uma tarefa exigir alteração real do repositório via Git Operations. Não use para editar código, navegar arquitetura ou substituir validação de implementação.
+description: Use para operar Git com segurança através das ferramentas MCP do Code Awareness: inspecionar estado e mudanças, manter a higiene do worktree, preparar commits, gerenciar branches e upstreams, sincronizar remoto, fazer merge/revert, preservar trabalho com shelves, resolver conflitos tipados e recuperar mutações por operationId. Use quando uma tarefa exigir alteração real do repositório via Git Operations. Não use para editar código, navegar arquitetura ou substituir validação de implementação.
 ---
 
 # Git Operations
@@ -133,9 +133,42 @@ O commit deve representar exatamente o índice inspecionado.
 
 Não misture resíduos desconhecidos com a mudança pretendida apenas para deixar o worktree limpo.
 
-## Branches e remoto
+## Branches, upstream e remoto
 
-Use `manage_git_branch` para operações locais tipadas.
+Use `manage_git_branch` para operações locais tipadas, inclusive o vínculo de upstream da branch atual.
+
+A existência simultânea de `main` e `origin/main` é normal:
+
+- `main` é a branch local;
+- `origin/main` é a remote-tracking ref.
+
+O problema é existir uma branch destinada a sincronizar com remoto e ela permanecer com `upstream: null` sem intenção explícita.
+
+### Regra preventiva de tracking
+
+Ao trabalhar em uma branch que deve acompanhar uma branch remota, especialmente a branch principal:
+
+1. observe `get_git_state`;
+2. se `upstream` estiver configurado, use `ahead/behind` como sinal de sincronização;
+3. se `upstream: null`, determine se isso é intencional;
+4. quando o tracking deveria existir, garanta freshness com `sync_git_remote FETCH` se necessário;
+5. confirme que a remote-tracking branch alvo existe;
+6. use `manage_git_branch(SET_UPSTREAM)` com:
+   - `branch` atual;
+   - `remote`;
+   - `remoteBranch`;
+   - `expectedHead`;
+   - `operationId`;
+7. confirme pelo novo `get_git_state` que `upstream`, `ahead` e `behind` representam o vínculo esperado.
+
+`SET_UPSTREAM` só deve configurar a branch atualmente checkoutada e não faz network I/O.
+
+Não use `PUSH` como substituto implícito de tracking. Sincronizar conteúdo remoto e configurar upstream são intenções distintas:
+
+- `sync_git_remote PUSH` publica o HEAD observado;
+- `manage_git_branch SET_UPSTREAM` configura o relacionamento local de tracking.
+
+Quando a branch local e a remote-tracking branch precisarem convergir, primeiro sincronize o conteúdo com as operações remotas seguras e depois estabeleça o upstream.
 
 Antes de decisões dependentes do remoto, prefira `sync_git_remote FETCH` quando freshness remota importar.
 
@@ -145,6 +178,8 @@ Use:
 - `PUSH` sem force;
 - `merge_git_branch` com FF_ONLY por padrão quando aplicável;
 - MERGE somente quando a integração real exigir merge commit/semântica de merge.
+
+Não configure upstream para mascarar divergência. Se `main` e `origin/main` apontarem para histórias incompatíveis, resolva primeiro a relação Git real.
 
 Não use Git Operations para reescrever história.
 
@@ -299,4 +334,4 @@ Quando uma operação segura não estiver representada pela superfície tipada, 
 
 ## Regra final
 
-> Estado observado define a precondition. Paths explícitos definem a intenção. operationId define a identidade da mutação. Verificação mínima confirma o resultado. Nunca troque segurança por atalhos e nunca aumente chamadas para descobrir algo que o próprio contrato pode responder.
+> Estado observado define a precondition. Paths explícitos definem a intenção. operationId define a identidade da mutação. Upstream explícito define a relação local↔remoto quando ela deve existir. Verificação mínima confirma o resultado. Nunca troque segurança por atalhos e nunca aumente chamadas para descobrir algo que o próprio contrato pode responder.
