@@ -1,340 +1,116 @@
 ---
-name: continuum  
-description: Use o Continuum para autocontextualização entre agentes por meio de artefatos duráveis do projeto. Acione para recuperar Implementation Handoffs e contexto histórico produzido por outros agentes, publicar o handoff final de uma implementação ou detectar oportunidades de melhorar o próprio Continuum. Não use como substituto do CodeScope para verificar o estado atual do código, nem para carregar histórico preventivamente quando o contexto presente já é suficiente.
+name: continuum
+description: Use o Continuum universal para autocontextualização entre agentes, descoberta seletiva de contexto durável, publicação e edição de Artifacts ou navegação de suas relações. Recupere somente contexto histórico que possa alterar a próxima decisão; confirme source atual pelo CodeScope. Não carregue o corpus preventivamente nem preserve conversa bruta.
 ---
 
-# Finalidade
+# One Continuum
 
-Continuum é a camada de contexto durável entre agentes.
+Agents are ephemeral. Artifacts are durable. Context is assembled on demand.
 
-Princípio:
+Existe um corpus universal e um Continuum Channel MCP. Projeto é metadata canônica, nunca banco, pasta ou canal separado. Artifacts globais coexistem com Artifacts de todos os projetos. Qualquer comunicação durável relevante pode ser um Artifact; tipos conhecidos não limitam o domínio.
 
-> **Agents are ephemeral. Artifacts are durable. Context is assembled on demand.**
+Pure Signal: preserve decisões, provas, planos, investigações e comunicações reutilizáveis. Não preserve chats completos, cadeia de pensamento, logs arbitrários, histórico de ferramentas ou informação descartável. Não publique apenas para aumentar volume.
 
-O conhecimento relevante não precisa permanecer no mesmo chat ou na mesma janela de contexto.
+Unbounded Corpus, Bounded Context: corpus grande exige filtros, índices, relações e paginação; não exclusão preventiva de conhecimento útil.
 
-Agentes podem:
+# Self-Contextualization e Fast-Finding
 
-- produzir artefatos duráveis;
-- sair;
-- ser substituídos;
-- retornar em outro chat;
-- recuperar somente o contexto necessário posteriormente.
+Use contexto histórico quando implementação anterior, decisão, prova, pendência ou trabalho de outro agente puder alterar uma decisão material. Antes de pedir copy/paste de histórico, procure contexto relevante no Continuum. Não consulte por precaução quando o source ou o plano presente já bastam.
 
-Continuum é **project-scoped**.
+Metadata Before Content é estrutural:
 
-Cada projeto possui seu próprio Continuum.
+necessidade → filtros → discovery records → seleção → get_artifact → conteúdo.
 
-Não assuma conhecimento compartilhado entre projetos.
+1. Formule a necessidade específica de contexto.
+2. Use `list_artifacts` com filtros em interseção: `query` pesquisa somente name/description; `scope` aceita ANY (default), ACTIVE_PROJECT ou GLOBAL; `projectId`, `kind`, `status` e `metadata` restringem a seleção.
+3. Comece com limite pequeno (default 20, máximo 100). Use `nextCursor` como `cursor` somente se a próxima página puder mudar a decisão. Preserve os filtros ao continuar.
+4. Leia apenas os discovery records. Metadata adicional não vem por padrão; use `metadataKeys` para solicitar somente chaves úteis.
+5. Escolha um `artifactId` explícito e use `get_artifact`. Nunca abra todos os resultados automaticamente.
+6. Pare ao obter o menor conjunto suficiente para agir.
 
-# Pure Signal
+Continuum tells you what happened. CodeScope tells you what exists now. Artifact histórico não prova source atual ou runtime fresco. Confirme essas propriedades pelas capacidades correspondentes.
 
-Continuum não é memória indiscriminada.
+# Markdown e metadata
 
-Ele preserva somente artefatos deliberadamente definidos como contexto reutilizável.
+Novos Artifacts exigem YAML frontmatter e corpo Markdown não vazio:
 
-Não trate como Artifact:
+```markdown
+---
+name: Correção de identidade do Continuum
+description: Mapeamento canônico de projeto, invariantes preservadas e provas para retomar a integração MCP.
+kind: IMPLEMENTATION_HANDOFF
+status: VALIDATED
+relations:
+  - artifactId: artifact-id-do-plano
+    kind: implements
+---
+Conteúdo durável.
+```
 
-- conversa completa;
-- pensamentos intermediários;
-- logs arbitrários;
-- histórico de ferramentas;
-- cada comando executado;
-- informação descartável da sessão.
+`name`: curto, específico e reconhecível. Evite títulos genéricos como Relatório ou Contexto. Não repita toda a descrição.
 
-Princípio:
+`description`: escreva para o agente decidir se abrir vale o custo. Identifique problema, resultado ou decisão que poderá encontrar e fronteiras relevantes. Não use frases vazias, repetições do título ou alegações sobre conteúdo ausente. Legados podem não possuir descrição; enriqueça-os por edição quando houver conhecimento suficiente, sem inventar semântica histórica.
 
-> **Persist deliberate signal, not conversational exhaust.**
+`kind`: natureza da comunicação. Reutilize IMPLEMENTATION_HANDOFF, EXECUTABLE_PLAN, WORK_ITEM, VALIDATION_PROOF, ARCHITECTURAL_DECISION, INVESTIGATION ou OBSERVATION quando corresponderem. Antes de introduzir outro termo, verifique convenções existentes. Evite sinônimos para a mesma natureza. Esse vocabulário é convenção da Skill, não enum do backend.
 
-# Quando recuperar contexto
+`status`: use somente quando houver lifecycle. Handoffs/provas podem usar VALIDATED ou BLOCKED; Work Items usam PENDING, COMPLETED ou CANCELLED segundo `continuum-work-items`. Não acrescente status decorativo a uma decisão sem lifecycle.
 
-Use Continuum quando a tarefa puder depender materialmente de:
+Metadata adicional deve responder a uma necessidade concreta de seleção recorrente. Reutilize chaves e valores existentes; use JSON/YAML estruturado simples. `metadata` filtra igualdade exata por chave, inclusive objetos e arrays (ordem das chaves de objetos é irrelevante). Evite tags livres, sinônimos, campos decorativos, cópia do corpo, paths de armazenamento, hashes e provenance técnica no índice agentivo. Não confunda metadata livre com identidade: IDs, revisão e timestamps são atribuídos pelo backend.
 
-- implementações anteriores;
-- handoffs de outros agentes;
-- alterações recentes realizadas fora do chat atual;
-- validações anteriormente relatadas;
-- pendências ou desvios conhecidos;
-- Capability Opportunities anteriores;
-- contexto que, sem Continuum, precisaria ser copiado pelo usuário de outro agente ou chat.
+Semântica e procedimento evoluem primeiro na Skill. Mude o backend somente quando faltar uma primitive estrutural real.
 
-Antes de pedir ao usuário que reconstrua histórico já produzido pelo sistema, verifique o Continuum quando aplicável.
+# Identidade de projeto
 
-# Quando não recuperar contexto
+Na publicação, escolha explicitamente `ACTIVE_PROJECT` ou `GLOBAL`. O backend resolve ACTIVE_PROJECT pelo RepositoryRecord.id; GLOBAL possui projectId null. Não digite nomes livres como identidade e não crie projeto durante publicação. Em descoberta cross-project, use um projectId canônico previamente obtido do catálogo ou dos discovery records; projectName serve somente para compreensão.
 
-Não consulte Continuum apenas por precaução.
+# Artifact Graph
 
-Evite quando:
+Relações usam `artifactId` canônicos existentes e `kind` aberto. Nunca use título ou filename como alvo. Não duplique a mesma aresta nem crie autorrelações.
 
-- o contexto atual já é suficiente;
-- a pergunta é exclusivamente sobre o estado atual do código;
-- CodeScope já responde diretamente;
-- nenhuma informação histórica influencia a decisão;
-- abrir artifacts adicionais não mudaria o próximo passo.
+Vocabulário inicial:
 
-Continuum deve reduzir custo de contextualização, não criar uma nova rotina obrigatória de leitura histórica.
+- `related-to`: relevância contextual concreta sem relação mais específica;
+- `derived-from`: origem material do contexto;
+- `implements`: implementação → plano/decisão executada;
+- `validates`: prova → Artifact cuja propriedade foi demonstrada;
+- `resolved-by`: Work Item → handoff que comprova resolução.
 
-# Retrieval Progressivo
+Prefira a relação mais específica; não crie sinônimos ou múltiplas relações redundantes. Crie uma relação quando o alvo puder mudar uma decisão de aquisição de contexto. Não ligue Artifacts apenas porque são do mesmo projeto ou foram publicados próximos no tempo.
 
-Use:
+Para navegar, use `list_artifacts` com `relatedToArtifactId`, `direction` inbound/outbound/both (default both), e `relationKind` quando relevante. Cada consulta retorna um hop de discovery records. A → B → C não implica C na consulta de A. Abra um relacionado apenas depois de selecioná-lo. Relação significa pista de relevância, nunca carregar contexto automaticamente.
 
-**discover → select → read**
+# Publicar e editar
 
-Primeiro:
+Use `publish_artifact` com `rawMarkdown` completo e `scope`. O receipt traz success, artifactId, revisão 1 e projectId quando aplicável; não ecoa conteúdo. Preserve o artifactId após sucesso e não republique por rotina.
 
-`list_artifacts`
+Edite o Artifact existente quando identidade e finalidade lógica permanecerem: corrigir metadata, mudar status, resolver bloqueio, acrescentar prova ou ajustar relações. Crie novo Artifact para comunicação com finalidade independente, nunca apenas porque houve evolução.
 
-Use a listagem para identificar artifacts potencialmente relevantes.
+Fluxo de edição:
 
-Não abra todos automaticamente.
+get_artifact → observar revision N → editar Markdown/frontmatter completos → update_artifact(artifactId, expectedRevision=N, rawMarkdown).
 
-Depois:
+A operação substitui representação corrente e relações atomicamente, preserva artifactId/createdAt e grava revisão interna imutável. Relações omitidas são removidas; preserve explicitamente as que continuam válidas. Associação de projeto permanece por padrão; inclua scope somente para reclassificação deliberada.
 
-`get_artifact`
-
-somente para os artifacts selecionados.
-
-Pare quando houver contexto suficiente para continuar corretamente.
-
-> **Discover cheaply. Read deliberately.**
-
-# Seleção de Artifacts
-
-Prefira:
-
-- artifacts mais recentes quando a pergunta for sobre trabalho recente;
-- títulos diretamente relacionados à tarefa;
-- apenas artifacts cuja leitura possa alterar uma decisão material.
-
-Se o primeiro artifact resolver a necessidade, não continue abrindo outros.
-
-O objetivo não é reconstruir toda a história do projeto.
-
-É recuperar:
-
-> **o menor conjunto de contexto histórico suficiente para a tarefa atual.**
-
-# Artifact não é Source Atual
-
-Um Artifact representa conhecimento histórico produzido em determinado momento.
-
-Ele pode informar:
-
-- o que foi implementado;
-- o que foi validado;
-- que arquivos foram alterados;
-- quais problemas foram observados;
-- quais pendências permaneceram.
-
-Ele não garante que o repositório continue nesse estado.
-
-Quando a decisão depender do estado atual:
-
-- use CodeScope;
-- use Runtime Identity quando houver questão de runtime/freshness;
-- use outras capacidades atuais apropriadas.
-
-Princípio:
-
-> **Continuum tells you what happened. CodeScope tells you what exists now.**
-
-Não trate um handoff antigo como autoridade sobre source atual.
+Em REVISION_CONFLICT, releia a versão corrente, reavalie a alteração e use a nova revisão. Não faça retry cego, merge automático ou novo Artifact para contornar conflito. Histórico não é despejado nem possui navegação pública nesta entrega.
 
 # Implementation Handoff
 
-`IMPLEMENTATION_HANDOFF` é o Artifact canônico produzido ao final de uma implementação.
+O corpo do IMPLEMENTATION_HANDOFF é exatamente o Relato Final exigido pelo AGENTS.md. Materialize uma única fonte em Markdown UTF-8, preserve verbatim e acrescente somente frontmatter de descoberta. Não gere resumo, segundo relatório ou seções duplicadas. Confirme publicação e preserve artifactId.
 
-Para o Agente de Implementação:
+Nunca materialize Markdown através de argumentos de shell ou strings interpoladas: backticks, $, ${…}, $(…) e Unicode devem permanecer literais. Use escrita direta de arquivo.
 
-> o conteúdo do Implementation Handoff é exatamente o Relato Final definido pelo `AGENTS.md` vigente.
+# Compatibilidade offline
 
-Não mantenha uma segunda estrutura equivalente nesta Skill.
+Se MCP de publicação estiver indisponível, o transporte oficial é:
 
-Não crie:
+`node scripts/continuum/publish-artifact.cjs publish <arquivo.md> --scope ACTIVE_PROJECT`
 
-- versão resumida para o Continuum;
-- JSON semântico duplicado;
-- registros separados para cada seção;
-- segundo relatório para publicação.
+Use GLOBAL explicitamente quando necessário. A semântica vem do frontmatter. O locator repositoryKey é apenas compatibilidade de transporte; a ingestão resolve identidade canônica.
 
-Produza uma fonte única.
+`QUEUED` confirma envelope na inbox, não persistência universal. Depois, localize pelo `list_artifacts` e confirme o mesmo artifactId/conteúdo por `get_artifact` antes de declarar publicado. O comando v1 implementation-handoff continua apenas para consumidores antigos; envelopes pendentes e bancos legados são importados sem alterar Markdown. Não apague os bancos legados.
 
-# Publicação
+Se publicação falhar, preserve o Relato Final e informe que o handoff não foi publicado. Nunca deixe uma falha de transporte apagar contexto necessário.
 
-Ao concluir o Relato Final:
+# Evolução por evidência
 
-1. materialize exatamente esse conteúdo em arquivo Markdown UTF-8;
-2. preserve o conteúdo verbatim;
-3. publique o arquivo pelo publisher oficial;
-4. confirme o receipt `PUBLISHED`;
-5. preserve o `artifactId`.
-
-Comando operacional atual:
-
-`node scripts/continuum/publish-artifact.cjs implementation-handoff <arquivo.md> --title "<título>"`
-
-O agente informa somente conteúdo semântico e título.
-
-Não forneça manualmente metadata que o Publisher consegue determinar.
-
-# Fidelidade do Markdown
-
-Nunca construa o Implementation Handoff usando um mecanismo de shell que interprete o conteúdo.
-
-Especialmente:
-
-> **não passe o relatório inteiro como argumento de shell e não o materialize através de string interpolada.**
-
-Markdown pode conter:
-
-- backticks;
-- `$`;
-- `${…}`;
-- `$(…)`;
-- aspas;
-- code fences;
-- paths;
-- Unicode;
-- caracteres que shells interpretam.
-
-Prefira a capacidade de escrita de arquivos da ferramenta/agente para produzir o `.md` diretamente.
-
-O arquivo deve representar exatamente o texto pretendido.
-
-O Continuum protege integridade desde a entrada do Publisher em diante; não consegue reconstruir conteúdo que já tenha sido alterado antes dessa fronteira.
-
-# Publicação bem-sucedida
-
-Depois de `PUBLISHED`:
-
-- preserve o `artifactId`;
-- não publique novamente o mesmo handoff por rotina;
-- não gere outra versão apenas para apresentar no chat.
-
-Quando o workflow do agente permitir, a resposta final ao usuário pode ser curta e referenciar o Artifact publicado.
-
-O Artifact é a versão durável do handoff.
-
-# Falha de publicação
-
-Se a publicação falhar:
-
-- não declare que o Artifact existe;
-- não descarte o Relato Final;
-- preserve o relatório na resposta ao usuário ou em outro meio seguro disponível;
-- informe explicitamente que o handoff não foi publicado.
-
-Nunca deixe uma falha do Continuum apagar conhecimento necessário para continuidade.
-
-# Continuidade entre Agentes
-
-Ao assumir trabalho vindo de outro agente:
-
-1. identifique se existe contexto histórico material;
-2. consulte `list_artifacts`;
-3. selecione apenas o handoff relevante;
-4. use `get_artifact`;
-5. incorpore o contexto necessário;
-6. valide no source atual aquilo que exigir atualidade.
-
-Não peça ao usuário copy/paste de um handoff que o Continuum já disponibiliza.
-
-# Continuum Improvement
-
-O uso real deve ajudar a evoluir o Continuum.
-
-Observe dificuldades recorrentes relacionadas a:
-
-- descoberta;
-- seleção;
-- signal density;
-- publicação;
-- fidelidade;
-- Artifact Types;
-- metadata;
-- retrieval;
-- relações entre artifacts;
-- contextualização entre agentes;
-- intervenção humana desnecessária.
-
-Pergunta central:
-
-> **O Continuum poderia permitir autocontextualização com mais sinal, menos chamadas, menos tokens ou menos intervenção humana?**
-
-# Sinais de oportunidade
-
-Considere uma Capability Opportunity quando ocorrer de forma material ou recorrente:
-
-- muitos artifacts precisam ser abertos para localizar um fato simples;
-- títulos/metadata são insuficientes para selecionar corretamente;
-- informação valiosa existe, mas não possui Artifact Type adequado;
-- o usuário ainda precisa transportar manualmente contexto que já deveria ser recuperável;
-- publicação exige trabalho repetitivo desnecessário;
-- fidelidade do conteúdo é difícil de preservar;
-- é necessário reconstruir repetidamente relações entre artifacts;
-- o volume histórico tornou listagem simples insuficiente;
-- o agente não consegue distinguir contexto histórico de atual;
-- existe necessidade real e recorrente de contexto cross-project;
-- uma sequência manual está compensando uma primitive ausente do Continuum.
-
-Quando houver candidato material:
-
-> use `capability-opportunity` para qualificá-lo.
-
-Não implemente a melhoria fora do escopo atual apenas porque foi observada.
-
-# Near-misses
-
-Não considere deficiência apenas porque:
-
-- um Artifact precisou ser aberto;
-- dois handoffs foram necessários;
-- CodeScope precisou confirmar source atual;
-- um Artifact antigo ficou naturalmente stale;
-- uma tarefa não possuía contexto histórico relevante;
-- o agente precisou raciocinar sobre o conteúdo recuperado.
-
-Continuum deve fornecer sinal, não substituir raciocínio.
-
-# Evolução
-
-Não resolva inefficiency criando uma operação que retorna toda a memória do projeto.
-
-Preserve:
-
-> **progressive disclosure**
-
-e:
-
-> **Pure Signal**.
-
-Uma melhoria deve provar ganho marginal em pelo menos uma dimensão:
-
-- menos intervenção humana;
-- menos tokens;
-- menos chamadas necessárias;
-- melhor seleção;
-- maior precisão;
-- menor ambiguidade;
-- contexto mais relevante;
-- maior confiabilidade da continuidade entre agentes.
-
-# Princípios
-
-> Context transcends the chat.
-
-> Agents are ephemeral. Artifacts are durable.
-
-> Context is assembled on demand.
-
-> Persist deliberate signal, not conversational exhaust.
-
-> Discover cheaply. Read deliberately.
-
-> Continuum tells you what happened. CodeScope tells you what exists now.
-
-> One canonical artifact is better than multiple duplicated representations.
-
-> The Continuum preserves what it receives. The agent must deliver what it intended.
-
-> Improve the Continuum from real usage, not imagined possibilities.
+Observe seleção ruim, descrições insuficientes, contexto transportado manualmente, custo recorrente de publicação ou ausência de primitive real. Use `capability-opportunity` para qualificar causa generalizável e ganho futuro. Não implemente fora do escopo nem crie ferramenta que despeje todo o corpus. Um Artifact aberto, source confirmado ou histórico naturalmente stale não constitui deficiência por si só.

@@ -240,25 +240,26 @@ Se já existir item com o mesmo objetivo material:
 - não crie outro;
 - reutilize o existente.
 
-Se o trabalho existente ganhou contexto material novo, atualize-o segundo o mecanismo de supersession do Continuum.
+Se o trabalho existente ganhou contexto material novo, leia sua revisão e atualize o mesmo Artifact com `update_artifact` e `expectedRevision`.
 
 Não crie fontes concorrentes da mesma tarefa.
 
 ---
 
-# Imutabilidade e evolução
+# Identidade estável e evolução
 
-Artifacts do Continuum são imutáveis.
+Um Work Item possui um `artifactId` estável durante seu lifecycle.
 
-Não altere um snapshot já publicado.
+Use frontmatter com `name`, `description`, `kind: WORK_ITEM` e `status: PENDING`, `COMPLETED` ou `CANCELLED`.
 
-Quando um Work Item precisar ser atualizado, publique um novo snapshot preservando:
+Quando um Work Item precisar ser atualizado:
 
-- o mesmo `workItemId`;
-- novo `artifactId`;
-- referência ao snapshot anterior através de `supersedesArtifactId`.
+- leia o Artifact corrente e sua revisão;
+- preserve `artifactId` e finalidade lógica;
+- substitua Markdown e metadata completos com `expectedRevision`;
+- releia e reavalie em caso de conflito, segundo `continuum`.
 
-O snapshot mais recente representa o estado atual.
+A projeção corrente representa o estado atual. Revisões internas preservam história; não publique outro Artifact apenas para mudar estado.
 
 ---
 
@@ -268,10 +269,9 @@ Quando o trabalho for concluído:
 
 1. valide a implementação;
 2. publique o `IMPLEMENTATION_HANDOFF` normal usando `continuum`;
-3. publique novo snapshot do Work Item como `COMPLETED`;
-4. preserve o `workItemId`;
-5. referencie o snapshot anterior;
-6. associe o Work Item ao handoff de resolução.
+3. atualize o mesmo Work Item para `COMPLETED` com `expectedRevision`;
+4. preserve o `artifactId`;
+5. adicione relação `resolved-by` para o `artifactId` do handoff de resolução, preservando outras relações ainda válidas.
 
 O histórico deve permitir reconstruir:
 
@@ -281,7 +281,7 @@ O histórico deve permitir reconstruir:
 
 # Cancelamento
 
-Publique `CANCELLED` quando:
+Atualize o mesmo Artifact para `CANCELLED` quando:
 
 - evidência nova eliminar a necessidade;
 - a arquitetura mudar;
@@ -305,7 +305,7 @@ Consulte Work Items quando:
 
 Use Progressive Disclosure:
 
-`listar PENDING`
+`list_artifacts(kind=WORK_ITEM, status=PENDING)` com escopo/filtros relevantes
 
 → selecionar item relevante
 
@@ -333,7 +333,7 @@ Preserve decisões ainda válidas; não execute cegamente contexto histórico ob
 
 # Falta de Primitive
 
-Se a versão atual do Continuum não suportar `WORK_ITEM`:
+Se as primitives genéricas de publicação/edição não estiverem disponíveis no runtime atual:
 
 - não publique a tarefa falsamente como `IMPLEMENTATION_HANDOFF`;
 - não invente outro tipo equivalente;
