@@ -219,9 +219,11 @@ Na validação, cruze os estados afetados com repouso, hover, aberto e foco por 
 
 ## Mockup como contrato direcional
 
-Quando a direção visual estiver aberta e a diferença entre o estado atual e o desejado for grande, crie ou obtenha uma referência visual antes de implementar.
+Quando a direção visual estiver aberta, a diferença entre o estado atual e o desejado for grande ou o usuário pedir explicitamente uma referência visual, use a Skill `mockup-design`.
 
-Use o mockup para fixar:
+Esta Skill continua responsável por decidir **quando** o mockup agrega valor ao redesign e qual problema visual ele precisa resolver. `mockup-design` é responsável por produzir a representação visual com qualidade, fidelidade semântica e relação correta com o Design System.
+
+O mockup deve ajudar a fixar:
 
 - composição;
 - proporções;
@@ -229,13 +231,11 @@ Use o mockup para fixar:
 - densidade;
 - linguagem visual.
 
-Não o trate como banco de dados.
-
 > **Mockup defines direction; source defines truth.**
 
 Não implemente campos, estados ou ações ilustrativas que o produto não suporta.
 
-Se a direção visual já estiver resolvida, não gere outro mockup por rotina.
+Se a direção visual já estiver resolvida e o usuário não tiver solicitado mockup, não gere outro por rotina.
 
 ## Preserve contratos funcionais
 
