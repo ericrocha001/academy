@@ -186,6 +186,18 @@ Não crie um design system paralelo dentro de uma feature.
 
 Uma UI nova deve parecer parte do produto, não um microsite dentro dele.
 
+## Semântica de estado durante interação
+
+Quando um controle comunica estado operacional, sua aparência deve continuar comunicando esse estado durante a interação.
+
+- Use os tokens de estado existentes; não substitua sua semântica pelo accent da feature.
+- Preserve a cor de estado em repouso, hover e aberto. Inspecione a cascata dos componentes compartilhados: um hover global pode recolorir o controle e apagar essa distinção.
+- Preserve a geometria do controle e o foco visível. O contorno de foco pode seguir o padrão global sem recolorir o estado.
+- Vincule spinner ou animação de atividade a uma operação real em andamento; pendência e integridade desconhecida não implicam processamento.
+- Mantenha rótulo ou ícone que permita compreender o estado sem depender exclusivamente da cor.
+
+Na validação, cruze os estados afetados com repouso, hover, aberto e foco por teclado nos temas suportados, quando aplicáveis. Uma screenshot em repouso não prova que a semântica e o contraste sobrevivem à interação.
+
 ## Mockup como contrato direcional
 
 Quando a direção visual estiver aberta e a diferença entre o estado atual e o desejado for grande, crie ou obtenha uma referência visual antes de implementar.
