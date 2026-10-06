@@ -28,15 +28,81 @@ O Continuum pode hospedar documentos canônicos **repo-specific** cuja identidad
 - Design System do produto;
 - mapa ou princípios arquiteturais;
 - políticas técnicas específicas do repositório;
-- especificações duráveis que agentes precisam consultar ao longo do tempo.
+- especificações duráveis que agentes precisam consultar ao longo do tempo;
+- arquitetura conceitual de sistemas de engenharia e governança do próprio repositório.
 
-Nesses casos:
+### Metadata canônico
+
+Use:
+
+`livingArtifact: true`
+
+Living Artifact **não é kind novo**. O Artifact conserva sua natureza real — por exemplo `ARCHITECTURAL_DECISION`, `INVESTIGATION` ou outro kind apropriado — e recebe a propriedade adicional de que sua representação canônica deve ser reconsiderada quando surgirem aprendizados materiais do seu domínio.
+
+Não crie:
+
+- sub-Continuum de Living Artifacts;
+- pasta lógica;
+- Store separado;
+- kind `LIVING_ARTIFACT`;
+- cópia paralela do mesmo documento.
+
+Discovery:
+
+`list_artifacts(metadata: { livingArtifact: true })`
+
+### Semântica de manutenção
+
+`livingArtifact: true` significa:
+
+> este documento é deliberadamente evolutivo e deve ser **reavaliado** quando nova evidência, experiência ou mudança de workflow puder alterar seu conteúdo canônico.
+
+Não significa:
+
+- atualizar em toda tarefa;
+- acrescentar log cronológico;
+- registrar qualquer observação;
+- transformar experiência isolada em regra.
+
+Quando uma execução produzir aprendizado material:
+
+1. determine o domínio afetado;
+2. descubra Living Artifacts relevantes, preferindo filtros adicionais quando disponíveis;
+3. abra somente os candidatos capazes de mudar;
+4. compare aprendizado novo com conteúdo canônico existente;
+5. atualize in-place apenas se houver ganho generalizável ou mudança normativa real;
+6. preserve artifactId e relações válidas;
+7. atualize `date` e metadata de discovery quando a representação mudar.
+
+Se não houver mudança material, não toque no Artifact.
+
+### Promoção de aprendizado
+
+Promova aprendizado para Living Artifact quando ele:
+
+- altera uma regra ou princípio vigente;
+- resolve ambiguidade recorrente;
+- generaliza evidência de múltiplas execuções ou uma prova especialmente forte;
+- muda arquitetura, workflow ou governança de forma durável;
+- evita que agentes futuros repitam decisão já resolvida.
+
+Não promova:
+
+- preferência local;
+- workaround;
+- detalhe acidental de implementação;
+- evento histórico que pertence a handoff/observation;
+- hipótese ainda não comprovada.
+
+### Identidade e revisão
+
+Para Living Artifacts:
 
 - mantenha um único `artifactId` canônico;
-- atualize por revisão, não publique cópias concorrentes;
-- mantenha description e metadata úteis para discovery;
-- relacione exemplares, decisões ou implementações quando isso ajudar aquisição de contexto;
-- trate o Artifact corrente como a representação agent-readable vigente.
+- atualize por revisão;
+- não publique `v2`, `v3` como Artifacts concorrentes apenas porque o conteúdo evoluiu;
+- mantenha description e metadata adequados para discovery;
+- relacione exemplares, decisões ou implementações quando isso melhorar aquisição de contexto.
 
 Não use o Continuum como espelho redundante de todo arquivo importante.
 
