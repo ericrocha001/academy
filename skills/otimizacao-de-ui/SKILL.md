@@ -173,6 +173,25 @@ Exemplos:
 
 Use `progressive-disclosure` quando o problema exigir estruturar múltiplos níveis de profundidade.
 
+## Verdade operacional antes do acabamento
+
+Quando uma UI exibir estados operacionais como carregando, sincronizando, pendente, saudável, degradado ou concluído, confirme antes do redesign que esses estados representam a verdade do sistema.
+
+Se a interface aparenta estar trabalhando enquanto o backend está ocioso, ou aparenta estar saudável enquanto existe backlog/falha, isso não é apenas um problema visual.
+
+Antes de estilizar:
+
+- identifique a fonte de verdade do estado;
+- diferencie backlog, atividade, saúde e erro;
+- confirme como início, progresso, conclusão e falha chegam ao renderer;
+- corrija estado stale, evento de conclusão ausente ou contrato quebrado antes de redesenhar sua aparência.
+
+Não use polling extra, timeout visual, limpeza artificial de estado ou remoção de spinner para mascarar inconsistência operacional.
+
+> **Não otimize a aparência de um estado cuja semântica ainda não é verdadeira.**
+
+Depois que o contrato estiver correto, a UI pode representar cada estado com a hierarquia e semântica visual apropriadas.
+
 ## Design system existente primeiro
 
 Antes de criar tokens ou padrões novos:
