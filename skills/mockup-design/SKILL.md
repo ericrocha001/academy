@@ -313,10 +313,50 @@ O mockup deve ser acompanhado pela interpretação correta:
 - referência visual direcional;
 - Design System continua normativo;
 - source/runtime continuam normativos para comportamento;
-- o Implementador pode adaptar medidas, spacing e detalhes locais;
+- o Implementador pode adaptar medidas, spacing, densidade e detalhes locais;
 - diferenças entre mockup e runtime final são aceitáveis quando melhoram implementação sem violar direção e contratos.
 
 Não instrua o Implementador a “copiar o mockup exatamente”.
+
+### Fidelidade esperada
+
+A fidelidade correta é à **intenção visual**, não aos pixels.
+
+O runtime final deve preservar principalmente:
+
+- hierarquia;
+- proporções relativas;
+- regiões e responsabilidades;
+- densidade;
+- foco;
+- atmosfera visual;
+- relação entre primary e secondary surfaces.
+
+Ele pode divergir em:
+
+- medidas;
+- spacing;
+- quantidade de ornamentação;
+- iconografia local;
+- labels;
+- distribuição exata;
+- detalhes de cardification;
+- simplificações necessárias para aderir melhor ao produto real.
+
+Se o runtime ficar mais claro, mais denso, mais coerente com o Design System e funcionalmente verdadeiro, uma divergência visual pode ser uma melhoria.
+
+### Pós-implementação
+
+Depois que o runtime for validado visualmente:
+
+- compare direção do mockup com resultado real;
+- identifique o que o runtime melhorou;
+- se o aprendizado for generalizável, promova-o à Skill ou ao Design System;
+- quando útil, preserve uma captura do runtime como exemplar gráfico separado do mockup.
+
+Mockup e runtime cumprem papéis diferentes:
+
+> **Mockup explores direction. Runtime proves embodiment.**
 
 ## Critério de sucesso
 
