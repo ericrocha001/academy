@@ -1,6 +1,6 @@
 ---
 name: mockup-design
-description: Use quando o usuário pedir criar, gerar, desenhar ou refazer um mockup, referência visual, wireframe de alta fidelidade ou direção gráfica de uma UI, ou quando uma otimização de UI precisar resolver visualmente composição, hierarquia, proporção, densidade e linguagem antes da implementação. Produza mockups fiéis ao produto e ao Design System, sem inventar comportamento; trate-os como referência direcional, não especificação literal. Quando Repository File Ingress estiver disponível, preserve o resultado em docs/mockups/<feature>/. Não use para implementar a UI nem para decidir sozinho se uma feature deve existir.
+description: Use quando o usuário pedir criar, gerar, desenhar ou refazer um mockup, referência visual ou wireframe de alta fidelidade, ou quando `otimizacao-de-ui` concluir que uma UI nova/redesign ainda possui incerteza visual material. Decida entre gerar, reutilizar ou dispensar mockup; produza referência fiel ao produto e ao Design System, explicite divergências ilustrativas e trate o mockup como direção visual, nunca fonte funcional. Quando precisar persistir o resultado no repositório, use `repository-file-ingress`. Não use para implementar a UI nem para decidir sozinho se a feature deve existir.
 ---
 
 # Mockup Design
@@ -26,18 +26,62 @@ O mockup deve tornar visíveis:
 
 Ele não é uma especificação pixel-perfect nem autoridade sobre dados, comportamento ou contratos.
 
-## Quando usar
+## Gate de mockup
 
-Use quando:
+A função desta Skill não é maximizar quantidade de mockups. É criar a menor referência visual capaz de reduzir incerteza material.
 
-- o usuário pedir explicitamente um mockup;
-- uma UI existente será repaginada e a diferença visual desejada é grande;
-- múltiplas composições plausíveis ainda competem;
-- uma direção visual precisa ser comunicada ao Implementador;
-- o Design System está descrito, mas falta representação gráfica da composição;
-- `otimizacao-de-ui` concluir que uma referência visual reduzirá incerteza material.
+### GERAR
 
-Não gere mockup por ritual quando a direção já estiver suficientemente resolvida e o usuário não o tiver solicitado.
+Gere quando:
+
+- o usuário pedir explicitamente;
+- uma UI nova possuir composição não trivial ainda não materializada;
+- um redesign mudar substancialmente composição ou hierarquia;
+- múltiplas direções visuais plausíveis competirem;
+- outro agente precisar de referência visual antes da implementação;
+- a tela puder se tornar exemplo gráfico durável do Design System.
+
+### REUTILIZAR
+
+Se já houver mockup aprovado e a direção relevante continuar válida:
+
+- use o existente;
+- não crie variação redundante;
+- atualize somente quando houver mudança material de direção.
+
+### DISPENSAR
+
+Dispense quando:
+
+- o ajuste for local/cosmético;
+- o padrão visual canônico já determinar a solução;
+- a direção já estiver inequívoca;
+- a imagem não mudaria decisão arquitetural ou de implementação.
+
+Se esta Skill foi chamada porque o usuário pediu explicitamente um mockup, gere-o; o gate serve para decisões autônomas do agente.
+
+## Hierarquia de autoridade
+
+Use sempre:
+
+1. **Source/runtime — verdade funcional**
+2. **Design System — verdade visual normativa**
+3. **Arquitetura/Plano — composição específica**
+4. **Mockup — referência visual direcional**
+
+Em conflito, a camada superior vence.
+
+O mockup pode explorar apresentação, não produto.
+
+Ele não autoriza:
+
+- ações inexistentes;
+- métricas não produzidas;
+- filtros inexistentes;
+- estados impossíveis;
+- histórico que o sistema não possui;
+- backend novo;
+- mudanças de contrato.
 
 ## Fronteiras com Skills vizinhas
 
@@ -70,17 +114,13 @@ Depois da direção visual estar resolvida, `planejamento-executavel` transforma
 
 Antes de desenhar, adquira somente o necessário de:
 
-1. **contratos funcionais atuais** — source/runtime;
-2. **Design System canônico**, quando existir;
-3. **UI atual**, quando houver;
-4. **objetivo do redesign**;
-5. **restrições reais de viewport, estado e interação**.
+1. source/runtime atual;
+2. Design System canônico;
+3. arquitetura/Plano da feature;
+4. UI atual, quando houver;
+5. objetivo e restrições reais de viewport/estado.
 
-Prioridade semântica:
-
-> comportamento real → Design System → arquitetura de informação → mockup.
-
-O mockup nunca vence source ou runtime em conflito funcional.
+Não use screenshot isolada como autoridade funcional.
 
 ## Não invente produto
 
@@ -191,19 +231,29 @@ Evite:
 
 Use a capacidade visual disponível para gerar o mockup.
 
-Quando houver uma UI atual visualmente útil, ela pode servir como referência de estrutura, mas não deve aprisionar o redesign.
+Quando houver UI atual visualmente útil, ela pode servir como referência de estrutura, mas não deve aprisionar o redesign.
 
-Após a primeira geração, critique explicitamente contra:
+Após cada geração material, faça uma revisão curta contra:
 
-1. Design System;
-2. contratos funcionais;
-3. arquitetura de informação;
-4. densidade;
-5. implementação plausível.
+1. source/runtime;
+2. Design System;
+3. arquitetura/Plano;
+4. densidade e hierarquia;
+5. plausibilidade de implementação.
 
-Itere quando houver falha material.
+### Passo obrigatório de divergência
 
-Não itere apenas por diferenças cosméticas menores.
+Antes de entregar o mockup ao Implementador, identifique elementos que são apenas ilustrativos ou não suportados atualmente.
+
+Classifique-os como:
+
+- **direção válida** — composição/estilo que deve orientar a implementação;
+- **conteúdo ilustrativo** — valores/textos de exemplo sem obrigação literal;
+- **não suportado** — ação, dado, métrica, estado ou comportamento que não deve ser implementado.
+
+O Plano Executável deve preservar essa distinção quando o mockup puder induzir erro.
+
+Itere quando houver falha material. Não itere apenas por diferenças cosméticas menores.
 
 ## Texto no mockup
 
@@ -221,23 +271,30 @@ Não transforme o mockup em fonte para copiar strings.
 
 ## Persistência no repositório
 
-Quando o repositório ativo expuser Repository File Ingress:
+Quando o mockup aprovado merecer valor durável, use a Skill `repository-file-ingress` para materializá-lo no repositório ativo.
 
-1. converta/preserve o mockup em formato apropriado, preferencialmente WebP para screenshots e referências raster;
-2. armazene em:
-   `docs/mockups/<feature>/`
-3. use nome kebab-case orientado à função, por exemplo:
-   `channel-overview-operational-v1.webp`;
-4. não sobrescreva silenciosamente referência existente;
-5. se uma revisão material produzir nova direção, incremente a versão do arquivo;
-6. confirme integridade pelo recibo de importação;
-7. deixe stage/commit para Git Operations.
+Convenção preferida:
 
-Não salve mockups temporários, experimentos ruins ou variações descartadas por padrão.
+`docs/mockups/<feature>/`
 
-Preserve apenas referências que merecem orientar trabalho futuro.
+Nome:
 
-Se Repository File Ingress não estiver disponível, não invente persistência. Informe que o mockup foi produzido mas ainda não materializado no repositório.
+`<feature>-<state-or-purpose>-vN.webp`
+
+Exemplo:
+
+`channel-overview-operational-v1.webp`
+
+Regras:
+
+- preserve apenas referências aprovadas ou materialmente úteis;
+- não salve experimentos descartados por padrão;
+- não sobrescreva silenciosamente;
+- incremente versão quando a direção mudar materialmente;
+- registre/retorne o path e, quando disponível, hash do arquivo;
+- stage/commit continuam pertencendo a `git-operations`.
+
+Se o ingress não estiver disponível, não invente persistência alternativa; entregue a imagem e informe a limitação.
 
 ## Relação com o Design System
 
