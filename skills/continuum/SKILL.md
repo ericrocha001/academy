@@ -15,11 +15,39 @@ Agents are ephemeral. Artifacts are durable. Context is assembled on demand.
 
 # Pure Signal
 
-Artifact é qualquer unidade durável de comunicação com valor contextual para outro agente. Planos, handoffs, decisões, Work Items, provas, investigações, bloqueios e comunicações futuras usam a mesma infraestrutura. Tipos conhecidos não limitam aquilo que pode trafegar.
+Artifact é qualquer unidade durável de comunicação com valor contextual para outro agente. Planos, handoffs, decisões, Work Items, provas, investigações, bloqueios, comunicações futuras e **referências canônicas vivas do repositório** usam a mesma infraestrutura quando isso aumentar descoberta e continuidade.
 
 Preserve contexto deliberado e reutilizável. Não preserve chats completos, cadeia de pensamento, logs arbitrários, histórico de ferramentas ou informação descartável. Não publique apenas para aumentar volume.
 
 Unbounded Corpus, Bounded Context: corpus grande exige índices, filtros, metadata, relações e paginação; não exclusão preventiva de conhecimento útil.
+
+## Living Canonical Artifacts
+
+O Continuum pode hospedar documentos canônicos **repo-specific** cuja identidade permanece estável enquanto o conteúdo evolui, por exemplo:
+
+- Design System do produto;
+- mapa ou princípios arquiteturais;
+- políticas técnicas específicas do repositório;
+- especificações duráveis que agentes precisam consultar ao longo do tempo.
+
+Nesses casos:
+
+- mantenha um único `artifactId` canônico;
+- atualize por revisão, não publique cópias concorrentes;
+- mantenha description e metadata úteis para discovery;
+- relacione exemplares, decisões ou implementações quando isso ajudar aquisição de contexto;
+- trate o Artifact corrente como a representação agent-readable vigente.
+
+Não use o Continuum como espelho redundante de todo arquivo importante.
+
+Quando um arquivo é carregado diretamente pelo runtime/harness — por exemplo `ARCHITECT.md`, prompts operacionais, configs ou source — **o arquivo continua sendo a fonte de verdade operacional**. O Continuum pode registrar decisões, rationale ou referências relacionadas, mas não deve manter uma segunda cópia normativa que possa divergir.
+
+Regra de localização:
+
+- **repo-specific + contexto durável para agentes** → Continuum pode ser canônico;
+- **procedimento reutilizável entre repositórios** → Academy/Skill;
+- **config/prompt/source executado diretamente** → arquivo/sistema que o carrega é canônico;
+- **estado atual do software** → source/runtime, nunca Artifact histórico.
 
 # Fast-Finding e Self-Contextualization
 
