@@ -342,7 +342,7 @@ Preserve foco e responsabilidade em cada breakpoint.
 
 Testes, typecheck e build são necessários, mas não provam qualidade visual.
 
-Antes de declarar um redesign concluído, inspecione o **runtime real**.
+Antes de declarar uma UI nova ou redesign concluído, inspecione o **runtime real**.
 
 Verifique estados representativos, incluindo quando aplicável:
 
@@ -357,7 +357,33 @@ Verifique estados representativos, incluindo quando aplicável:
 - overflow;
 - scroll ownership;
 - contraste;
-- proximidade com a referência aprovada.
+- proximidade com a direção visual aprovada.
+
+### Compare intenção, não pixels
+
+Quando houver mockup, não avalie sucesso por semelhança literal.
+
+Compare o runtime contra quatro perguntas:
+
+1. a hierarquia principal sobreviveu?
+2. a composição continua transmitindo a mesma direção?
+3. o Design System ficou mais coerente, não menos?
+4. a implementação real melhorou alguma simplificação, densidade ou legibilidade sem violar contratos?
+
+O runtime pode — e às vezes deve — divergir do mockup para ficar melhor.
+
+> **Mockup fidelity is not the goal. Intent fidelity is.**
+
+Se a implementação eliminar ornamentação desnecessária, reduzir ruído, aumentar densidade útil ou adaptar proporções às restrições reais, isso é uma melhoria legítima.
+
+### Runtime como exemplar
+
+Quando uma UI validada materializar muito bem o Design System:
+
+- considere preservar uma captura representativa como exemplo gráfico;
+- trate essa captura como exemplar, não como novo contrato;
+- use exemplos reais para ensinar como princípios abstratos aparecem no produto;
+- não generalize uma composição local para regra global sem evidência de reutilização.
 
 Se a prova visual obrigatória não puder ser executada, o trabalho não é `VALIDADO`.
 
