@@ -1,6 +1,6 @@
 ---
 name: git-operations
-description: Use para operar Git com segurança através das ferramentas MCP do Code Awareness: inspecionar estado e mudanças, preparar commits, gerenciar branches, sincronizar remoto, fazer merge/revert, preservar worktree com shelves, resolver conflitos tipados e recuperar mutações por operationId. Use quando uma tarefa exigir alteração real do repositório via Git Operations. Não use para editar código, navegar arquitetura ou substituir validação de implementação.
+description: Use para operar Git com segurança através das ferramentas MCP do Code Awareness: inspecionar estado e mudanças, manter a higiene do worktree, preparar commits, gerenciar branches, sincronizar remoto, fazer merge/revert, preservar trabalho com shelves, resolver conflitos tipados e recuperar mutações por operationId. Use quando uma tarefa exigir alteração real do repositório via Git Operations. Não use para editar código, navegar arquitetura ou substituir validação de implementação.
 ---
 
 # Git Operations
@@ -40,6 +40,64 @@ Observe quando aplicável:
 Use `get_git_changes` somente quando precisar descobrir quais paths compõem o estado dirty.
 
 Não leia diffs amplos por rotina.
+
+## Higiene do worktree
+
+Worktree limpo é uma propriedade operacional desejável, mas nunca justifica ocultar, descartar ou misturar trabalho não compreendido.
+
+Quando o estado dirty for dominado por untracked gerado, ou antes de concluir uma implementação, use `analyze_git_hygiene` antes de enumerar centenas de paths manualmente.
+
+A análise deve separar:
+
+- mudanças tracked legítimas;
+- resíduos gerados;
+- projeções de ferramentas;
+- runtimes, logs e validações;
+- untracked não classificados que ainda exigem inspeção.
+
+Para novas regras de ignore:
+
+`analyze_git_hygiene`
+→ escolher somente regras justificadas
+→ `manage_gitignore(PREVIEW_ADD)`
+→ verificar `newlyIgnoredCount`, grupos afetados e `remainingUntrackedCount`
+→ `manage_gitignore(ADD)` com o mesmo `expectedWorktreeRevision` e `expectedPreviewId`.
+
+`PREVIEW_ADD` é obrigatório antes de `ADD`.
+
+Nunca use `.gitignore` para esconder:
+
+- arquivos tracked modificados;
+- trabalho cuja intenção ainda não foi determinada;
+- conteúdo fonte apenas porque dificulta staging;
+- uma árvore ampla sem evidência de que ela é gerada/disponível para descarte.
+
+Prefira a regra mais estável que represente uma fronteira realmente gerada. Uma regra de diretório raiz só é adequada quando histórico e preview sustentarem que a árvore não contém conteúdo versionado intencionalmente.
+
+`manage_gitignore ADD` é mutação receipted: crie `operationId` antes da primeira tentativa e reutilize o mesmo ID em recuperação.
+
+## Higiene do Implementador
+
+Durante implementação, evite criar resíduos em locais versionáveis quando puder usar áreas já ignoradas.
+
+Antes do handoff final:
+
+1. use `get_git_state`;
+2. se houver untracked inesperado ou grande volume dirty, use `analyze_git_hygiene`;
+3. preserve mudanças tracked legítimas em commit coerente ou shelf deliberado;
+4. trate resíduos gerados por regra de ignore somente após preview;
+5. confirme `stagedCount = 0`, `unstagedCount = 0`, `untrackedCount = 0`, salvo estado residual explicitamente justificado.
+
+Não entregue um worktree dirty por acidente.
+
+Se algum dirty precisar permanecer, registre explicitamente no handoff:
+
+- paths ou grupo;
+- motivo;
+- propriedade/intenção;
+- ação esperada do próximo agente.
+
+A meta é que o próximo agente receba um worktree com alto sinal, sem pagar novamente o custo de separar centenas de resíduos do trabalho real.
 
 ## Optimistic Concurrency
 
