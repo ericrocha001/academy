@@ -1,19 +1,54 @@
 ---
 name: otimizacao-de-ui
-description: Use sempre que o trabalho pedir otimizar, repaginar, redesenhar, modernizar, profissionalizar, reorganizar ou melhorar visualmente uma UI existente, preservando seus contratos funcionais. Diagnostique arquitetura de informação, hierarquia, layout, scroll, densidade, estados, responsividade e sistema visual antes de estilizar. Quando a direção visual estiver aberta ou o usuário pedir uma referência visual/mockup, acione `mockup-design`. Exija inspeção visual do runtime real antes de considerar o trabalho validado. Não use para decidir se uma nova UI deve existir, nem para redesenhar backend ou comportamento de produto sem necessidade.
+description: Use ao criar do zero, desenhar, otimizar, repaginar, redesenhar, modernizar, profissionalizar, reorganizar ou melhorar visualmente uma UI. Resolva arquitetura de informação, hierarquia, layout, scroll, densidade, estados, responsividade e aderência ao Design System antes de estilizar; preserve contratos funcionais quando a UI já existir. Decida explicitamente se mockup agrega valor e, quando necessário, acione `mockup-design`. Exija inspeção visual do runtime real antes de considerar o trabalho validado. Não use para decidir se uma feature deve existir nem para alterar backend ou comportamento de produto sem necessidade.
 ---
 
-# Otimização de UI
+# Design e Otimização de UI
 
 ## Finalidade
 
-Transforme interfaces funcionais porém cruas em experiências claras, profissionais e coerentes sem confundir redesign visual com mudança de produto.
+Projete interfaces novas e transforme interfaces existentes em experiências claras, profissionais e coerentes sem confundir design visual com mudança de produto.
 
 Princípio:
 
-> **Preserve semantics. Redesign the experience.**
+> **Preserve truth. Design the experience.**
 
-A otimização deve melhorar compreensão, fluxo, densidade, organização e qualidade visual sem perder capacidades existentes.
+Para UI existente, preserve capacidades e contratos funcionais.
+
+Para UI nova, derive a experiência apenas de capacidades e requisitos realmente aprovados; não use o design para inventar produto.
+
+## Escopo: criação e redesign
+
+Esta Skill é a fonte canônica tanto para:
+
+- criar uma UI do zero para uma feature já justificada;
+- estruturar uma nova tela, painel, modal ou workspace;
+- otimizar uma UI funcional porém crua;
+- repaginar ou modernizar uma superfície;
+- corrigir arquitetura de informação, densidade, scroll, responsividade ou hierarquia;
+- alinhar uma superfície existente ao Design System do produto.
+
+Se a própria existência da UI ainda estiver em dúvida, use primeiro `feature-investment-gate`.
+
+Não crie uma segunda Skill de “UI design” paralela: criação e otimização compartilham os mesmos contratos de experiência e devem evoluir juntas.
+
+## Hierarquia de autoridade do design
+
+Quando houver múltiplas referências, use esta ordem:
+
+1. **Source/runtime — verdade funcional.** Define capacidades, dados, estados, ações e comportamento realmente suportados.
+2. **Design System — verdade visual normativa.** Define identidade, semântica visual, tokens, padrões e regras compartilhadas.
+3. **Arquitetura/Plano — composição específica da feature.** Define hierarquia, regiões, responsabilidades, invariantes e direção particular da tela.
+4. **Mockup — referência visual direcional.** Materializa composição, proporções, densidade e atmosfera.
+
+Em conflito, a camada superior vence.
+
+Consequências:
+
+- não implemente ação, métrica, filtro ou estado apenas porque apareceu no mockup;
+- não viole o Design System apenas para copiar uma imagem;
+- não use o source atual como desculpa para preservar uma composição visual ruim quando o comportamento pode ser apresentado melhor;
+- diferenças entre mockup e runtime final são esperadas quando preservam melhor verdade funcional, Design System e arquitetura aprovada.
 
 ## Antes de desenhar
 
@@ -217,25 +252,47 @@ Quando um controle comunica estado operacional, sua aparência deve continuar co
 
 Na validação, cruze os estados afetados com repouso, hover, aberto e foco por teclado nos temas suportados, quando aplicáveis. Uma screenshot em repouso não prova que a semântica e o contraste sobrevivem à interação.
 
-## Mockup como contrato direcional
+## Decida se mockup agrega valor
 
-Quando a direção visual estiver aberta, a diferença entre o estado atual e o desejado for grande ou o usuário pedir explicitamente uma referência visual, use a Skill `mockup-design`.
+Não gere mockup por rotina. Faça um gate explícito antes da implementação visual.
 
-Esta Skill continua responsável por decidir **quando** o mockup agrega valor ao redesign e qual problema visual ele precisa resolver. `mockup-design` é responsável por produzir a representação visual com qualidade, fidelidade semântica e relação correta com o Design System.
+### GERAR mockup
 
-O mockup deve ajudar a fixar:
+Use `mockup-design` quando pelo menos uma destas condições for material:
 
-- composição;
-- proporções;
-- hierarquia;
-- densidade;
-- linguagem visual.
+- o usuário pediu explicitamente uma referência visual;
+- a UI é nova e possui composição não trivial ainda sem referência gráfica;
+- o redesign altera substancialmente arquitetura de informação ou composição;
+- existem múltiplos layouts plausíveis e a escolha visual ainda está aberta;
+- a direção precisa ser comunicada a outro agente antes da implementação;
+- o Design System está descrito, mas a aplicação concreta dele à tela ainda é ambígua;
+- uma referência gráfica terá valor durável como exemplo do Design System.
 
-> **Mockup defines direction; source defines truth.**
+### REUTILIZAR mockup existente
 
-Não implemente campos, estados ou ações ilustrativas que o produto não suporta.
+Se já existe mockup aprovado e a direção material não mudou:
 
-Se a direção visual já estiver resolvida e o usuário não tiver solicitado mockup, não gere outro por rotina.
+- reutilize a referência;
+- não gere outra variação por hábito;
+- confirme apenas se source/runtime e Design System ainda preservam as premissas relevantes.
+
+### NÃO GERAR mockup
+
+Normalmente pule o mockup quando:
+
+- a mudança é pequena e local;
+- trata-se de bug visual, spacing, overflow, contraste ou ajuste de estado conhecido;
+- um padrão canônico já resolve diretamente a composição;
+- a arquitetura visual já está aprovada e inequívoca;
+- o mockup não alteraria nenhuma decisão do Implementador.
+
+O custo do mockup deve comprar redução real de incerteza.
+
+Quando gerado, trate-o segundo a hierarquia de autoridade acima:
+
+> **Mockup defines direction; source/runtime define truth.**
+
+Antes de planejar implementação, identifique explicitamente qualquer elemento ilustrativo do mockup que não seja suportado pelo produto e exclua-o do Plano.
 
 ## Preserve contratos funcionais
 
