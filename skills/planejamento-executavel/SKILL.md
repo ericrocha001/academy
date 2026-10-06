@@ -1,6 +1,6 @@
 ---
 name: planejamento-executavel
-description: Use quando uma solução arquitetural já estiver suficientemente resolvida e precisar ser transformada em um Plano Final Executável para um agente de implementação, incluindo escopo, ordem, Unidades de Implementação, granularidade, dependências, capacidade mínima do executor e critérios de execução. Não use para descobrir arquitetura ainda aberta, projetar provas em detalhe ou resolver bloqueios de implementação.
+description: Use quando uma solução arquitetural já estiver suficientemente resolvida e precisar ser transformada em um Plano Final Executável para um agente de implementação, publicado como contexto durável no Continuum para recuperação pelo executor. Inclui escopo, ordem, Unidades de Implementação, granularidade, dependências, capacidade mínima e critérios de execução. Não use para descobrir arquitetura ainda aberta, projetar provas em detalhe ou resolver bloqueios de implementação.
 ---
 
 
@@ -439,8 +439,11 @@ Antes de entregar o Plano Final, verifique:
 15. Existe detalhe tático desnecessariamente prescrito?
 16. Existe contexto ou explicação histórica que pode ser removido sem perda de executabilidade?
 17. Um Implementador que não participou da investigação consegue executar este Plano diretamente?
+18. O Plano final foi publicado no Continuum do repositório ativo quando a capability estava disponível?
+19. A referência entregue ao Implementador aponta para a representação canônica, sem cópia concorrente?
+20. O `executionId`, quando necessário para continuidade entre Plano e Handoff, foi criado ou reutilizado de forma estável?
 
-Se a resposta relevante for não, corrija o Plano antes de entregá-lo.
+Se a resposta relevante for não, corrija o Plano ou a transferência antes de considerá-lo entregue.
 
 ## Anti-Padrões
 
@@ -478,6 +481,51 @@ Não compense deficiência de planejamento simplesmente aumentando a capacidade 
 
 Não copie para esta Skill procedimentos pertencentes à capacidade especializada de validação.
 
+## Publicação e Handoff via Continuum
+
+Quando o repositório ativo possuir Continuum disponível, o Plano Final Executável deve ser transferido ao Implementador **por meio do Continuum**, não por copy/paste manual.
+
+O Plano publicado é a representação canônica da transferência Arquitetura → Implementação.
+
+Use a Skill `continuum` para cumprir o contrato vigente de metadata, publicação, edição, relações, data e isolamento por repositório. Esta Skill define apenas a semântica do handoff:
+
+1. finalize e revise o Plano antes de publicar;
+2. publique-o como Artifact `EXECUTABLE_PLAN` no Continuum do repositório ativo;
+3. quando a execução produzir múltiplos Artifacts relacionados, estabeleça ou reutilize um `executionId` estável;
+4. preserve o `artifactId` retornado;
+5. entregue ao executor a referência do Artifact, não uma segunda versão reescrita do Plano;
+6. o Implementador deve recuperar o Artifact pelo Continuum e executar exatamente a representação corrente selecionada;
+7. o `IMPLEMENTATION_HANDOFF` final deve reutilizar o mesmo `executionId` quando ele existir e relacionar-se ao Plano com `implements`.
+
+Não mantenha duas versões semanticamente concorrentes do mesmo Plano em chat, arquivo e Continuum. Se o chat precisar informar o resultado, prefira um receipt compacto com `artifactId`, `executionId` quando houver e estado da publicação.
+
+Se a finalidade e identidade do Plano permanecerem as mesmas, uma revisão material deve atualizar o Artifact existente segundo a Skill `continuum`, em vez de publicar outro Plano concorrente. Crie outro Artifact somente quando houver uma execução ou finalidade realmente independente.
+
+### Recuperação pelo Implementador
+
+O executor não deve depender de o Arquiteto reenviar o texto.
+
+Preferência:
+
+`artifactId conhecido → get_artifact → executar`.
+
+Quando a referência direta não estiver disponível:
+
+`list_artifacts(kind=EXECUTABLE_PLAN, filtros relevantes) → selecionar discovery record → get_artifact`.
+
+A recuperação continua obedecendo Metadata Before Content. Não abra preventivamente vários Planos.
+
+### Falha de publicação
+
+Se o Continuum estiver indisponível:
+
+- preserve integralmente o Plano Final;
+- informe que a publicação não foi concluída;
+- não invente `artifactId`;
+- não produza uma versão resumida como substituto silencioso.
+
+A transferência direta do texto é fallback operacional, não o caminho normal. Quando a publicação voltar a estar disponível, materialize a mesma representação canônica conforme a Skill `continuum`.
+
 ## Forma de Saída
 
 Não imponha um template rígido.
@@ -498,6 +546,8 @@ Para cada Unidade, deixe explícito o novo estado que ela deve produzir.
 
 Adapte a forma ao problema sem enfraquecer os contratos necessários para execução segura.
 
+Quando o Continuum estiver disponível, a saída operacional normal após a publicação é **referenciar o Artifact publicado**, não reproduzir novamente o Plano inteiro.
+
 ## Regra Final
 
-> **Transforme arquitetura resolvida em execução econômica. Preserve decisões, contratos e fronteiras; remova histórico e ruído; decomponha somente quando isso reduzir complexidade real; deixe liberdade onde ela for segura; exija estados verificáveis; e entregue ao Implementador apenas a carga cognitiva que legitimamente pertence à implementação.**
+> **Transforme arquitetura resolvida em execução econômica. Preserve decisões, contratos e fronteiras; remova histórico e ruído; decomponha somente quando isso reduzir complexidade real; deixe liberdade onde ela for segura; exija estados verificáveis; publique o Plano canônico no Continuum; e faça o Implementador recuperar somente a carga cognitiva que legitimamente pertence à execução.**
