@@ -13,9 +13,9 @@ Princípio:
 
 > Inspecione antes de mutar. Preserve intenção explicitamente. Use preconditions. Reutilize operationId para recuperar resultado; nunca repita uma mutação às cegas.
 
-Git Operations não substitui CodeScope, validação, System Health ou Continuum.
+Git Operations não substitui Code Navigation, validação, System Health ou Continuum.
 
-- CodeScope explica o repositório.
+- Code Navigation, através do Code Awareness Channel, explica o repositório.
 - Continuum informa o que aconteceu anteriormente.
 - Git Operations altera e verifica o estado Git atual.
 - Validation Evidence Channels decide como provar software.
