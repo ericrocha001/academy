@@ -191,7 +191,7 @@ Example:
 ```text
 Element Graph knowledge
 → CodeBrain backend
-→ CodeScope queries
+→ Code Navigation queries
 ```
 
 does not require:
@@ -408,7 +408,7 @@ For example:
 
 ```text
 CodeBrain relationship
-→ CodeScope projection
+→ Code Navigation projection
 → optional UI later
 ```
 
@@ -434,7 +434,7 @@ Evaluate:
 
 Example:
 
-If CodeScope already lets an agent navigate an Element Graph efficiently, the question for an Element Graph UI is not:
+If Code Navigation already lets an agent navigate an Element Graph efficiently, the question for an Element Graph UI is not:
 
 > "Are element relationships useful?"
 
