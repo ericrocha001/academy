@@ -64,7 +64,7 @@ Estude a UI atual e seu source suficiente para responder:
 
 Não redesenhe apenas a screenshot. A screenshot mostra sintomas; o source revela estrutura e contratos.
 
-Quando precisar navegar no codebase, use `codescope-navigation`.
+Quando precisar navegar no codebase, use `code-navigation`.
 
 ## Separe conteúdo de apresentação
 
