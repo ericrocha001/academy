@@ -359,6 +359,14 @@ Exemplos conceituais:
 
 Não reutilize mecanicamente a mesma estratégia para todas as Unidades.
 
+## Evidência Visual em Electron
+
+Quando houver harness local equivalente de Electron real, prefira-o para evidência visual reproduzível, com perfil isolado, interações reais e captura nativa. No Code Awareness, utilize a lane `scripts/ui-visual-validation/` e seu contrato local, sem duplicar aqui sua documentação.
+
+Computer Use continua útil para exploração interativa quando disponível. Sua indisponibilidade não impede `VALIDADO` quando uma prova visual local equivalente observa as propriedades exigidas com força suficiente.
+
+Inspecione efetivamente as screenshots antes de aprovar a aparência. Arquivo PNG gerado ou receipt aprovado não substitui inspeção visual. Registre os estados e viewports observados e os limites da evidência: fixtures de renderer não provam backend, persistência ou integração remota.
+
 ## Escopo da Prova
 
 Escolha o menor escopo que observe diretamente a propriedade.
