@@ -44,7 +44,7 @@ Duas chamadas pequenas podem ser melhores que uma grande. Uma chamada adicional 
 
 ## Ferramentas
 
-Code Navigation expõe:
+Code Navigation expõe, através do Code Awareness Channel:
 
 - `discover_repository`
 - `inspect_files`
@@ -53,10 +53,15 @@ Code Navigation expõe:
 - `get_symbol_dependencies`
 - `get_symbol_hierarchy`
 - `read_code`
-- `get_system_health`
-- `get_runtime_identity`
 
-Cada ferramenta responde uma pergunta diferente.
+O Channel também expõe capacidades operacionais irmãs, como:
+
+- `get_system_health` — localização diagnóstica;
+- `get_runtime_identity` — identidade e freshness do runtime.
+
+Não trate essas capacidades como parte de Code Navigation. Elas compartilham o Channel, mas possuem responsabilidades próprias.
+
+Cada ferramenta ou capability responde uma pergunta diferente.
 
 Não use uma representação mais profunda quando uma mais barata já resolver a decisão.
 
