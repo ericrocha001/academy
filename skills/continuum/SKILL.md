@@ -51,6 +51,49 @@ Discovery:
 
 `list_artifacts(metadata: { livingArtifact: true })`
 
+### Architecture Maps
+
+Use o papel semântico:
+
+`artifactRole: ARCHITECTURE_MAP`
+
+sempre em combinação com:
+
+`livingArtifact: true`
+
+Architecture Map é a projeção arquitetural canônica de alto sinal do **repositório como sistema**.
+
+Regra padrão:
+
+> **um Architecture Map canônico por repositório.**
+
+Ele responde principalmente:
+
+- como o sistema se organiza;
+- quais são os grandes subsistemas;
+- quem possui quais responsabilidades;
+- quais são as direções principais de dependência;
+- quais runtime boundaries existem;
+- quais fluxos atravessam subsistemas;
+- quais invariantes arquiteturais governam o todo.
+
+Architecture Map não deve repetir em profundidade as features. Para drill-down, relacione Capability Maps com:
+
+`drills-down-to`
+
+Exemplo de aquisição:
+
+Architecture Map
+→ `list_artifacts(relatedToArtifactId, direction: "outbound", relationKind: "drills-down-to")`
+→ selecionar Capability Map relevante
+→ abrir somente esse Artifact.
+
+Discovery direto:
+
+`list_artifacts(metadata: { livingArtifact: true, artifactRole: "ARCHITECTURE_MAP" })`
+
+Criação, revisão, discrepância e gatilhos de atualização pertencem à Skill `architecture-map`.
+
 ### Capability Maps
 
 Use o papel semântico:
@@ -266,7 +309,8 @@ Vocabulário recomendado:
 - `derived-from`: origem material do contexto;
 - `implements`: implementação → plano/decisão executada;
 - `validates`: prova → Artifact cuja propriedade foi demonstrada;
-- `resolved-by`: Work Item → handoff que comprova resolução.
+- `resolved-by`: Work Item → handoff que comprova resolução;
+- `drills-down-to`: Architecture Map → Capability Map que aprofunda um subsistema representado no mapa global.
 
 Prefira a relação mais específica e evite sinônimos ou arestas redundantes. Crie uma relação quando o alvo puder mudar uma decisão de aquisição de contexto. Mesmo repositório, tema vago ou proximidade temporal não bastam.
 
