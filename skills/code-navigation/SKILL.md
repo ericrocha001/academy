@@ -1,13 +1,13 @@
 ---
-name: codescope-navigation
-description: Use e evolua o CodeScope para compreender e investigar um repositório com alto sinal e baixo ruído, começando por discovery e aprofundando somente o necessário com estrutura, relações, referências, dependências, hierarquia e source literal. Use ao localizar código, formar escopo, entender arquitetura, seguir símbolos, selecionar contexto ou identificar oportunidades para o CodeScope entregar informação mais precisa com menos navegação. Não use para dumps amplos do codebase nem para insistir no CodeScope quando a própria região quebrada impede sua leitura; nesses casos use o caminho break-glass apropriado.
+name: code-navigation
+description: Use e evolua Code Navigation através do Code Awareness Channel para compreender e investigar um repositório com alto sinal e baixo ruído, começando por discovery e aprofundando somente o necessário com estrutura, relações, referências, dependências, hierarquia e source literal. Use ao localizar código, formar escopo, entender arquitetura, seguir símbolos, selecionar contexto ou identificar oportunidades para Code Navigation entregar informação mais precisa com menos navegação. Não use para dumps amplos do codebase nem para insistir na navegação quando a própria região quebrada impede sua leitura; nesses casos use o caminho break-glass apropriado.
 ---
 
-# SKILL
+# Code Navigation
 
 ## Finalidade
 
-Use CodeScope para construir contexto do repositório com **progressive disclosure** e alta eficiência informacional.
+Use Code Navigation, exposta pelo Code Awareness Channel, para construir contexto do repositório com **progressive disclosure** e alta eficiência informacional.
 
 Objetivo:
 
@@ -25,7 +25,7 @@ A filosofia central é:
 
 > **Maximize signal. Minimize noise.**
 
-Uma boa interação com CodeScope:
+Uma boa interação com Code Navigation:
 
 - reduz incerteza;
 - elimina candidatos;
@@ -44,7 +44,7 @@ Duas chamadas pequenas podem ser melhores que uma grande. Uma chamada adicional 
 
 ## Ferramentas
 
-CodeScope expõe:
+Code Navigation expõe:
 
 - `discover_repository`
 - `inspect_files`
@@ -281,7 +281,7 @@ Fluxo:
 
 → investigation target/seeds
 
-→ CodeScope.
+→ Code Navigation.
 
 Não reinicie a investigação pela raiz quando System Health já delimitou a região.
 
@@ -315,12 +315,12 @@ Não aumente timeout automaticamente.
 
 ## Break-glass
 
-CodeScope pode depender da própria região quebrada.
+Code Navigation pode depender da própria região quebrada.
 
 Se:
 
 - System Health localizou o problema;
-- CodeScope depende dessa região;
+- Code Navigation depende dessa região;
 - chamadas deixam de fornecer contexto;
 
 não insista.
@@ -331,11 +331,11 @@ Use Diagnostic Source Access para o **menor escopo já delimitado**:
 - `diagnostic_read_file` lê somente um intervalo de linhas conhecido;
 - `diagnostic_find_text` busca texto literal somente em arquivos explicitamente selecionados.
 
-Esse acesso é read-only, restrito ao repositório ativo e independente de CodeMap, readiness e Context Engine. Não o use como navegador de filesystem, busca semântica alternativa ou substituto rotineiro do CodeScope.
+Esse acesso é read-only, restrito ao repositório ativo e independente de CodeMap, readiness e Context Engine. Não o use como navegador de filesystem, busca semântica alternativa ou substituto rotineiro de Code Navigation.
 
 Ele também pode ser usado quando System Health estiver indisponível e o usuário solicitar explicitamente o diagnóstico direto apropriado.
 
-Depois da correção, volte ao CodeScope e valide o fluxo normal.
+Depois da correção, volte a Code Navigation e valide o fluxo normal.
 
 Break-glass é fallback, não navegação padrão.
 
@@ -382,9 +382,9 @@ Baixa densidade aparece quando retornamos:
 
 Alta densidade significa que a saída corresponde diretamente à decisão necessária.
 
-## Evolução do CodeScope
+## Evolução de Code Navigation
 
-CodeScope não é estático.
+Code Navigation não é estática.
 
 Durante o uso, observe oportunidades de melhorar:
 
@@ -559,7 +559,7 @@ Depois disso, contexto adicional tende a diminuir signal density.
 
 > Uma nova capacidade deve provar ganho marginal.
 
-> Evolua o CodeScope a partir de padrões reais de uso.
+> Evolua Code Navigation a partir de padrões reais de uso.
 
 > Preserve progressive disclosure enquanto aumenta signal density.
 
@@ -567,14 +567,14 @@ Depois disso, contexto adicional tende a diminuir signal density.
 
 > Runtime Identity confirma qual instância e source estão sendo observados.
 
-> CodeScope explica a arquitetura e o comportamento.
+> Code Navigation explica a arquitetura e o comportamento.
 
 > Source confirma a implementação.
 
-> Quando CodeScope depender da própria região quebrada, use break-glass.
+> Quando Code Navigation depender da própria região quebrada, use break-glass.
 
 ## Stop rule por degradação do canal
 
-BUSY, CHANNEL_DEGRADED ou REQUEST_TIMEOUT interrompe novas chamadas caras de CodeScope. Use system-health-debugging para uma única localização e respeite recommendedAction/retryability/retryAfterMs; não alterne discover, inspect e read_code como retries equivalentes. Após backoff, permita uma única tentativa half-open. Se persistir a recusa ou degradação, use somente nextBestEvidence ou break-glass no escopo comprovado.
+BUSY, CHANNEL_DEGRADED ou REQUEST_TIMEOUT indicam degradação do Code Awareness Channel e interrompem novas chamadas caras de Code Navigation. Use system-health-debugging para uma única localização e respeite recommendedAction/retryability/retryAfterMs; não alterne discover, inspect e read_code como retries equivalentes. Após backoff, permita uma única tentativa half-open. Se persistir a recusa ou degradação, use somente nextBestEvidence ou break-glass no escopo comprovado.
 
 Chamadas repetidas que aumentam pressão operacional sem reduzir o espaço da próxima decisão são sinal negativo, mesmo quando seus argumentos diferem. Não compense indisponibilidade com maior paralelismo, polling ou dumps. Runtime Identity, System Health e evidências leves continuam sendo caminhos independentes quando a navegação está ocupada.
