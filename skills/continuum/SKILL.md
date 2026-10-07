@@ -1,6 +1,6 @@
 ---
 name: continuum
-description: Use o Continuum do repositório ativo para autocontextualização entre agentes, descoberta seletiva de contexto durável, publicação e edição de Artifacts ou navegação de relações. Recupere somente histórico capaz de alterar a próxima decisão; confirme source atual pelo CodeScope. Não carregue o corpus preventivamente nem preserve conversa bruta.
+description: Use o Continuum do repositório ativo para autocontextualização entre agentes, descoberta seletiva de contexto durável, publicação e edição de Artifacts ou navegação de relações. Recupere somente histórico capaz de alterar a próxima decisão; confirme source atual por Code Navigation através do Code Awareness Channel. Não carregue o corpus preventivamente nem preserve conversa bruta.
 ---
 
 # Um repositório, um Continuum
@@ -132,7 +132,7 @@ necessidade → filtros → discovery records → seleção → get_artifact →
 
 O objetivo é contexto suficiente sem reconstruir a conversa original. Meça qualidade pela precisão da seleção, número de aquisições e tamanho da representação fornecida ao agente.
 
-Continuum tells you what happened. CodeScope tells you what exists now. Artifact histórico não prova source atual ou runtime fresco. Confirme essas propriedades pelas capacidades correspondentes.
+Continuum tells you what happened. Code Navigation tells you what exists now. Artifact histórico não prova source atual ou runtime fresco. Confirme essas propriedades pelas capacidades correspondentes.
 
 # Markdown e metadata
 
