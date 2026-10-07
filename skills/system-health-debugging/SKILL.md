@@ -11,7 +11,7 @@ Use System Health para reduzir progressivamente o espaço de investigação ante
 
 A sequência preferencial é:
 
-**System Health → localização da falha → CodeScope/CodeBrain → source mínimo → causa → correção → Harness**
+**System Health → localização da falha → Code Navigation → source mínimo → causa → correção → Harness**
 
 System Health não precisa descobrir sozinho a causa em código. Sua função é determinar **onde a investigação deve começar e qual evidência ainda falta**.
 
@@ -74,7 +74,7 @@ Exemplo conceitual:
 
 - transporte externo detecta timeout;
 - handler MCP já iniciou;
-- CodeScope já entrou em execução;
+- Code Navigation já entrou em execução;
 - Snapshot Synchronization ficou pendente.
 
 A localização pertence à região mais profunda comprovada, não ao componente que apenas materializou o timeout.
@@ -227,7 +227,7 @@ Quando System Health fornecer:
 
 use isso para selecionar o menor contexto possível.
 
-Prefira CodeScope para:
+Prefira Code Navigation para:
 
 - descobrir estrutura;
 - inspecionar arquivos;
@@ -244,7 +244,7 @@ O canal usado para investigar pode depender da própria região quebrada.
 
 Exemplo:
 
-System Health localiza falha dentro do CodeMap, mas CodeScope também precisa dessa mesma capacidade para ler código.
+System Health localiza falha dentro do CodeMap, mas Code Navigation também depende dessa região para ler código.
 
 Nesse caso:
 
@@ -476,7 +476,7 @@ Depois da correção:
 
 # Princípios
 
-> System Health localiza; CodeScope explica; source confirma; Harness protege.
+> System Health localiza; Code Navigation explica; source confirma; Harness protege.
 
 > Debugging é redução progressiva do espaço de busca.
 
