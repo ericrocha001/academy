@@ -19,6 +19,39 @@ Fluxo preferencial:
 
 Não comece lendo código arbitrariamente.
 
+## Architecture Bootstrap
+
+Quando a intenção principal for **entender a arquitetura do repositório**, formar uma visão global antes de planejar, ou localizar qual subsistema deve ser investigado, não comece reconstruindo topologia pelo source.
+
+Primeiro descubra no Continuum:
+
+`metadata: { livingArtifact: true, artifactRole: "ARCHITECTURE_MAP" }`
+
+Se existir um único Architecture Map canônico:
+
+1. leia esse Artifact;
+2. use-o como orientação inicial, nunca como substituto do source;
+3. siga relações `drills-down-to` somente para Capability Maps relevantes à pergunta;
+4. só então use Code Navigation para confirmar detalhes, resolver lacunas ou verificar estado atual.
+
+Fluxo preferencial:
+
+**Architecture Map → Capability Map relevante → Code Navigation → source mínimo**
+
+Não carregue todos os Capability Maps preventivamente.
+
+### Discrepância
+
+Se Code Navigation ou runtime contradisserem materialmente o Architecture Map:
+
+- source/runtime vencem;
+- não force a investigação a caber no documento;
+- determine se a discrepância representa mudança arquitetural real ou apenas detalhe interno;
+- se for arquiteturalmente material, use `architecture-map` para revisar o Living Artifact;
+- se for detalhe interno, não altere o mapa.
+
+O Architecture Map acelera orientação. Ele nunca reduz a autoridade do estado atual.
+
 ## Pure Signal
 
 A filosofia central é:
