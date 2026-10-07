@@ -51,6 +51,92 @@ Discovery:
 
 `list_artifacts(metadata: { livingArtifact: true })`
 
+### Capability Maps
+
+Use o papel semântico:
+
+`artifactRole: CAPABILITY_MAP`
+
+sempre em combinação com:
+
+`livingArtifact: true`
+
+Capability Map é uma projeção arquitetural canônica de alto sinal para compreender rapidamente **o que uma feature/subsistema é hoje**, sem reconstruir sua arquitetura pelo source.
+
+Ele não é novo `kind`. Preserve a natureza do Artifact e use `artifactRole` apenas para discovery.
+
+#### Gate de criação
+
+Crie um Capability Map somente quando a feature/subsistema:
+
+- possui arquitetura ou fronteiras não triviais;
+- é consultada repetidamente por agentes;
+- expõe múltiplas capacidades, contratos ou garantias;
+- costuma exigir várias chamadas de Code Navigation apenas para recuperar compreensão básica;
+- continuará relevante ao longo de várias execuções;
+- pode ser descrita em uma representação significativamente menor que sua implementação.
+
+Não crie quando:
+
+- a feature é pequena e autoexplicativa;
+- o source já é barato o suficiente para contextualização;
+- o documento apenas repetiria README, plano ou handoff;
+- a arquitetura ainda muda rápido demais para uma representação canônica ser útil;
+- não existe consumidor recorrente.
+
+Teste contrafactual:
+
+> Se este Capability Map já existisse, um agente novo conseguiria tomar decisões corretas sobre a feature com materialmente menos navegação, source e inferência?
+
+Se não, não crie.
+
+#### Conteúdo permitido
+
+Um Capability Map deve privilegiar:
+
+- finalidade;
+- modelo conceitual;
+- capabilities atuais;
+- fronteiras e ownership;
+- contratos de consumo;
+- garantias relevantes;
+- estados/readiness/freshness quando materiais;
+- superfícies públicas;
+- limites explícitos;
+- relações com capacidades vizinhas;
+- gatilhos de manutenção.
+
+Evite:
+
+- copiar classes/funções;
+- reproduzir schemas completos;
+- listar todo arquivo;
+- narrar histórico;
+- registrar decisões já obsoletas;
+- documentar detalhes internos sem impacto de consumo;
+- substituir source/runtime como autoridade atual.
+
+#### Manutenção
+
+Atualize quando mudança material alterar:
+
+- capability pública;
+- fronteira arquitetural;
+- contrato de consumo;
+- garantia;
+- estado/readiness;
+- ownership;
+- limite relevante;
+- forma principal de interação com consumidores.
+
+Não atualize por refactor interno semanticamente neutro.
+
+Capability Map representa **o melhor modelo corrente da feature**, não seu changelog.
+
+Discovery recomendado:
+
+`list_artifacts(metadata: { livingArtifact: true, artifactRole: "CAPABILITY_MAP" })`
+
 ### Semântica de manutenção
 
 `livingArtifact: true` significa:
