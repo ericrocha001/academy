@@ -153,7 +153,7 @@ Não chame `record_validation_proof` depois de uma run produzida por Validation 
 
 # Source Inspection
 
-Use CodeScope quando precisar saber:
+Use Code Navigation, através do Code Awareness Channel, quando precisar saber:
 
 - o que está implementado;
 - onde está implementado;
@@ -172,7 +172,7 @@ Não prova que:
 - o runtime carregou a versão atual;
 - o comportamento funcionou em execução.
 
-Quando o CodeMap/CodeScope estiver operacionalmente degradado e impedir a própria investigação, use o procedimento diagnóstico especializado disponível, não invente conclusões a partir de contexto histórico.
+Quando o caminho de Code Navigation estiver operacionalmente degradado e impedir a própria investigação, use o procedimento diagnóstico especializado disponível, não invente conclusões a partir de contexto histórico.
 
 ---
 
@@ -368,7 +368,7 @@ Fluxo:
 
 → investigation target
 
-→ CodeScope
+→ Code Navigation
 
 → targeted proof
 
@@ -482,4 +482,4 @@ Quando a superfície remota for necessária, execute provas em série e mantenha
 
 Consulte get_validation_run com waitMs dentro do limite publicado (até 15000 ms); o servidor limita a espera também pelo deadline seguro do transporte. Se ainda RUNNING, aguarde retryAfterMs antes da próxima consulta. Em estado terminal, use o proofId já produzido, sem registrar prova duplicada. Não faça polling agressivo nem consultas concorrentes da mesma run.
 
-Diante de BUSY, CHANNEL_DEGRADED ou timeout, respeite a orientação operacional e use system-health-debugging para uma única localização quando necessária. As consultas leves de run, Ledger e identidade podem continuar independentes da navegação CodeScope; não inicie trabalho adicional para inferir o resultado do trabalho existente.
+Diante de BUSY, CHANNEL_DEGRADED ou timeout, respeite a orientação operacional e use system-health-debugging para uma única localização quando necessária. As consultas leves de run, Ledger e identidade podem continuar independentes da navegação de Code Navigation; não inicie trabalho adicional para inferir o resultado do trabalho existente.
