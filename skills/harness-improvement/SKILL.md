@@ -1,6 +1,6 @@
 ---
 name: harness-improvement
-description: Use quando trabalho agentic revelar fricção recorrente, raciocínio caro repetitivo, redescoberta, excesso de contexto, procedimento manual, falta de observabilidade, regra frequentemente violada, regressão agentic ou possível obsolescência do próprio Harness, e for necessário decidir se existe uma capacidade reutilizável que merece ser criada, fortalecida, avaliada, simplificada ou removida. Não use para dificuldade pontual, complexidade inerente ou trabalho sem valor relevante de reutilização.
+description: Avalie se fricção recorrente, redescoberta, regressão ou desperdício agentic justifica evoluir ou simplificar o Harness. Use para qualificar a necessidade e o ganho reutilizável; use harness-productization para escolher a forma da solução, harness-ablation para remover capacidade existente e capability-opportunity para registrar oportunidades gerais.
 ---
 
 # Harness Improvement
