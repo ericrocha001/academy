@@ -92,6 +92,8 @@ Prefira Skill quando a capacidade:
 
 Não transforme operação determinística em Skill apenas porque o agente consegue executá-la.
 
+Quando uma Skill for escolhida como representação, utilize `skill-engineering` para decidir escopo, granularidade, triggering e não duplicação. Não replique aqui o projeto interno de Skills.
+
 Quando computação puder realizar o trabalho diretamente, considere ferramenta.
 
 ## Trabalho Determinístico
