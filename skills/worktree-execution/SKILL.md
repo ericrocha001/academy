@@ -1,6 +1,6 @@
 ---
 name: worktree-execution
-description: Use ao conduzir uma implementação em Git worktree isolada quando sessões ou agentes possam trabalhar concorrentemente no mesmo repositório. Mantém uma worktree e branch por sessão, permite vários Planos Finais Executáveis na mesma sessão, cria checkpoints locais após estados coerentes validados, publica a branch ao fim da sessão, orienta integração e só encerra o workspace após preservação e validação suficientes. Não use para ensinar comandos Git, definir provas de software ou decompor planos.
+description: Use ao iniciar ou conduzir uma implementação em Git worktree isolada, especialmente com agentes concorrentes. Exige gate verificável de worktree e branch exclusiva antes da primeira edição; governa a sessão, checkpoints validados, publicação, integração e encerramento seguro. Não use para comandos Git, provas de software ou decomposição de planos.
 ---
 
 # Worktree Execution
@@ -22,6 +22,20 @@ Esta Skill governa o ciclo da sessão. Para operações Git concretas, use git-o
 Antes de editar, confirme repositório, worktree ativa, branch dedicada e baseline inicial. Prefira a criação ou seleção nativa de worktree da IDE ou harness antes de iniciar a sessão.
 
 Não considere isolamento obtido apenas porque outra worktree existe em outro diretório. A execução precisa estar efetivamente vinculada a ela. Se a sessão começou no checkout compartilhado e o ambiente não consegue provar rebinding seguro, não inicie trabalho concorrente ali; reinicie ou abra a execução na worktree correta.
+
+## Gate obrigatório de inicialização — antes da primeira edição
+
+**Worktree criada não significa sessão preparada.** Imediatamente após a IDE ou harness criar/selecionar a Worktree, e **antes da primeira alteração persistente de código, teste, configuração ou índice Git**, o executor deve comprovar:
+
+1. **Workspace efetivo:** a sessão está realmente vinculada à Worktree pretendida e ao repositório correto; não está editando o checkout principal compartilhado.
+2. **Branch dedicada:** a Worktree tem uma branch local ativa, exclusiva daquela sessão, não a branch principal/compartilhada. `detached HEAD` não passa no gate.
+3. **Correção do detached HEAD:** se a IDE criou a Worktree sem branch, criar e ativar **nessa mesma Worktree**, no HEAD/base observados, uma branch nova, sem mover o diretório nem descartar arquivos. Usar a capacidade nativa da IDE/harness quando apropriada ou a Skill `git-operations` para operações Git concretas. Não usar force nem ocupar branch checkoutada por outra Worktree.
+4. **Identidade rastreável:** nome da branch comunica o propósito da sessão, é único no repositório e respeita a convenção vigente (por exemplo, `feature/code-dash-v2`, acrescentando discriminador se necessário). Nome opaco do diretório, como `96d6`, não substitui uma branch semântica.
+5. **Prova de readiness:** reler o estado Git **da própria Worktree** e confirmar branch, HEAD inicial/baseline, vínculo efetivo da sessão e ausência de colisão de branch. Registrar a identidade para checkpoints e handoffs posteriores.
+
+**Resultado do gate:** PASS somente com essas condições observadas; caso contrário, **BLOCKED**. Não iniciar implementação persistente em detached HEAD nem editar no checkout compartilhado para contornar a falha. Se a IDE não permitir estabelecer/verificar branch segura, resolver pelo caminho apropriado ou escalar o bloqueio antes de editar; não presumir que a criação física já prove isolamento.
+
+O gate se aplica a sessões destinadas a produzir alterações. Worktrees temporárias **exclusivamente de leitura** podem permanecer em detached HEAD, desde que não recebam edições, staging ou checkpoints. Para recuperar uma sessão legada já dirty/detached, **preservar integralmente o trabalho**, conferir ownership/quiescência e estabelecer uma branch naquela Worktree antes de novos commits; não recriar ou limpar o workspace para corrigir a identidade.
 
 ## Worktree por sessão
 
@@ -107,6 +121,7 @@ Não distribua automaticamente unidades do mesmo plano entre agentes apenas porq
 
 ## Anti-padrões
 
+- iniciar implementação persistente em Worktree detached HEAD ou sem provar branch exclusiva e workspace efetivo;
 - criar worktree em outro diretório e continuar editando o checkout original;
 - criar uma worktree por plano sem necessidade;
 - manter uma sessão longa sem preservar estados validados restauráveis;
@@ -118,7 +133,7 @@ Não distribua automaticamente unidades do mesmo plano entre agentes apenas porq
 
 ## Critério de conclusão
 
-Uma execução está encerrada quando começou em workspace realmente isolado, preservou sua linha de execução, manteve checkpoints úteis, publicou a sessão quando aplicável, integrou segundo a política do repositório, revalidou propriedades afetáveis quando necessário e só então encerrou worktree e branch efêmeras.
+Uma execução está encerrada quando passou no gate inicial de **Worktree efetiva + branch exclusiva antes da primeira edição**, preservou sua linha de execução, manteve checkpoints úteis, publicou a sessão quando aplicável, integrou segundo a política do repositório, revalidou propriedades afetáveis quando necessário e só então encerrou worktree e branch efêmeras.
 
 ## Regra final
 
