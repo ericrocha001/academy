@@ -1,6 +1,6 @@
 ---
 name: feature-investment-gate
-description: Use before proposing, planning, productizing, expanding, or adding UI to a feature or capability. Decide whether it should be built at all, remain backend-only, become an agent/tool capability, receive a human-facing interface, or be deferred. Prevent investment in attractive but unnecessary features, workflow-coupled features, duplicate surfaces, and productization whose cost exceeds its additional value.
+description: Use before proposing, expanding or productizing a software feature to decide whether it merits investment and which minimum surface (backend, agent/tool or UI) adds value. Assess real consumers, duplication, workflow coupling and full cost. Do not use to convert resolved architecture into an executable plan (planejamento-executavel) or to choose the format of an already-qualified Harness improvement (harness-productization).
 ---
 
 # Feature Investment Gate
