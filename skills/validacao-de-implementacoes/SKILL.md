@@ -1,6 +1,6 @@
 ---
 name: validacao-de-implementacoes
-description: Use ao planejar, executar ou revisar uma implementação de software quando for necessário determinar ou produzir evidências objetivas de correção e conclusão. O Implementador produz essas provas preferencialmente pelos mecanismos locais do workspace; canais remotos de Validation Execution/Ledger do Code Awareness ficam para verificação do Arquiteto ou situações sem equivalente local. Não use para avaliar comportamento agentic.
+description: Use quando for necessário definir ou demonstrar que uma implementação satisfaz seus contratos, por evidência proporcional e verificável. Oriente provas locais, aceitação e regressões sem confundir teste com validação. Para escolher canais remotos de evidência use validation-evidence-channels; para avaliar comportamento agentic ou Skills use surgical-evals.
 ---
 
 # SKILL
