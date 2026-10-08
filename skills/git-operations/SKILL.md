@@ -44,7 +44,7 @@ Se a intenção for **compreender elementos e relações modificados** e não ap
 
 Se a capability ainda não estiver disponível, não invente seus resultados nem assuma que Git Operations legado lê outra Worktree: mantenha o escopo comprovado e informe a limitação. Para engenharia de contexto mais profunda utilize a Skill `progressive-disclosure`.
 
-**Fronteira de posse:** inspecionar uma Worktree não transfere controle. Conclusão de Plano, handoff VALIDATED, branch publicada, idle presumido ou path conhecido **não** autorizam stage/commit/switch/merge, nem remoção ou cleanup. Enquanto a sessão mantém posse, preserve arquivos, index, HEAD, branch checkoutada e operação Git do executor. Qualquer mutação scoped depende de liberação/handoff explícito, preconditions frescas, lease cooperativo e receipt/operationId conforme a capability; a Worktree pode continuar ativa para novos Planos na mesma sessão. Não bloquear ou fechar a Worktree apenas porque uma auditoria terminou. Uma liberação de posse não se deduz da ausência de edição recente; limitações de IDEs não cooperativas precisam ser reconhecidas.
+**Fronteira de posse e papéis:** o Implementador **somente implementa, valida e publica handoff**. Ele não participa de aprovação, liberação/transferência de permissões, stage, commit, push, merge ou cleanup. O Arquiteto só executa operações Git após solicitação explícita do usuário; handoff VALIDATED não é autorização. Para cada mutação, o Arquiteto obtém a aprovação nativa do operador pelo próprio backend, com preconditions frescas, scope/lease temporário e receipt/operationId quando exigidos. Nenhuma credencial é pedida ao Implementador. A confirmação de que não há escrita concorrente da IDE é indispensável: ausência de edição recente ou handoff não a comprovam por si. Commit move HEAD/índice daquela Worktree, mas **não exige encerrá-la**; preserve a pasta/branch para retorno ao Implementador. Push e integração são decisões distintas; fechamento exige pedido separado do usuário. As restrições do backend são obrigatórias, não podem ser ignoradas por instrução na Skill.
 
 ## Comece pelo estado
 
@@ -103,26 +103,11 @@ Prefira a regra mais estável que represente uma fronteira realmente gerada. Uma
 
 ## Higiene do Implementador
 
-Durante implementação, evite criar resíduos em locais versionáveis quando puder usar áreas já ignoradas.
+O Implementador não precisa inspecionar estado Git, executar higiene de repositório ou realizar checkpoints para publicar handoff. O papel dele é evitar resíduos artificiais quando isso fizer parte do próprio código/teste e registrar, no relato, arquivos e limitações relevantes já conhecidos.
 
-Antes do handoff final:
+**Após pedido explícito do usuário**, o Arquiteto verifica na Worktree real o estado Git, as mudanças tracked/untracked e eventuais resíduos, usando `analyze_git_hygiene` quando a quantidade justificar. Antes de stage/commit, distingue trabalho validado de mudanças anteriores, alheias ou geradas; seleciona paths explícitos. Não comita `add all` indiscriminadamente para “limpar” o estado e não altera `.gitignore` para ocultar código não compreendido. O handoff dá contexto do trabalho, não substitui o snapshot Git fresco.
 
-1. use `get_git_state`;
-2. se houver untracked inesperado ou grande volume dirty, use `analyze_git_hygiene`;
-3. preserve mudanças tracked legítimas em commit coerente ou shelf deliberado;
-4. trate resíduos gerados por regra de ignore somente após preview;
-5. confirme `stagedCount = 0`, `unstagedCount = 0`, `untrackedCount = 0`, salvo estado residual explicitamente justificado.
-
-Não entregue um worktree dirty por acidente.
-
-Se algum dirty precisar permanecer, registre explicitamente no handoff:
-
-- paths ou grupo;
-- motivo;
-- propriedade/intenção;
-- ação esperada do próximo agente.
-
-A meta é que o próximo agente receba um worktree com alto sinal, sem pagar novamente o custo de separar centenas de resíduos do trabalho real.
+Se permanecer dirty deliberado, preserve esse conteúdo e registre o que não entrou no commit; não force checkout limpo para declarar conclusão. O Implementador pode voltar à mesma Worktree, mas nenhuma escrita concorrente deve ocorrer durante a mutação do Arquiteto.
 
 ## Optimistic Concurrency
 
@@ -372,8 +357,8 @@ Quando uma operação segura não estiver representada pela superfície tipada, 
 
 Descubra com `discover_worktrees` e selecione pelo worktreeId retornado; paths físicos são informativos, nunca seletores. `inspect_worktree` fornece snapshot; envie somente branch, head, indexRevision, worktreeRevision e operation. Leituras seletivas usam `get_worktree_changes`, `get_worktree_diff` e `read_worktree_file`, respeitando limites e cursores; revisão por metadados não equivale a hash de conteúdo.
 
-Antes de mutar, `handoff_worktree_for_git` REQUEST exige confirmação nativa do operador de que o executor foi pausado. PENDING não concede autoridade: respeite retryAfterMs e use ACCEPT com requestId/requestCredential. A concessão é temporária, exclusiva e cooperativa, vinculada à geração, snapshot e escopo mínimo de operações, paths, branches e SHAs exatos em startPoints. Mantenha leaseCredential privada. Expiração, restart, drift ou resultado desconhecido exigem reconciliação e RECOVER com nova confirmação local; nunca inferir ownership por branch limpa, sessão, recibo ou timeout. RELEASE encerra a concessão.
+Quando **o usuário solicitar** uma operação Git, o Arquiteto inicia `handoff_worktree_for_git` REQUEST diretamente no Code Awareness; nenhuma etapa de autorização pertence ao Implementador. A confirmação nativa do operador deve assegurar que ninguém está escrevendo naquela Worktree no momento da mutação. PENDING não concede autoridade: respeite retryAfterMs e use ACCEPT com requestId/requestCredential. A concessão é temporária, exclusiva e cooperativa, vinculada à geração, snapshot e escopo mínimo de operações, paths, branches e SHAs exatos em startPoints. Mantenha leaseCredential privada. Expiração, restart, drift ou resultado desconhecido exigem reconciliação e RECOVER com nova confirmação local; nunca inferir ownership por branch limpa, sessão, recibo ou timeout. RELEASE encerra a concessão.
 
-Mutações enviam leaseId, leaseCredential, snapshot e operationId estável. Consulte/reutilize recibos para replay; OPERATION_OUTCOME_UNKNOWN não autoriza repetir cegamente. `mutate_worktree` faz STAGE/UNSTAGE explícitos, COMMIT do índice exato e CREATE_BRANCH exclusivo. `manage_worktree` CREATE deriva o diretório no servidor e exige branch nova e commit inicial exato aprovado, sem trocar projeto ativo. CLOSE aceita somente checkout gerenciado, limpo, unlocked, sem ownership ativo e com commits preservados em branch autorizada; nunca remover worktree externa.
+Mutações enviam leaseId, leaseCredential, snapshot e operationId estável. Consulte/reutilize recibos para replay; OPERATION_OUTCOME_UNKNOWN não autoriza repetir cegamente. `mutate_worktree` faz STAGE/UNSTAGE explícitos, COMMIT do índice exato e CREATE_BRANCH exclusivo. `manage_worktree` CREATE deriva o diretório no servidor e exige branch nova e commit inicial exato aprovado, sem trocar projeto ativo. CLOSE é operação **separadamente solicitada pelo usuário**, nunca efeito de commit/integração. Só aceita checkout gerenciado, limpo, unlocked, sem ownership ativo e com commits preservados em branch autorizada; nunca remover worktree externa. A fonte permanece disponível por padrão para correção/retomada.
 
 `publish_worktree` faz push explícito sem force: PUBLISHED não significa integrado. `preview_worktree_integration` vincula source, target, snapshots e merge-base. `integrate_worktree` APPLY opera somente em sandbox gerenciado; conflitos ficam nele e são lidos/resolvidos explicitamente por `get_worktree_conflict`/`resolve_worktree_conflict`. Execute profiles existentes com `start_worktree_validation` e acompanhe `get_worktree_validation`; somente prova autêntica PASSED, CURRENT, do checkout/commit correto sustenta PROMOTE. Prova manual, cwd diferente, runtime diferente ou fingerprint obsoleto não valida integração. PROMOTE revalida preview e exige concessão legítima no target quando ocupado; não atualizar lateralmente ref de branch em checkout. Delegue o ciclo de execução à Skill worktree-execution.
