@@ -487,7 +487,7 @@ Quando o repositório ativo possuir Continuum disponível, o Plano Final Execut�
 
 O Plano publicado é a representação canônica da transferência Arquitetura → Implementação.
 
-Use a Skill `continuum` para cumprir o contrato vigente de metadata, publicação, edição, relações, data e isolamento por repositório. Esta Skill define apenas a semântica do handoff:
+Use `continuum-publication` para cumprir o contrato vigente de metadata, publicação, edição, relações, data e isolamento por repositório. Esta Skill define apenas a semântica do handoff:
 
 1. finalize e revise o Plano antes de publicar;
 2. publique-o como Artifact `EXECUTABLE_PLAN` no Continuum do repositório ativo;
@@ -499,7 +499,7 @@ Use a Skill `continuum` para cumprir o contrato vigente de metadata, publicaçã
 
 Não mantenha duas versões semanticamente concorrentes do mesmo Plano em chat, arquivo e Continuum. Se o chat precisar informar o resultado, prefira um receipt compacto com `artifactId`, `executionId` quando houver e estado da publicação.
 
-Se a finalidade e identidade do Plano permanecerem as mesmas, uma revisão material deve atualizar o Artifact existente segundo a Skill `continuum`, em vez de publicar outro Plano concorrente. Crie outro Artifact somente quando houver uma execução ou finalidade realmente independente.
+Se a finalidade e identidade do Plano permanecerem as mesmas, uma revisão material deve atualizar o Artifact existente segundo a Skill `continuum-publication`, em vez de publicar outro Plano concorrente. Crie outro Artifact somente quando houver uma execução ou finalidade realmente independente.
 
 ### Recuperação pelo Implementador
 
@@ -524,7 +524,7 @@ Se o Continuum estiver indisponível:
 - não invente `artifactId`;
 - não produza uma versão resumida como substituto silencioso.
 
-A transferência direta do texto é fallback operacional, não o caminho normal. Quando a publicação voltar a estar disponível, materialize a mesma representação canônica conforme a Skill `continuum`.
+A transferência direta do texto é fallback operacional, não o caminho normal. Quando a publicação voltar a estar disponível, materialize a mesma representação canônica conforme a Skill `continuum-publication`.
 
 ## Forma de Saída
 
