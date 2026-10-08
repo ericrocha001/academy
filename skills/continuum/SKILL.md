@@ -322,6 +322,8 @@ Relações mostram caminhos; não carregam contexto automaticamente.
 
 Use `publish_artifact` com `rawMarkdown` completo. O destino é o Continuum ativo. O receipt contém success, artifactId, revisão 1 e updatedAt; não ecoa conteúdo. Preserve artifactId após sucesso e não republique por rotina.
 
+**Referência entregue ao usuário:** após confirmar publicação, informe sempre o **name exato do frontmatter** junto do **artifactId** retornado. Apresente preferencialmente `Nome do Artifact — artifactId`, para que a pessoa identifique e encaminhe o documento a outro agente sem depender apenas do identificador opaco. Use o nome do documento efetivamente publicado; não acrescente chamadas de leitura apenas para repetir metadata já conhecida. Para atualização de Artifact existente, informe nome e artifactId quando comunicar a atualização. Em falha/QUEUED, não apresente o Artifact como publicado.
+
 Edite o Artifact existente quando identidade e finalidade lógica permanecerem: corrigir metadata, mudar status, resolver bloqueio, acrescentar contexto/prova ou ajustar relações. Crie novo Artifact para comunicação com finalidade independente, nunca apenas porque o documento evoluiu.
 
 Fluxo de edição:
