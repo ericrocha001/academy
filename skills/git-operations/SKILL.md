@@ -1,13 +1,13 @@
 ---
 name: git-operations
-description: Use para operar Git com segurança através das ferramentas MCP do Code Awareness: inspecionar estado, mudanças e Worktrees registradas, manter a higiene do worktree, preparar commits, gerenciar branches e upstreams, sincronizar remoto, fazer merge/revert, preservar trabalho com shelves, resolver conflitos tipados e recuperar mutações por operationId. Use quando uma tarefa exigir inspeção segura de Worktrees ou alteração real do repositório via Git Operations. Não use para editar código, navegar arquitetura ou substituir validação de implementação.
+description: Use quando uma tarefa Git precisa do canal remoto MCP do Code Awareness, sem alternativa Git local suficiente: inspeção de Worktrees, aprovação nativa, leases, snapshots, receipts, integração protegida e recuperação. Não acione para Git ou testes locais equivalentes quando o ambiente dispõe de ferramenta adequada e autorização; nesse caso use worktree-execution.
 ---
 
 # Git Operations
 
 ## Finalidade
 
-Use Git Operations para executar mudanças Git reais com segurança, baixo ruído e estado observável.
+Esta Skill governa **operações Git pelo canal MCP remoto do Code Awareness**. Não é o caminho obrigatório para quem dispõe de Git local autorizado; o transporte decorre das capacidades e garantias exigidas, não do papel presumido.
 
 Princípio:
 
@@ -44,7 +44,9 @@ Se a intenção for **compreender elementos e relações modificados** e não ap
 
 Se a capability ainda não estiver disponível, não invente seus resultados nem assuma que Git Operations legado lê outra Worktree: mantenha o escopo comprovado e informe a limitação. Para engenharia de contexto mais profunda utilize a Skill `progressive-disclosure`.
 
-**Fronteira de posse e papéis:** o Implementador **somente implementa, valida e publica handoff**. Ele não participa de aprovação, liberação/transferência de permissões, stage, commit, push, merge ou cleanup. O Arquiteto só executa operações Git após solicitação explícita do usuário; handoff VALIDATED não é autorização. Para cada mutação, o Arquiteto obtém a aprovação nativa do operador pelo próprio backend, com preconditions frescas, scope/lease temporário e receipt/operationId quando exigidos. Nenhuma credencial é pedida ao Implementador. A confirmação de que não há escrita concorrente da IDE é indispensável: ausência de edição recente ou handoff não a comprovam por si. Commit move HEAD/índice daquela Worktree, mas **não exige encerrá-la**; preserve a pasta/branch para retorno ao Implementador. Push e integração são decisões distintas; fechamento exige pedido separado do usuário. As restrições do backend são obrigatórias, não podem ser ignoradas por instrução na Skill.
+**Escopo de autoridade:** neste MCP, descobrir Worktree ou receber handoff não concede permissão. Toda mutação requer pedido autorizado, aprovação nativa, lease scoped e snapshot/receipt exigidos pelo backend. Confirme ausência de escrita concorrente e preserve a Worktree após commit/merge; publicação, integração e encerramento são ações distintas.
+
+**Quando não usar o MCP:** agente com acesso local ao checkout correto, Git funcional e autorização para a operação usa Git local conforme `worktree-execution`. Não use este canal para repetir Git, Vitest, typecheck ou build equivalentes. MCP continua adequado quando acesso remoto, dados do registry canônico, prova independente ou enforcement específico forem necessários. Ferramenta disponível não implica autorização para `main` ou Worktree de outro agente.
 
 ## Comece pelo estado
 
@@ -101,13 +103,11 @@ Prefira a regra mais estável que represente uma fronteira realmente gerada. Uma
 
 `manage_gitignore ADD` é mutação receipted: crie `operationId` antes da primeira tentativa e reutilize o mesmo ID em recuperação.
 
-## Higiene do Implementador
+## Higiene da operação
 
-O Implementador não precisa inspecionar estado Git, executar higiene de repositório ou realizar checkpoints para publicar handoff. O papel dele é evitar resíduos artificiais quando isso fizer parte do próprio código/teste e registrar, no relato, arquivos e limitações relevantes já conhecidos.
+No MCP, antes de stage/commit, examine mudanças tracked e untracked; `analyze_git_hygiene` pode separar resíduos de trabalho legítimo. Faça stage de paths explícitos do escopo validado, sem `add all` indiscriminado nem ocultar fontes com `.gitignore`. Não descarte dirty desconhecido; handoff não substitui estado Git fresco.
 
-**Após pedido explícito do usuário**, o Arquiteto verifica na Worktree real o estado Git, as mudanças tracked/untracked e eventuais resíduos, usando `analyze_git_hygiene` quando a quantidade justificar. Antes de stage/commit, distingue trabalho validado de mudanças anteriores, alheias ou geradas; seleciona paths explícitos. Não comita `add all` indiscriminadamente para “limpar” o estado e não altera `.gitignore` para ocultar código não compreendido. O handoff dá contexto do trabalho, não substitui o snapshot Git fresco.
-
-Se permanecer dirty deliberado, preserve esse conteúdo e registre o que não entrou no commit; não force checkout limpo para declarar conclusão. O Implementador pode voltar à mesma Worktree, mas nenhuma escrita concorrente deve ocorrer durante a mutação do Arquiteto.
+Agente com Git local autorizado observa as mesmas invariantes sem usar MCP; o procedimento do checkout local pertence a `worktree-execution`.
 
 ## Optimistic Concurrency
 
@@ -357,8 +357,8 @@ Quando uma operação segura não estiver representada pela superfície tipada, 
 
 Descubra com `discover_worktrees` e selecione pelo worktreeId retornado; paths físicos são informativos, nunca seletores. `inspect_worktree` fornece snapshot; envie somente branch, head, indexRevision, worktreeRevision e operation. Leituras seletivas usam `get_worktree_changes`, `get_worktree_diff` e `read_worktree_file`, respeitando limites e cursores; revisão por metadados não equivale a hash de conteúdo.
 
-Quando **o usuário solicitar** uma operação Git, o Arquiteto inicia `handoff_worktree_for_git` REQUEST diretamente no Code Awareness; nenhuma etapa de autorização pertence ao Implementador. A confirmação nativa do operador deve assegurar que ninguém está escrevendo naquela Worktree no momento da mutação. PENDING não concede autoridade: respeite retryAfterMs e use ACCEPT com requestId/requestCredential. A concessão é temporária, exclusiva e cooperativa, vinculada à geração, snapshot e escopo mínimo de operações, paths, branches e SHAs exatos em startPoints. Mantenha leaseCredential privada. Expiração, restart, drift ou resultado desconhecido exigem reconciliação e RECOVER com nova confirmação local; nunca inferir ownership por branch limpa, sessão, recibo ou timeout. RELEASE encerra a concessão.
+Para uma operação **delegada pelo canal MCP**, o agente autorizado usa `handoff_worktree_for_git` REQUEST; somente aprovação do operador no backend pode conceder autoridade. PENDING não é concessão: respeite `retryAfterMs`, use ACCEPT com as credenciais privadas da própria solicitação, proteja a leaseCredential e não infira posse de handoff ou silêncio da IDE. Scope, snapshots, geração, paths, branches e startPoints são limites materiais. Expiração, drift, restart ou resultado desconhecido exigem reconciliação/RECOVER, nunca tomada por timeout. RELEASE encerra a concessão. Essas exigências pertencem ao transporte MCP, não ao Git local.
 
-Mutações enviam leaseId, leaseCredential, snapshot e operationId estável. Consulte/reutilize recibos para replay; OPERATION_OUTCOME_UNKNOWN não autoriza repetir cegamente. `mutate_worktree` faz STAGE/UNSTAGE explícitos, COMMIT do índice exato e CREATE_BRANCH exclusivo. `manage_worktree` CREATE deriva o diretório no servidor e exige branch nova e commit inicial exato aprovado, sem trocar projeto ativo. CLOSE é operação **separadamente solicitada pelo usuário**, nunca efeito de commit/integração. Só aceita checkout gerenciado, limpo, unlocked, sem ownership ativo e com commits preservados em branch autorizada; nunca remover worktree externa. A fonte permanece disponível por padrão para correção/retomada.
+`mutate_worktree` faz STAGE/UNSTAGE explícitos, COMMIT do índice exato e CREATE_BRANCH exclusivo. `manage_worktree` CREATE deriva o diretório no servidor e exige branch nova e commit inicial exato aprovado, sem trocar projeto ativo. CLOSE é operação **separadamente solicitada pelo usuário**, nunca efeito de commit/integração. Só aceita checkout gerenciado, limpo, unlocked, sem ownership ativo e com commits preservados em branch autorizada; nunca remover worktree externa. A fonte permanece disponível por padrão para correção/retomada.
 
 `publish_worktree` faz push explícito sem force: PUBLISHED não significa integrado. `preview_worktree_integration` vincula source, target, snapshots e merge-base. `integrate_worktree` APPLY opera somente em sandbox gerenciado; conflitos ficam nele e são lidos/resolvidos explicitamente por `get_worktree_conflict`/`resolve_worktree_conflict`. Execute profiles existentes com `start_worktree_validation` e acompanhe `get_worktree_validation`; somente prova autêntica PASSED, CURRENT, do checkout/commit correto sustenta PROMOTE. Prova manual, cwd diferente, runtime diferente ou fingerprint obsoleto não valida integração. PROMOTE revalida preview e exige concessão legítima no target quando ocupado; não atualizar lateralmente ref de branch em checkout. Delegue o ciclo de execução à Skill worktree-execution.
