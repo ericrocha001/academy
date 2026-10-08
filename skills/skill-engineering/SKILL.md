@@ -155,30 +155,25 @@ A Skill chamada permanece responsável pelo procedimento especializado.
 
 ## Defina uma Capacidade Coerente
 
-Trate o escopo como uma responsabilidade de software.
+Trate o escopo como uma responsabilidade de software. **Uma Skill representa uma intenção operacional coerente, não uma quantidade máxima de palavras.** Tamanho, número de seções e etapas não justificam divisão.
 
-Uma Skill deve representar uma capacidade coerente.
+### Gate de coesão versus particionamento
 
-Una conteúdos quando eles:
+Pergunta central: **em um pedido real, o agente pode deixar de carregar uma parte inteira sem prejudicar a decisão e a execução corretas da parte necessária?** Analise a frequência desse caso e o valor do contexto evitado.
 
-- servem à mesma intenção;
-- normalmente precisam estar ativos juntos;
-- compartilham o mesmo contexto;
-- evoluem pela mesma razão.
+**MANTER COESA, mesmo longa:** as partes servem à mesma intenção, normalmente são necessárias juntas, compartilham contexto/contratos e evoluem pela mesma razão. Etapas diferentes de um fluxo obrigatório não são automaticamente capacidades independentes. Dividir criaria mais entradas no índice, seleções, referências e risco de faltar instrução necessária.
 
-Separe quando partes relevantes:
+**MANTER COM APROFUNDAMENTO CONDICIONAL:** a intenção continua única, mas um detalhe, referência ou procedimento especializado só é necessário em alguns casos. Preserve a decisão e as invariantes no corpo principal; carregue o detalhe por recurso interno sob demanda. Não crie micro-Skills para cada seção.
 
-- são acionadas por intenções diferentes;
-- resolvem problemas independentes;
-- evoluem por razões diferentes;
-- possuem reutilização própria;
-- raramente precisam estar presentes ao mesmo tempo.
+**DIVIDIR POR CAPACIDADE:** existem pedidos naturais que precisam de uma parte sem a outra; cada parte possui resultado útil, procedimento material, gatilho distinguível já por `name`/`description` e evolução própria. Uma capacidade pode chamar outra quando necessário, sem copiar seu contrato. Compartilhar o mesmo produto, ferramenta ou agente não torna as intenções uma só.
 
-Antes de dividir, verifique novamente se a capacidade candidata já existe em outra Skill.
+**SE A FRONTEIRA NÃO ESTIVER COMPROVADA:** mantenha a estrutura atual. Compare pedidos positivos, negativos e próximos, custo total do índice e corpos carregados, além de eventuais regressões, usando `surgical-evals` quando o valor justificar.
 
-> **Divida por capacidade, não por tamanho.**
+Exemplos de fronteira:
+- **Manter:** decomposição, critérios de prova e handoff de um Plano Final Executável integram a mesma entrega; não repartir `planejamento-executavel` por etapas.
+- **Dividir:** navegar um repositório e projetar a evolução permanente da ferramenta de navegação são intenções diferentes; `code-navigation` e `code-navigation-evolution` podem ser descobertas separadamente.
 
-Uma Skill longa e verdadeiramente coesa é preferível a várias micro-Skills artificiais.
+Antes de criar uma nova Skill, verifique a capacidade existente e aplique o Gate de Não-Duplicação. A divisão só é produtiva quando a independência de acionamento e o ganho marginal compensam o custo de composição.
 
 ## Construa a Partir de Evidência
 
