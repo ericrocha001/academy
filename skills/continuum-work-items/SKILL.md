@@ -72,7 +72,7 @@ Uma recomendação pode ser útil sem merecer um Work Item.
 
 Work Item não é estado de uma Unidade bloqueada dentro de uma implementação ainda em andamento. Para decidir se o Implementador deve parar/escalar, use `escalonamento-de-bloqueios`; para transferir o estado da investigação, `blockage-handoff`; para resolver a decisão e retomar, `resolucao-de-bloqueios`.
 
-Crie Work Item apenas quando **trabalho material for deliberadamente separado da execução atual** e outro agente puder retomá-lo futuramente com problema, decisões, limites e critério de conclusão suficientemente definidos. Uma lacuna arquitetural ainda não resolvida não pode ser mascarada como plano executável. Não crie registros paralelos para o mesmo trabalho ou transforme todo bloqueio em backlog.
+Crie Work Item apenas quando **trabalho material for deliberadamente separado da execução atual** e outro agente puder retomá-lo futuramente com problema, decisões, limites e critério de conclusão suficientemente definidos. Uma implementação dependente de decisão arquitetural aberta não é um Work Item executável de implementação. Uma **investigação futura** pode ser Work Item quando sua pergunta, evidência a obter e critério de conclusão estiverem definidos; isso não resolve automaticamente o bloqueio atual. Não crie registros paralelos para o mesmo trabalho nem transforme todo bloqueio em backlog.
 
 # Capability Opportunities
 
