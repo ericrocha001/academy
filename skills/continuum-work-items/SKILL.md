@@ -68,6 +68,12 @@ Uma recomendação pode ser útil sem merecer um Work Item.
 
 ---
 
+# Fronteira com Bloqueios e Handoffs
+
+Work Item não é estado de uma Unidade bloqueada dentro de uma implementação ainda em andamento. Para decidir se o Implementador deve parar/escalar, use `escalonamento-de-bloqueios`; para transferir o estado da investigação, `blockage-handoff`; para resolver a decisão e retomar, `resolucao-de-bloqueios`.
+
+Crie Work Item apenas quando **trabalho material for deliberadamente separado da execução atual** e outro agente puder retomá-lo futuramente com problema, decisões, limites e critério de conclusão suficientemente definidos. Uma lacuna arquitetural ainda não resolvida não pode ser mascarada como plano executável. Não crie registros paralelos para o mesmo trabalho ou transforme todo bloqueio em backlog.
+
 # Capability Opportunities
 
 Quando o trabalho nasceu de uma Capability Opportunity:
