@@ -1,6 +1,6 @@
 ---
 name: git-operations
-description: Use para operar Git com segurança através das ferramentas MCP do Code Awareness: inspecionar estado e mudanças, manter a higiene do worktree, preparar commits, gerenciar branches e upstreams, sincronizar remoto, fazer merge/revert, preservar trabalho com shelves, resolver conflitos tipados e recuperar mutações por operationId. Use quando uma tarefa exigir alteração real do repositório via Git Operations. Não use para editar código, navegar arquitetura ou substituir validação de implementação.
+description: Use para operar Git com segurança através das ferramentas MCP do Code Awareness: inspecionar estado, mudanças e Worktrees registradas, manter a higiene do worktree, preparar commits, gerenciar branches e upstreams, sincronizar remoto, fazer merge/revert, preservar trabalho com shelves, resolver conflitos tipados e recuperar mutações por operationId. Use quando uma tarefa exigir alteração real do repositório via Git Operations. Não use para editar código, navegar arquitetura ou substituir validação de implementação.
 ---
 
 # Git Operations
@@ -20,6 +20,21 @@ Git Operations não substitui Code Navigation, validação, System Health ou Con
 - Git Operations altera e verifica o estado Git atual.
 - Validation Evidence Channels decide como provar software.
 - System Health localiza falhas operacionais.
+
+## Worktrees externas: localização, inspeção e não interferência
+
+Quando o resultado de uma implementação foi produzido em outra Worktree do mesmo repositório, **não confunda** o checkout ativo do Code Awareness com o workspace de origem. Recupere somente o handoff/Artifact relevante no Continuum e use os metadados `worktreeId` e/ou `worktreePath` como **pistas de descoberta**, nunca como autorização de mutação. Se precisar agrupar outros Artifacts originados naquela mesma Worktree, filtre o Continuum pelo campo de metadata disponível (`worktreeId` preferencialmente, `worktreePath` como fallback histórico), sem carregar todo o corpus. `executionId` correlaciona a execução, não substitui a identidade da Worktree.
+
+Quando Worktree Operations estiver disponível pelo Channel:
+1. Descubra a Worktree pelo registry Git do projeto canônico (`discover_worktrees`), revalidando ID, common-dir e path. Não aceite um path informado no handoff como seletor livre ou prova de existência atual.
+2. Inspecione somente o estado e as revisões necessários (`inspect_worktree`): branch, HEAD, dirty/index, ocupação e status de operação. Não solicite diff/source no discovery.
+3. Identifique commits ou paths relevantes antes de solicitar conteúdo. Prefira metadata, contagens e lista curta de mudanças; não faça dump da Worktree.
+4. Aprofunde com diff **bounded** por paths explícitos e leitura literal de **ranges** somente quando a decisão exigir evidência além do handoff e das provas já existentes.
+5. Pare quando o contexto for suficiente. Uma nova inspeção da mesma sessão deve confirmar freshness/HEAD e aproveitar a identificação anterior, em vez de redescobrir todo o trabalho.
+
+Se a capability ainda não estiver disponível, não invente seus resultados nem assuma que Git Operations legado lê outra Worktree: mantenha o escopo comprovado e informe a limitação. Para engenharia de contexto mais profunda utilize a Skill `progressive-disclosure`.
+
+**Fronteira de posse:** inspecionar uma Worktree não transfere controle. Conclusão de Plano, handoff VALIDATED, branch publicada, idle presumido ou path conhecido **não** autorizam stage/commit/switch/merge, nem remoção ou cleanup. Enquanto a sessão mantém posse, preserve arquivos, index, HEAD, branch checkoutada e operação Git do executor. Qualquer mutação scoped depende de liberação/handoff explícito, preconditions frescas, lease cooperativo e receipt/operationId conforme a capability; a Worktree pode continuar ativa para novos Planos na mesma sessão. Não bloquear ou fechar a Worktree apenas porque uma auditoria terminou. Uma liberação de posse não se deduz da ausência de edição recente; limitações de IDEs não cooperativas precisam ser reconhecidas.
 
 ## Comece pelo estado
 
