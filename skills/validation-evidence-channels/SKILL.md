@@ -1,6 +1,6 @@
 ---
 name: validation-evidence-channels  
-description: Use principalmente pelo Arquiteto ou revisor remoto quando precisar escolher, combinar ou interpretar canais de evidência do Code Awareness para validar uma implementação, confirmar runtime, verificar provas existentes ou investigar contradições. Implementadores com execução local equivalente devem validar pelo próprio workspace e evitar Validation Execution/Ledger remotos como rotina; use esses canais somente quando não houver equivalente local ou quando uma verificação independente exigir a superfície remota.
+description: Selecione e interprete evidências remotas ou independentes do Code Awareness (Validation Ledger/Execution, runtime e outros canais) quando a prova local não bastar, estiver indisponível ou exigir verificação independente. Não use para executar testes locais equivalentes nem para definir genericamente o que valida uma implementação; use validacao-de-implementacoes.
 ---
 
 # Validation Evidence Channels
