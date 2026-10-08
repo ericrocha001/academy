@@ -1,6 +1,6 @@
 ---
 name: planejamento-executavel
-description: Use quando uma solução arquitetural já estiver suficientemente resolvida e precisar ser transformada em um Plano Final Executável para um agente de implementação, publicado como contexto durável no Continuum para recuperação pelo executor. Inclui escopo, ordem, Unidades de Implementação, granularidade, dependências, capacidade mínima e critérios de execução. Não use para descobrir arquitetura ainda aberta, projetar provas em detalhe ou resolver bloqueios de implementação.
+description: Use quando a arquitetura de uma solução já estiver resolvida e precisar virar Plano Final Executável para implementação: unidades coerentes, contratos, ordem, evidências e perfil mínimo do executor. Publique o plano no Continuum quando disponível. Não acione para decidir se a feature merece existir (feature-investment-gate) nem para resolver decisões arquiteturais ainda abertas.
 ---
 
 
