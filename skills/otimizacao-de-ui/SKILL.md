@@ -1,6 +1,6 @@
 ---
 name: otimizacao-de-ui
-description: Use ao criar do zero, desenhar, otimizar, repaginar, redesenhar, modernizar, profissionalizar, reorganizar ou melhorar visualmente uma UI. Resolva arquitetura de informação, hierarquia, layout, scroll, densidade, estados, responsividade e aderência ao Design System antes de estilizar; preserve contratos funcionais quando a UI já existir. Decida explicitamente se mockup agrega valor e, quando necessário, acione `mockup-design`. Exija inspeção visual do runtime real antes de considerar o trabalho validado. Não use para decidir se uma feature deve existir nem para alterar backend ou comportamento de produto sem necessidade.
+description: Projete ou revise a interface real do produto: arquitetura da informação, hierarquia, layout, scroll, densidade, estados, responsividade e Design System. Use na criação ou redesign de UI e valide visualmente o runtime. Para produzir somente mockup ou referência visual use mockup-design; não decida se a feature deve existir.
 ---
 
 # Design e Otimização de UI
