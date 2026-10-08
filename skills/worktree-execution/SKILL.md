@@ -29,6 +29,20 @@ Uma mesma worktree pode receber vários Planos Finais Executáveis relacionados.
 
 Não crie worktree nova por plano sem razão operacional.
 
+## Identidade e proveniência da Worktree
+
+Toda comunicação durável **produzida a partir do trabalho executado em uma Worktree** deve permitir recuperar sua origem sem reconstruir a sessão. No handoff de cada Plano, reporte a Worktree efetiva (path absoluto), branch, HEAD/commit observado, identidade da sessão quando disponível e se ela permanece **ativa**, **encerrada** ou foi **explicitamente liberada para Git**. Um handoff de Plano não exige encerrar a sessão.
+
+Nos Artifacts do Continuum originados daquela execução (por exemplo IMPLEMENTATION_HANDOFF, VALIDATION_PROOF ou OBSERVATION), inclua no **frontmatter**, preservando metadata/relations existentes:
+- `worktreeId`: identidade opaca **obtida do registry Git/Code Awareness**, somente quando existir e tiver sido verificada;
+- `worktreePath`: caminho absoluto da Worktree efetiva, quando conhecido, sobretudo enquanto a capability de IDs MCP não estiver disponível.
+
+Esses campos são **proveniência histórica e índices de descoberta**. Não invente worktreeId; não use branch, checkout principal ou executionId como identidade substituta. Se ambos estiverem disponíveis, registre ambos; se somente o path estiver disponível, registre worktreePath e o estado de verificação no corpo. Não deixe de publicar o handoff por ausência temporária de worktreeId. Preserve o mesmo identificador entre Artifacts da mesma Worktree registrada e mantenha `executionId` como dimensão independente para correlacionar a execução.
+
+Não adicione esses metadados a Planos criados **antes** da execução ou a documentos que apenas **mencionem** a Worktree sem dela se originarem. Nunca atualize retroativamente um Plano Final já entregue apenas para adicionar proveniência. Ao consumir Artifact, trate seus campos como localizadores históricos: Git vivo precisa confirmar registro, branch, HEAD e ocupação antes de qualquer operação.
+
+**Conclusão de Plano ≠ fim da sessão ≠ transferência de posse.** Relatar Worktree e publicar handoff não concedem automaticamente controle ao leitor, nem permitem stage, commit, switch, merge, remoção ou limpeza. Um novo Plano da mesma sessão pode reutilizar o mesmo workspace e checkpoints. Para handoff de posse e mutações, use `git-operations`; para documentação e discovery, use `continuum`.
+
 ## Baseline
 
 Registre o baseline observado no início. O avanço posterior da branch de destino não muda esse ponto de partida. Use-o no encerramento para reconhecer drift e avaliar integração.
