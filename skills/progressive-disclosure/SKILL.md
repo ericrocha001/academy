@@ -161,11 +161,9 @@ Promova uma parte para Skill própria quando ela possuir:
 
 > **Divida por capacidade, não por contagem de palavras.**
 
-Como heurística, prefira Skills pequenas e coesas, idealmente com até cerca de 1.600 palavras.
+Não use uma meta universal de palavras para decidir particionamento. Quando uma capacidade longa precisa ser carregada integralmente para cumprir a mesma intenção, a divisão pode aumentar o custo total de descoberta, composição e perda de instruções.
 
-Esse valor é orientação arquitetural, não limite rígido.
-
-Uma Skill maior é aceitável quando sua responsabilidade permanecer verdadeiramente única e coesa.
+Use o Gate de Coesão versus Particionamento de `skill-engineering` antes de criar outra Skill. Progressive Disclosure determina **quando aprofundar**; Skill Engineering determina **quando a capacidade realmente deve ser separada**.
 
 ## Metadata como Índice
 
