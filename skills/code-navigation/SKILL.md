@@ -86,6 +86,7 @@ Code Navigation expõe, através do Code Awareness Channel:
 - `get_symbol_dependencies`
 - `get_symbol_hierarchy`
 - `read_code`
+- `inspect_worktree_structure`
 
 O Channel também expõe capacidades operacionais irmãs, como:
 
@@ -163,6 +164,19 @@ Prefira `signatures: false` quando nomes e estrutura bastarem.
 Use `signatures: true` somente quando assinaturas alterarem a seleção.
 
 Se o outline resolver a pergunta, não leia source.
+
+
+## `inspect_worktree_structure`
+
+Use para perguntar quais estruturas e relações diretas mudaram em paths escolhidos de uma worktree. Descubra o worktreeId pelas operações Git existentes; selecione 1–10 paths relativos. A ferramenta não cria outro Code Map nem exige indexar a worktree.
+
+A base padrão é o merge-base entre o HEAD canônico e o HEAD selecionado. `baseCommit` aceita somente SHA completo do mesmo repositório. A comparação inclui commits próprios e o conteúdo atual staged/unstaged/untracked; não comprova autoria de um executor.
+
+Leia identidade, generation, fingerprint, baseCommit, HEAD, cobertura e limitações antes dos deltas. Referência canônica só é compatível por contentHash e readiness. Importers são candidatos de versão compatível, nunca prova de impacto transitivo ou ausência de dependentes fora do escopo. Para parear rename commitado, selecione origem e destino; se um lado ficar fora da seleção, trate ADDED_OR_RENAME_FROM_OUTSIDE_SELECTION ou REMOVED_OR_RENAME_TO_OUTSIDE_SELECTION como incerteza e refine os paths. Renames Git, homônimos, parse parcial e fallback mantêm sua incerteza explícita.
+
+Limites: 1 MiB por arquivo, 4 MiB de entrada e 24 KB de projeção. Siga `nextCursor` com os mesmos argumentos. Em GIT_STATE_CHANGED, redescubra e reinicie sem cursor stale; em limite, reduza paths/tamanho. Comparação UNAVAILABLE não autoriza inferir mudanças contra uma base fictícia.
+
+As referências efêmeras usam path, linhas e hash; não são CodeTargets canônicos. Para aprofundar, use `read_worktree_file` com o hash CURRENT ou `get_worktree_diff` contra os commits indicados. Não envie essas referências a `read_code`. Pare na projeção quando ela resolver a decisão.
 
 ## Relações e CodeTargets
 
