@@ -1,6 +1,6 @@
 ---
 name: capability-opportunity  
-description: Detecte e qualifique oportunidades reutilizáveis surgidas durante ou após trabalho agentivo: fricção, lacuna, repetição ou desperdício com causa generalizável. Registre e encaminhe apenas oportunidades materiais. Não use para projetar uma Skill, criar infraestrutura ou avaliar especificamente um produto de Harness já escolhido.
+description: Detecte e registre Capability Opportunities materiais durante ou após trabalho agentivo, independentemente do destino provável: Harness, ferramenta, código, validação ou processo. Qualifique evidência, causa generalizável, reutilização e ganho; encaminhe sem implementar. Não substitua análise especializada de Harness já identificado (harness-improvement) nem o projeto de Skills (skill-engineering).
 ---
 
 # SKILL
