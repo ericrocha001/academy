@@ -439,7 +439,7 @@ Alta densidade significa que a saída corresponde diretamente à decisão necess
 
 ## Capacidade de desenho e evolução
 
-Quando a tarefa for projetar instrumentação permanente, mapear fronteiras ou melhorar a própria ferramenta, utilize `code-navigation-evolution`. Não carregue essas instruções em uma investigação corrente apenas por serem potencialmente úteis.
+Quando a tarefa for projetar novas primitives, reduzir overfetching ou corrigir fricções recorrentes de navegação, utilize `code-navigation-evolution`. Não carregue o procedimento de evolução durante a mera exploração de código.
 
 ## Quando parar
 
