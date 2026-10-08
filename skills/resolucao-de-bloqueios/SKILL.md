@@ -203,6 +203,12 @@ Se ainda não houver informação suficiente para escolher uma solução:
 
 A saída pode continuar como bloqueada quando isso for a representação correta do estado.
 
+## Fronteira com Trabalho Adiado
+
+Um bloqueio cuja decisão indispensável ainda está aberta **não é uma tarefa futura pronta para execução**. Mantenha explícitos a incerteza, a evidência ausente e o estado bloqueado; não publique um Work Item apenas para encerrar a investigação.
+
+Quando uma decisão separada retirar trabalho material da execução atual e ele já puder ser descrito com resultado, limites e provas suficientes para retomada por outro agente, use `continuum-work-items` para sua preservação. Não substitua o Blockage Handoff nem a decisão de retomada por esse registro.
+
 ## Instrução de Retomada
 
 Quando o bloqueio estiver resolvido, produza uma instrução diretamente executável pelo Implementador.
