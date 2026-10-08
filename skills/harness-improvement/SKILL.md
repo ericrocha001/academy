@@ -1,6 +1,6 @@
 ---
 name: harness-improvement
-description: Avalie se fricção recorrente, redescoberta, regressão ou desperdício agentic justifica evoluir ou simplificar o Harness. Use para qualificar a necessidade e o ganho reutilizável; use harness-productization para escolher a forma da solução, harness-ablation para remover capacidade existente e capability-opportunity para registrar oportunidades gerais.
+description: Avalie uma deficiência concreta ou suspeita do Harness (Skills, prompts, ferramentas, contexto, observabilidade ou guardrails) para decidir se fortalecer capacidade reutilizável traz ganho líquido. Pode ser acionada diretamente, sem triagem prévia obrigatória. Use harness-productization para escolher o produto, harness-ablation para questionar uma peça existente e capability-opportunity para registrar oportunidades gerais.
 ---
 
 # Harness Improvement
@@ -112,6 +112,8 @@ O objetivo é eliminar:
 > **redescoberta e raciocínio repetitivo, não pensamento legítimo.**
 
 ## Harness Improvement Opportunity
+
+Se a causa já foi qualificada como Harness por `capability-opportunity` ou por investigação direta, reutilize a evidência e avalie apenas o que ainda falta para a decisão. Não repita o gate geral nem exija uma etapa intermediária quando a deficiência do Harness já estiver clara.
 
 Existe uma Harness Improvement Opportunity quando uma dificuldade revela uma capacidade reutilizável cuja externalização provavelmente produzirá ganho líquido futuro.
 
