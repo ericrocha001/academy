@@ -1,6 +1,6 @@
 ---
 name: continuum-work-items  
-description: Use quando trabalho material não será executado agora e precisa ser delegado, retomado ou resolvido posteriormente por outro agente através do Continuum. Converte trabalho qualificado em Work Item autocontido, evita duplicatas e acompanha estados PENDING, COMPLETED e CANCELLED. Não usar para ideias especulativas, tarefas locais imediatas ou Implementation Handoffs normais.
+description: Use quando trabalho material e suficientemente definido for deliberadamente retirado do fluxo atual para execução futura por outro agente. Registre um Work Item autocontido no Continuum, sem duplicatas, com estados PENDING, COMPLETED e CANCELLED. Não use para pausa/bloqueio da implementação em andamento, Handoff normal, ideia especulativa ou tarefa imediata.
 ---
 
 # Continuum Work Items
