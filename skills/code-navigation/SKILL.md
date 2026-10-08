@@ -1,6 +1,6 @@
 ---
 name: code-navigation
-description: Use e evolua Code Navigation através do Code Awareness Channel para compreender e investigar um repositório com alto sinal e baixo ruído, começando por discovery e aprofundando somente o necessário com estrutura, relações, referências, dependências, hierarquia e source literal. Use ao localizar código, formar escopo, entender arquitetura, seguir símbolos, selecionar contexto ou identificar oportunidades para Code Navigation entregar informação mais precisa com menos navegação. Não use para dumps amplos do codebase nem para insistir na navegação quando a própria região quebrada impede sua leitura; nesses casos use o caminho break-glass apropriado.
+description: Navegue pelo código de um repositório através do Code Awareness Channel quando precisar localizar módulos, relações, referências, dependências, estruturas ou source literal. Comece por discovery e aprofunde seletivamente. Não use para gerar pedidos JSON code-dash/v2 (solicitacao-de-contexto-code-dash) nem para dumps amplos do codebase.
 ---
 
 # Code Navigation
