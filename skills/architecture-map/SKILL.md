@@ -189,7 +189,7 @@ Living Artifact representa o melhor modelo corrente, não a história das versõ
 
 ## Relação com Skills vizinhas
 
-Use `continuum` para operações de discovery/publicação/edição.
+Use `continuum` para discovery e relações; use `continuum-publication` somente para publicação e edição.
 
 Use `code-navigation` para confirmar source e investigar discrepâncias.
 
