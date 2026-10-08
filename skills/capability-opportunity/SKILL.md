@@ -1,6 +1,6 @@
 ---
 name: capability-opportunity  
-description: Use durante ou após trabalho agentivo quando a execução revelar dificuldade, fricção, limitação, repetição, desperdício ou incapacidade que possa ser convertida em capacidade reutilizável. Identifique e qualifique oportunidades que aumentem materialmente o poder de resolução futuro, encaminhando-as para evolução de capacidade existente, Skill, Harness, automação, melhoria de ferramenta, código, validação ou processo. Não use para transformar toda inconveniência em infraestrutura nem para criar ou remover capacidades automaticamente.
+description: Detecte e qualifique oportunidades reutilizáveis surgidas durante ou após trabalho agentivo: fricção, lacuna, repetição ou desperdício com causa generalizável. Registre e encaminhe apenas oportunidades materiais. Não use para projetar uma Skill, criar infraestrutura ou avaliar especificamente um produto de Harness já escolhido.
 ---
 
 # SKILL
