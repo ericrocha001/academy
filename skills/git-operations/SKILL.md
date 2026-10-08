@@ -1,6 +1,6 @@
 ---
 name: git-operations
-description: Use para operar Git com segurança através das ferramentas MCP do Code Awareness: inspecionar estado, mudanças e Worktrees registradas, manter a higiene do worktree, preparar commits, gerenciar branches e upstreams, sincronizar remoto, fazer merge/revert, preservar trabalho com shelves, resolver conflitos tipados e recuperar mutações por operationId. Use quando uma tarefa exigir alteração real do repositório via Git Operations. Não use para editar código, navegar arquitetura ou substituir validação de implementação.
+description: Use para operar Git com segurança através das ferramentas MCP do Code Awareness: inspecionar estado, mudanças e Worktrees registradas, manter a higiene do worktree, preparar commits, gerenciar branches e upstreams, sincronizar remoto, fazer merge/revert, preservar trabalho com shelves, resolver conflitos tipados e recuperar mutações por operationId. Use quando uma tarefa exigir inspeção segura de Worktrees ou alteração real do repositório via Git Operations. Não use para editar código, navegar arquitetura ou substituir validação de implementação.
 ---
 
 # Git Operations
