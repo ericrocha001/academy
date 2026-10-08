@@ -114,7 +114,7 @@ Quando o bloqueio impedir avanço seguro:
 
 Um bloqueio da implementação corrente **não se transforma automaticamente em Work Item**. Enquanto a Unidade pertence à execução atual, preserve seu estado e use `blockage-handoff` para a decisão ou informação fora da autonomia. Trabalho independente que pode continuar no mesmo Plano não exige novo registro durável apenas porque outra parte ficou bloqueada.
 
-Somente quando houver decisão de retirar trabalho material do fluxo atual e delegá-lo para execução futura **autocontida e suficientemente definida**, utilize `continuum-work-items` para avaliar se merece persistência. Se ainda faltar uma decisão arquitetural indispensável à executabilidade, preserve o bloqueio como bloqueio; não o esconda em um Work Item.
+Somente quando houver decisão de retirar trabalho material do fluxo atual e delegá-lo para execução futura **autocontida e suficientemente definida**, utilize `continuum-work-items` para avaliar se merece persistência. Se a implementação depender de decisão arquitetural ainda aberta, preserve seu estado bloqueado: não a apresente como tarefa pronta. Uma investigação separada e deliberadamente adiada pode tornar-se Work Item quando tiver pergunta, evidência buscada e conclusão verificável; isso não apaga o bloqueio da execução atual.
 
 ## Produção do Handoff
 
