@@ -25,7 +25,7 @@ Deve transmitir contexto suficiente para que outro agente compreenda:
 - como implementar;
 - como provar conclusão.
 
-Use a Skill `continuum` para as regras gerais de publicação, recuperação, fidelidade e Pure Signal do Artifact.
+Use `continuum` para recuperação, relações e Pure Signal; use `continuum-publication` para publicar, editar e preservar revisões do Artifact.
 
 ---
 
@@ -257,7 +257,7 @@ Quando um Work Item precisar ser atualizado:
 - leia o Artifact corrente e sua revisão;
 - preserve `artifactId` e finalidade lógica;
 - substitua Markdown e metadata completos com `expectedRevision`;
-- releia e reavalie em caso de conflito, segundo `continuum`.
+- releia e reavalie em caso de conflito, segundo `continuum-publication`.
 
 A projeção corrente representa o estado atual. Revisões internas preservam história; não publique outro Artifact apenas para mudar estado.
 
@@ -268,7 +268,7 @@ A projeção corrente representa o estado atual. Revisões internas preservam hi
 Quando o trabalho for concluído:
 
 1. valide a implementação;
-2. publique o `IMPLEMENTATION_HANDOFF` normal usando `continuum`;
+2. publique o `IMPLEMENTATION_HANDOFF` normal usando `continuum-publication`;
 3. atualize o mesmo Work Item para `COMPLETED` com `expectedRevision`;
 4. preserve o `artifactId`;
 5. adicione relação `resolved-by` para o `artifactId` do handoff de resolução, preservando outras relações ainda válidas.
