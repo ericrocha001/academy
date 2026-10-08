@@ -1,6 +1,6 @@
 ---
 name: solicitacao-de-contexto-code-dash
-description: Traduza uma necessidade de contexto em um único request code-dash/v2 com find, follow, set e emit sobre o Code Map. Use para selecionar entidades e campos mínimos, controlar cardinalidade e solicitar source exato somente quando necessário, sem pré-carregar o repositório.
+description: Formule um request JSON code-dash/v2 sobre o Code Map quando o Code Dash for o canal escolhido ou fallback de contexto: find, follow, set e emit com seleção mínima. Não use para navegação direta pelo Code Awareness Channel; nesse caso use code-navigation.
 ---
 
 # Solicitação de contexto pelo Code Dash
