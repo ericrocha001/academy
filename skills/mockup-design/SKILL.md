@@ -1,6 +1,6 @@
 ---
 name: mockup-design
-description: Use quando o usuário pedir criar, gerar, desenhar ou refazer um mockup, referência visual ou wireframe de alta fidelidade, ou quando `otimizacao-de-ui` concluir que uma UI nova/redesign ainda possui incerteza visual material. Decida entre gerar, reutilizar ou dispensar mockup; produza referência fiel ao produto e ao Design System, explicite divergências ilustrativas e trate o mockup como direção visual, nunca fonte funcional. Quando precisar persistir o resultado no repositório, use `repository-file-ingress`. Não use para implementar a UI nem para decidir sozinho se a feature deve existir.
+description: Crie ou avalie a necessidade de mockup, wireframe ou referência visual de alta fidelidade quando solicitado ou quando otimizacao-de-ui identificar incerteza visual relevante. Preserve Design System e contratos; não use para implementar UI, definir layout operacional completo ou decidir se a feature deve existir.
 ---
 
 # Mockup Design
