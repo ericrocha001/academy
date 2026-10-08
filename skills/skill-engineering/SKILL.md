@@ -208,6 +208,18 @@ Primeiro determine:
 4. se deve evoluir uma Skill existente;
 5. somente então, se uma nova Skill é necessária.
 
+## Capacidades e autoridade verificáveis
+
+Projete o acionamento e a execução das Skills pela necessidade, capacidades efetivamente disponíveis e autorização explícita, nunca apenas pela identidade presumida do agente.
+
+Separe **responsabilidade** (papel atribuído por fonte confiável), **capacidade** (ferramentas e acesso confirmados no ambiente) e **autoridade** (permissões e escopo da tarefa). O papel não prova acesso ao terminal, Git, MCP ou permissão de mutação. Ter uma ferramenta não autoriza usá-la para qualquer alteração.
+
+Quando o resultado for equivalente, prefira a via local disponível e proporcionalmente mais econômica conforme `engineering-evidence-economy`. Use integração remota quando oferecer dados canônicos, alcance, prova independente ou controle exigido e indisponível localmente.
+
+Escreva condições positivas e negativas por tarefa, capacidade e autorização observáveis. Só use «Arquiteto» e «Implementador» para delimitar responsabilidades cuja atribuição foi verificada. Se não houver evidência suficiente sobre acesso ou permissão, não presuma identidade; investigue ou bloqueie somente a operação dependente.
+
+Valide o triggering em agentes com e sem terminal local, com e sem integração MCP e com ou sem autorização de escrita. Não replique esta regra geral em toda Skill; cada Skill descreve apenas suas restrições específicas.
+
 ## Metadata é o Índice
 
 Use somente:
