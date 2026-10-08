@@ -1,6 +1,6 @@
 ---
 name: engineering-evidence-economy
-description: Use when deciding whether an engineering uncertainty requires code inspection, tests, measurement, a benchmark, a Spike, or a remote tool call. Minimize investigative and operational cost by preferring existing and local evidence before remote/plugin channels, escalating only when the more expensive channel adds information that cheaper evidence cannot provide.
+description: Use when an engineering decision has an unresolved evidence gap and you must choose between code, tests, existing metrics, a targeted measurement or a Spike. Prefer cheaper local evidence over equivalent remote channels when available and authorized. Do not use for routine implementation validation (validacao-de-implementacoes) or to design an agent-facing context API (agent-context-interface-engineering).
 ---
 
 # Engineering Evidence Economy
