@@ -47,7 +47,7 @@ Se Code Navigation ou runtime contradisserem materialmente o Architecture Map:
 - source/runtime vencem;
 - não force a investigação a caber no documento;
 - determine se a discrepância representa mudança arquitetural real ou apenas detalhe interno;
-- se for arquiteturalmente material, use `architecture-map` para revisar o Living Artifact;
+- se for arquiteturalmente material, use `architecture-map-authoring` para revisar o Living Artifact;
 - se for detalhe interno, não altere o mapa.
 
 O Architecture Map acelera orientação. Ele nunca reduz a autoridade do estado atual.
