@@ -1,13 +1,13 @@
 ---
 name: continuum-living-artifacts
-description: Use ao criar ou manter documentos canônicos vivos no Continuum (Living Artifacts, Capability Maps e sua governança), sem duplicar source ou Skills. Use architecture-map para regras próprias de Architecture Maps e continuum-publication para persistir revisões. Não acione para consulta histórica comum.
+description: Use ao criar ou manter documentos canônicos vivos no Continuum (Living Artifacts, Capability Maps e sua governança), sem duplicar source ou Skills. Use architecture-map para consultar Architecture Maps e architecture-map-authoring para criá-los, revisá-los ou corrigi-los e continuum-publication para persistir revisões. Não acione para consulta histórica comum.
 ---
 
 # Continuum Living Artifacts
 
 ## Fronteira
 
-Aplica a governança de documentos canônicos duráveis em um único Continuum por repositório. Para seleção por discovery ou relações consulte `continuum`; para publicar/editar consulte `continuum-publication` apenas quando precisar persistir. A Skill `architecture-map` governa o conteúdo e os gatilhos específicos de Architecture Maps.
+Aplica a governança de documentos canônicos duráveis em um único Continuum por repositório. Para seleção por discovery ou relações consulte `continuum`; para publicar/editar consulte `continuum-publication` apenas quando precisar persistir. A Skill `architecture-map` governa a consulta do mapa; `architecture-map-authoring` governa seu conteúdo, criação e gatilhos de atualização.
 
 ## Living Canonical Artifacts
 
@@ -80,7 +80,7 @@ Discovery direto:
 
 `list_artifacts(metadata: { livingArtifact: true, artifactRole: "ARCHITECTURE_MAP" })`
 
-Criação, revisão, discrepância e gatilhos de atualização pertencem à Skill `architecture-map`.
+Criação, revisão, discrepância e gatilhos de atualização pertencem à Skill `architecture-map-authoring`.
 
 ### Capability Maps
 
