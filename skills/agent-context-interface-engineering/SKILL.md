@@ -1,6 +1,6 @@
 ---
 name: agent-context-interface-engineering
-description: Use when designing, reviewing, or evolving tools, APIs, retrieval systems, connectors, or interfaces that deliver information to AI agents. Optimize context acquisition for relevance, progressive depth, semantic purity, and measurable cognitive cost. Do not use merely to consume an already well-defined context tool.
+description: Use when designing or reviewing agent-facing context interfaces—MCP tools, retrieval APIs, indexes or connectors—to optimize model-visible evidence, progressive deepening, semantic purity and cognitive cost. Do not use for routine repository navigation (code-navigation) or merely choosing which existing evidence channel to consult (engineering-evidence-economy).
 ---
 
 # Agent Context Interface Engineering
