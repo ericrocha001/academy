@@ -1,6 +1,6 @@
 ---
 name: skill-engineering
-description: Use ao criar, revisar, dividir, combinar ou melhorar substancialmente uma Skill de agente. Determine primeiro se a capacidade já existe total ou parcialmente em outra Skill e se uma nova Skill realmente deveria existir. Evite duplicação e sobreposição de capacidades, prefira reutilizar, evoluir ou chamar a Skill canônica existente e projete novas Skills apenas quando houver capacidade coerente, reutilizável e materialmente distinta. Use também para revisar escopo, triggering, valor marginal e preservação de capacidade durante refatorações. Não use para simples edição textual de uma Skill já arquiteturalmente resolvida.
+description: Projete ou refatore Skills por capacidade, intenção e contexto de uso. Verifique necessidade, não duplicação, triggering e granularidade discriminativa; preserve compatibilidade entre Claude Code e Codex. Não use para edição textual simples.
 ---
 
 # Skill Engineering
@@ -220,35 +220,19 @@ Escreva condições positivas e negativas por tarefa, capacidade e autorização
 
 Valide o triggering em agentes com e sem terminal local, com e sem integração MCP e com ou sem autorização de escrita. Não replique esta regra geral em toda Skill; cada Skill descreve apenas suas restrições específicas.
 
+## Granularidade Discriminativa
+
+Divida uma Skill por intenções ou contextos operacionais que exijam procedimentos realmente diferentes e possam ser acionados independentemente. A fronteira deve ser distinguível já por `name` e `description`, antes do carregamento do corpo. Não divida mecanicamente por tamanho, papel presumido (Arquiteto/Implementador), pasta ou transporte. Se uma única intenção tem detalhes condicionais, prefira uma Skill coesa e referências internas sob demanda.
+
+Antes de uma divisão, verifique custo total do índice, falsos positivos/negativos e contexto efetivamente carregado. Compare a versão atual com a candidata usando a capacidade `surgical-evals`, com casos positivos, negativos e near-misses quando a incerteza justificar. Só substitua a Skill canônica quando houver ganho demonstrável e preservação das capacidades compartilhadas.
+
 ## Metadata é o Índice
 
-Use somente:
+A Academy é o catálogo canônico único. Otimize para Claude Code e Codex, mas não suponha equivalência de extensões entre produtos. Por padrão, mantenha frontmatter portável com `name` e `description`; campos opcionais da especificação Agent Skills só quando resolverem requisito concreto. Campos proprietários do Claude Code (por exemplo `when_to_use`, `disable-model-invocation` ou `context`) não são garantidamente interpretados pelo Codex e podem ser rejeitados em upload do claude.ai. Controles próprios do Codex, como `agents/openai.yaml`, pertencem à distribuição compatível do destino, quando comprovadamente necessários. Não use metadata personalizada como único gatilho de seleção.
 
-```yaml
----
-name:
-description:
----
-```
+A `description` deve ser curta e distintiva: comece pela intenção/ação, depois diga quando acionar e, somente quando discriminativo, quando não acionar. Evite listas extensas de exceções, exemplos e nomes de agente. Considere Skills vizinhas e o orçamento total do catálogo: aumentar a quantidade de Skills também aumenta o índice, mesmo que cada corpo seja menor. O corpo não corrige um gatilho ruim depois de carregado.
 
-`name` identifica a capacidade.
-
-`description` deve permitir que o sistema determine:
-
-- o que a Skill faz;
-- quando deve ser usada;
-- fronteiras relevantes que evitem acionamento incorreto.
-
-Projete `name` e `description` considerando também Skills vizinhas.
-
-Duas descrições que disputam sistematicamente as mesmas situações podem revelar:
-
-- fronteiras ruins;
-- sobreposição de capacidades;
-- decomposição inadequada;
-- duplicação.
-
-Não mantenha catálogos manuais quando a infraestrutura já fornece descoberta pelas próprias Skills.
+Quando uma configuração específica da plataforma resolver um caso comprovado, mantenha uma fonte semântica canônica e uma projeção/adaptação por destino, sem duplicar manualmente procedimentos. A distribuição deve verificar quais campos são aceitos, em quais superfícies, e quais controles efetivamente alteram descoberta ou invocação. Não introduza router próprio, catálogo paralelo nem variantes sem necessidade observada.
 
 ## Preserve Alto Sinal
 
