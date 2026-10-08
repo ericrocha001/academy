@@ -1,6 +1,6 @@
 ---
 name: worktree-execution
-description: Use ao iniciar ou conduzir uma sessão de implementação isolada em Git Worktree, incluindo branch exclusiva, checkpoints, integração autorizada e retomada sem encerrar a Worktree. Escolha Git local quando disponível e suficiente, ou git-operations MCP para operações remotas com aprovação; não deduza ferramenta ou autoridade do nome do papel.
+description: Use ao iniciar ou conduzir uma sessão de implementação isolada em Git Worktree, incluindo branch exclusiva, checkpoints e retomada. Prefira Git local autorizado; para Worktrees remotas protegidas use worktree-mcp-operations, sem presumir capacidade ou autorização pelo papel.
 ---
 
 # Worktree Execution
@@ -12,9 +12,9 @@ Governar uma sessão isolada, preservando a Worktree entre vários planos, check
 **Modelo:** uma sessão, uma Worktree, uma branch exclusiva; várias entregas validadas podem usar a mesma sessão. Quem executa Git é determinado por **capacidade observada + delegação/autorização**, não pelo rótulo Arquiteto/Implementador. Nenhuma ação Git nasce automaticamente de um handoff validado.
 ## Fronteiras
 
-Esta Skill governa o ciclo da sessão, não ensina comandos Git ou contratos MCP. Use `validacao-de-implementacoes` para as provas, `continuum` para os handoffs, `engineering-evidence-economy` para comparar canais.
+Esta Skill governa o ciclo da sessão, não ensina comandos Git ou contratos MCP. Use `validacao-de-implementacoes` para as provas, `continuum-publication` para publicar handoffs, `continuum` para recuperá-los e `engineering-evidence-economy` para comparar canais.
 
-**Roteamento:** agente com Git local no checkout correto e autorização para a operação prefere o meio local; se não tem acesso local, ou a operação exige garantias remotas específicas, usa a Skill `git-operations` pelo Code Awareness quando disponível e autorizado. Não acione o MCP só para repetir Git, typecheck ou Vitest locais. A Skill `git-operations` pertence ao transporte MCP e não governa comandos locais.
+**Roteamento:** agente com Git local no checkout correto e autorização para a operação prefere o meio local; se não tem acesso local, ou a operação exige garantias remotas específicas, usa `worktree-mcp-operations` para Worktrees protegidas ou `git-operations` para Git remoto comum, quando disponíveis e autorizados. Não acione o MCP só para repetir Git, typecheck ou Vitest locais. A Skill `git-operations` pertence ao transporte MCP e não governa comandos locais.
 
 **Autoridade:** acesso ao terminal não autoriza modificar a `main`, Worktree de outro agente ou remoto. Confirme delegação explícita para commit, merge, push ou operação compartilhada; validação/handoff não autorizam mutação implícita. Para executar via MCP respeite aprovação nativa e lease próprios desse canal; Git local não cria nem contorna lease MCP. Nenhum executor deve interferir em escritores concorrentes.
 ## Pré-condição de isolamento
@@ -48,7 +48,7 @@ Registre o baseline observado no início. O avanço posterior da branch de desti
 
 ## Plano e checkpoint
 
-Valide cada plano conforme `validacao-de-implementacoes` e publique o handoff pelo `continuum`. Um checkpoint local pode preservar um conjunto coerente e validado antes do próximo plano, sem criar commits mecânicos.
+Valide cada plano conforme `validacao-de-implementacoes` e publique o handoff pelo `continuum-publication`. Um checkpoint local pode preservar um conjunto coerente e validado antes do próximo plano, sem criar commits mecânicos.
 
 **Quando o responsável pela sessão estiver autorizado a criar commits**, ele pode fazê-los por Git local, sem delegação artificial a um agente remoto. Também é legítimo delegar a operação a outro agente com capacidade adequada mediante handoff de controle verificável. Confirme o estado e os paths antes de stage/commit; não interrompa uma sessão alheia.
 ## Commit e push
@@ -61,7 +61,7 @@ Use Git local autorizado quando disponível; `git-operations` MCP apenas se o me
 Fim de plano significa validação e handoff, não necessariamente encerramento da sessão. Novos planos podem reutilizar a Worktree e seus checkpoints. Se o usuário decidir concluir a linha de trabalho, verifique preservação de commits, integração e pendências explicitamente; não feche o workspace por inatividade ou handoff.
 ## Integração
 
-**Commit e merge são operações distintas.** Integre somente quando houver autorização específica para destino e escopo; o agente com Git local autorizado pode preparar e validar o merge localmente, sem passar pelo MCP. Se a operação for remota, use a integração protegida descrita em `git-operations`.
+**Commit e merge são operações distintas.** Integre somente quando houver autorização específica para destino e escopo; o agente com Git local autorizado pode preparar e validar o merge localmente, sem passar pelo MCP. Se a operação for remota e envolver integração de Worktrees protegidas, use `worktree-mcp-operations`.
 
 Confirme estado e disponibilidade do destino, possíveis escritores concorrentes, alterações dirty, commit-base e drift. Resolva conflitos em ambiente isolado quando necessário, preserve ambas as linhas e não substitua o estado da `main` com arquivos antigos. Não confunda ausência de conflito textual com compatibilidade semântica. **Merge não autoriza fechar a Worktree de origem.**
 ## Validação pós-integração
@@ -96,10 +96,10 @@ Não distribua automaticamente unidades do mesmo plano entre agentes apenas porq
 ## Regra final
 
 > Execute onde a capacidade existe e a autorização permite. Preserve Worktree, branch, contexto e checkpoints; valide o resultado combinado quando integrar. Nenhum handoff, commit ou merge encerra automaticamente a sessão.
-## Ciclo pelo Git Operations MCP
+## Ciclo pelas operações remotas de Worktree
 
 **Esta seção é condicional:** aplica-se somente quando a operação Git efetivamente usar o canal remoto Code Awareness. Não é o procedimento obrigatório para quem dispõe de Git local autorizado.
 
-Nesse canal, siga a Skill `git-operations`: descubra e inspecione a Worktree, obtenha aprovação nativa local, lease, snapshots, receipts e idempotência conforme contrato. Hand-off e pausa do escritor são cooperativos; não presuma posse de uma IDE externa. Para integrar, faça preview e APPLY em checkout gerenciado, valide o commit candidato no próprio checkout e promova somente com prova e ownership válidos. Expiração, restart ou resultado desconhecido exigem recuperação, nunca takeover por timeout.
+Nesse canal, siga a Skill `worktree-mcp-operations`: descubra e inspecione a Worktree, obtenha aprovação nativa local, lease, snapshots, receipts e idempotência conforme contrato. Hand-off e pausa do escritor são cooperativos; não presuma posse de uma IDE externa. Para integrar, faça preview e APPLY em checkout gerenciado, valide o commit candidato no próprio checkout e promova somente com prova e ownership válidos. Expiração, restart ou resultado desconhecido exigem recuperação, nunca takeover por timeout.
 
 Na via local, preserve as mesmas invariantes de intenção explícita, ausência de escrita concorrente, rollback não destrutivo e validação, mas **não emule nem solicite leases MCP** para comandar Git pelo terminal.
