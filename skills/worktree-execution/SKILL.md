@@ -123,3 +123,11 @@ Uma execução está encerrada quando começou em workspace realmente isolado, p
 ## Regra final
 
 > Isole antes de editar. Preserve estados validados localmente. Publique a sessão, não cada passo. Integre conscientemente. Revalide o que a integração puder afetar. Encerre o workspace somente depois que o trabalho estiver comprovadamente preservado.
+
+## Ciclo pelo Git Operations MCP
+
+Use a Skill git-operations para os contratos concretos de descoberta, handoff local, lease, snapshots, recibos e recuperação. Worktree descoberta é acessível para leitura, não automaticamente autorizada para escrita. Pause o executor antes da confirmação nativa; a concessão cooperativa não bloqueia uma IDE independente.
+
+Crie checkpoint em branch exclusiva e índice explicitamente selecionado. Para integração, crie checkout gerenciado de branch nova em SHA exato autorizado, preserve o projeto ativo e obtenha preview vinculado ao source/target. APPLY e resolução explícita de conflitos ocorrem no sandbox. Execute os profiles existentes no próprio checkout e obtenha prova autêntica PASSED/CURRENT do commit candidato antes de PROMOTE, com ownership legítimo do target ocupado. Duas sessões integram sequencialmente: renovar preview, snapshot e validação quando a base mudar.
+
+Mantenha os estados separados: checkpoint criado, PUBLISHED, INTEGRATION_PREPARED e INTEGRATION_VALIDATED. Push não prova integração; handoff não autoriza cleanup automático. Feche somente checkout gerenciado limpo, unlocked e sem ownership ativo, após comprovar preservação dos commits em branch autorizada. Worktrees externas permanecem intactas. Expiração, restart e resultado desconhecido requerem reconciliação e recuperação local explícita, nunca tomada de ownership por timeout.
