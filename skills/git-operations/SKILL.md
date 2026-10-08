@@ -356,3 +356,14 @@ Quando uma operação segura não estiver representada pela superfície tipada, 
 ## Regra final
 
 > Estado observado define a precondition. Paths explícitos definem a intenção. operationId define a identidade da mutação. Upstream explícito define a relação local↔remoto quando ela deve existir. Verificação mínima confirma o resultado. Nunca troque segurança por atalhos e nunca aumente chamadas para descobrir algo que o próprio contrato pode responder.
+
+
+## Operações tipadas em Worktrees
+
+Descubra com `discover_worktrees` e selecione pelo worktreeId retornado; paths físicos são informativos, nunca seletores. `inspect_worktree` fornece snapshot; envie somente branch, head, indexRevision, worktreeRevision e operation. Leituras seletivas usam `get_worktree_changes`, `get_worktree_diff` e `read_worktree_file`, respeitando limites e cursores; revisão por metadados não equivale a hash de conteúdo.
+
+Antes de mutar, `handoff_worktree_for_git` REQUEST exige confirmação nativa do operador de que o executor foi pausado. PENDING não concede autoridade: respeite retryAfterMs e use ACCEPT com requestId/requestCredential. A concessão é temporária, exclusiva e cooperativa, vinculada à geração, snapshot e escopo mínimo de operações, paths, branches e SHAs exatos em startPoints. Mantenha leaseCredential privada. Expiração, restart, drift ou resultado desconhecido exigem reconciliação e RECOVER com nova confirmação local; nunca inferir ownership por branch limpa, sessão, recibo ou timeout. RELEASE encerra a concessão.
+
+Mutações enviam leaseId, leaseCredential, snapshot e operationId estável. Consulte/reutilize recibos para replay; OPERATION_OUTCOME_UNKNOWN não autoriza repetir cegamente. `mutate_worktree` faz STAGE/UNSTAGE explícitos, COMMIT do índice exato e CREATE_BRANCH exclusivo. `manage_worktree` CREATE deriva o diretório no servidor e exige branch nova e commit inicial exato aprovado, sem trocar projeto ativo. CLOSE aceita somente checkout gerenciado, limpo, unlocked, sem ownership ativo e com commits preservados em branch autorizada; nunca remover worktree externa.
+
+`publish_worktree` faz push explícito sem force: PUBLISHED não significa integrado. `preview_worktree_integration` vincula source, target, snapshots e merge-base. `integrate_worktree` APPLY opera somente em sandbox gerenciado; conflitos ficam nele e são lidos/resolvidos explicitamente por `get_worktree_conflict`/`resolve_worktree_conflict`. Execute profiles existentes com `start_worktree_validation` e acompanhe `get_worktree_validation`; somente prova autêntica PASSED, CURRENT, do checkout/commit correto sustenta PROMOTE. Prova manual, cwd diferente, runtime diferente ou fingerprint obsoleto não valida integração. PROMOTE revalida preview e exige concessão legítima no target quando ocupado; não atualizar lateralmente ref de branch em checkout. Delegue o ciclo de execução à Skill worktree-execution.
