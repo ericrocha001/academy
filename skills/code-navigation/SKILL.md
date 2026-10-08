@@ -172,6 +172,8 @@ Use para perguntar quais estruturas e relações diretas mudaram em paths escolh
 
 A base padrão é o merge-base entre o HEAD canônico e o HEAD selecionado. `baseCommit` aceita somente SHA completo do mesmo repositório. A comparação inclui commits próprios e o conteúdo atual staged/unstaged/untracked; não comprova autoria de um executor.
 
+Antes da projeção, obtenha os caminhos candidatos pelo Git Operations. Quando houver muitos arquivos, `get_worktree_changes` aceita `pathPrefixes`, `categories` e `pageSize`: filtre no servidor para não entregar listas inteiras ao modelo. Preserve cursor vinculado aos mesmos filtros, tamanho de página e revisão Git; não reutilize cursor em outra seleção. A Skill `git-operations` é a autoridade para detalhes desse contrato e para leitura literal.
+
 Leia identidade, generation, fingerprint, baseCommit, HEAD, cobertura e limitações antes dos deltas. Referência canônica só é compatível por contentHash e readiness. Importers são candidatos de versão compatível, nunca prova de impacto transitivo ou ausência de dependentes fora do escopo. Para parear rename commitado, selecione origem e destino; se um lado ficar fora da seleção, trate ADDED_OR_RENAME_FROM_OUTSIDE_SELECTION ou REMOVED_OR_RENAME_TO_OUTSIDE_SELECTION como incerteza e refine os paths. Renames Git, homônimos, parse parcial e fallback mantêm sua incerteza explícita.
 
 Limites: 1 MiB por arquivo, 4 MiB de entrada e 24 KB de projeção. Siga `nextCursor` com os mesmos argumentos. Em GIT_STATE_CHANGED, redescubra e reinicie sem cursor stale; em limite, reduza paths/tamanho. Comparação UNAVAILABLE não autoriza inferir mudanças contra uma base fictícia.
