@@ -201,6 +201,8 @@ Quando duas peças preservarem essencialmente a mesma propriedade:
 
 Não mantenha duplicação apenas porque ambas funcionam.
 
+Se a simplificação envolver divisão, combinação ou mudança de escopo de Skills, use `skill-engineering` para preservar as capacidades, seus gatilhos e a fonte canônica. A decisão KEEP/SIMPLIFY/MOVE/REMOVE permanece nesta Skill; a refatoração de Skills pertence à especialização.
+
 Duplicação aumenta:
 
 - drift;
