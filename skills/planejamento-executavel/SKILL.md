@@ -397,6 +397,19 @@ Separe somente quando houver uma fronteira técnica real e o trabalho puder ser 
 
 A divisão entre Planos deve refletir arquitetura ou independência técnica, não conveniência administrativa.
 
+## Fronteiras de entrega integrável para PR
+
+Além das Unidades de Implementação (decomposição cognitiva), identifique **entregas independentemente integráveis** (fronteiras de revisão). Não equipare automaticamente Unidade, Plano, commit ou teste a PR.
+
+**Padrão:** um Plano coeso produz um PR. Um Plano maior pode prever mais de um PR apenas quando houver fatias realmente independentes que:
+- preservem contratos e deixem a `main` em estado coerente após cada merge;
+- possam ser compiladas, validadas, revisadas e integradas isoladamente, sem depender de outro PR ainda aberto;
+- tenham escopo e critério de aceitação próprios, com risco/revisão significativamente menores do que a entrega conjunta.
+
+Delimite no Plano essas fronteiras e sua ordem somente quando existirem. **Tamanho de diff, número de arquivos, testes e checkpoints não definem granularidade.** Não divida uma transformação naturalmente atômica, migração coordenada ou refatoração mecânica apenas para diminuir PRs. Compare ganho de contexto e revisão com custo fixo de recontextualização, CI, handoffs, conflitos e merges: otimize **custo total**, não tokens por PR. Se as fatias gerarem dependências, duplicações ou estados intermediários inválidos, mantenha um PR coeso. Separar em outro Plano continua sujeito a `Quando criar outro Plano`; PRs independentes não exigem Planos artificiais.
+
+O Plano especifica **quais fronteiras podem ser integradas com segurança**; a Skill `worktree-execution` governa publicação, revisão progressiva e merge, e `validacao-de-implementacoes` governa suficiência da evidência. Uma fatia validada não conclui automaticamente as demais Unidades nem o Plano completo.
+
 ## Critério de Conclusão do Plano
 
 Defina objetivamente o que deverá ser verdadeiro para que a implementação possa ser encerrada.
@@ -442,6 +455,7 @@ Antes de entregar o Plano Final, verifique:
 18. O Plano final foi publicado no Continuum do repositório ativo quando a capability estava disponível?
 19. A referência entregue ao Implementador aponta para a representação canônica, sem cópia concorrente?
 20. O `executionId`, quando necessário para continuidade entre Plano e Handoff, foi criado ou reutilizado de forma estável?
+21. Fronteiras de PR foram separadas somente quando cada entrega pode ser validada e integrada independentemente, com ganho no custo total?
 
 Se a resposta relevante for não, corrija o Plano ou a transferência antes de considerá-lo entregue.
 
