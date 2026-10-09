@@ -239,6 +239,14 @@ Preserve uma fonte canônica na Academy e caminhos relativos estáveis. Não cop
 
 Antes de declarar a distribuição correta, confirme no runtime de destino: (1) descoberta da Skill, (2) leitura do `SKILL.md`, (3) leitura efetiva dos complementos referenciados e (4) correspondência do conteúdo e metadata com o package canônico. Uma leitura bem-sucedida de recurso comprova esse recurso naquele destino, não integridade de todas as Skills nem atualização do catálogo inteiro.
 
+### Gate de representacao: corpo, complemento ou Skill?
+
+- **Corpo da Skill:** o procedimento precisa estar presente em quase todo acionamento da mesma capacidade.
+- **`references/`:** detalhe condicional da mesma capacidade, sem gatilho ou resultado proprio. Deve poder permanecer descarregado quando a tarefa nao o exigir.
+- **Outra Skill:** existe um pedido autonomo, resultado proprio e gatilhos positivos e negativos distinguiveis, mesmo quando a Skill original nao foi acionada; o ganho de contexto deve superar o custo de descoberta e composicao.
+- **Outra representacao:** procedimento deterministico pertence a ferramenta; estado factual pertence a fonte canonica, nao a mais instrucoes.
+
+Teste contrafactual: o usuario poderia solicitar a nova capacidade sem precisar da Skill original? Se nao, prefira corpo ou `references/`. Se sim, prove independencia de acionamento e ausencia de duplicacao antes de separar. O tamanho do documento, isoladamente, nao decide.
 ## Preserve Alto Sinal
 
 Para cada instrução, pergunte:
