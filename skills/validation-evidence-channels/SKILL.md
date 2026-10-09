@@ -208,7 +208,7 @@ Use quando a conclusão depender do sistema que está realmente rodando.
 
 Ele responde:
 
-> **o runtime atual corresponde ao source atual?**
+> **qual checkout iniciou este runtime, e seu source continua correspondente ao estado de startup?**
 
 Estados divergentes como:
 
@@ -224,6 +224,8 @@ Nesse caso:
 4. somente então execute a aceitação.
 
 Nunca atribua ao source atual um comportamento observado em runtime stale.
+
+**Aceitação em branch/worktree específica:** verifique também `sourceOrigin` da mesma instância. Exija `status: GIT_WORKTREE` e compare `sourceRootPath`, `worktree.rootPath`, `branch` e o HEAD de startup com o checkout esperado; quando o ID canônico for necessário, confira `worktreeId` contra `discover_worktrees`. HEAD/branch da origem são uma fotografia da inicialização, não equivalem ao Git atual. `MATCH` confirma apenas freshness dentro do root monitorado: pode estar perfeito **na worktree errada**. Não substitua procedência por projeto ativo, acesso remoto a arquivos de outra worktree ou status de PR. Se Git estiver `UNAVAILABLE`, `NON_GIT` ou `NOT_APPLICABLE`, registre a limitação e obtenha outra evidência se a identificação da worktree for requisito.
 
 ---
 
