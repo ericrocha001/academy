@@ -65,6 +65,8 @@ Em REVISION_CONFLICT, releia a versão corrente, reavalie a alteração e use a 
 
 O corpo do IMPLEMENTATION_HANDOFF é exatamente o Relato Final exigido pelo AGENTS.md. Materialize uma única fonte em Markdown UTF-8, preserve verbatim e acrescente somente frontmatter de descoberta. Não gere resumo, segundo relatório ou seções duplicadas. Confirme publicação e preserve artifactId.
 
+**Entrega por PR:** quando o trabalho foi validado e será proposto para integração, quem produziu a entrega deve **abrir o Pull Request antes de finalizar/publicar o Relato Final**, se possuir a permissão necessária. Inclua no próprio Relato Final o URL/número real do PR, branch de origem/destino, HEAD e evidências relevantes; assim o mesmo corpo do handoff serve ao revisor sem segundo relatório. O PR é a superfície de revisão de código e o Continuum preserva o relato/provas — um não substitui o outro. A escolha de quando propor, revisar e integrar pertence a `worktree-execution`. Se PR não pôde ser criado, registre o impedimento real sem inventar link; `VALIDATED` não equivale a `PR_OPEN` nem a merge.
+
 Nunca materialize Markdown através de argumentos de shell ou strings interpoladas: backticks, $, ${…}, $(…) e Unicode devem permanecer literais. Use escrita direta de arquivo.
 
 # Reconciliação de conclusão de execução
