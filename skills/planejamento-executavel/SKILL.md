@@ -501,19 +501,17 @@ Não mantenha duas versões semanticamente concorrentes do mesmo Plano em chat, 
 
 Se a finalidade e identidade do Plano permanecerem as mesmas, uma revisão material deve atualizar o Artifact existente segundo a Skill `continuum-publication`, em vez de publicar outro Plano concorrente. Crie outro Artifact somente quando houver uma execução ou finalidade realmente independente.
 
-### Recuperação pelo Implementador
+### Recuperação do Plano pelo executor
 
-O executor não deve depender de o Arquiteto reenviar o texto.
+O executor não precisa receber uma segunda cópia do texto do Plano. Use a capacidade `continuum` para decidir o que recuperar e `continuum-local-cli` como transporte preferido quando houver terminal, CLI local funcional, Worktree vinculada e autorização — **mesmo com MCP disponível**. Use MCP somente quando necessário e autorizado.
 
-Preferência:
+`artifactId conhecido → recuperar o Artifact exato pelo canal adequado → executar`.
 
-`artifactId conhecido → get_artifact → executar`.
+Sem referência direta:
 
-Quando a referência direta não estiver disponível:
+`descoberta filtrada por EXECUTABLE_PLAN → selecionar um Artifact → recuperar seu conteúdo`.
 
-`list_artifacts(kind=EXECUTABLE_PLAN, filtros relevantes) → selecionar discovery record → get_artifact`.
-
-A recuperação continua obedecendo Metadata Before Content. Não abra preventivamente vários Planos.
+Preserve Metadata Before Content e não abra vários Planos preventivamente. Não fixe nomes de ferramentas MCP num fluxo que também possui acesso local equivalente.
 
 ### Falha de publicação
 
