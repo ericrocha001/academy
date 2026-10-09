@@ -372,8 +372,8 @@ Não duplique metodologia de avaliação dentro de Skill Engineering.
 
 - se existe deficiência reutilizável;
 - qual capacidade deveria existir;
-- qual produto de Harness é adequado;
-- quando preservar, fortalecer, simplificar ou remover.
+- se fortalecer a capacidade de Harness produziria ganho líquido;
+- quando encaminhar uma capacidade qualificada a `harness-productization` para decidir sua representação, ou a `harness-ablation` para avaliar uma peça existente.
 
 Quando essa decisão depender de observar comportamento agentic antes e depois de uma mudança, utilize esta Skill.
 
