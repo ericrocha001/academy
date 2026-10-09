@@ -71,4 +71,6 @@ Quando o agente possuir **terminal no checkout ou Git Worktree vinculada** e pre
 
 ## Capacidades especializadas
 
+Se, ao consumir um resultado validado, detectar um Plano ou Work Item relacionado ainda `PENDING`, trate a divergência como **reconciliação de lifecycle**, não como evidência de trabalho inacabado. Quando houver responsabilidade pela atualização, autorização e prova de conclusão suficientes, use `continuum-publication` para conciliá-lo; caso contrário, comunique a pendência, sem editar por rotina de leitura. O procedimento canônico e as salvaguardas pertencem a `continuum-publication`, não a esta Skill de recuperação.
+
 Para publicação, edição, metadata de autoria e transporte offline, utilize `continuum-publication`. Para manutenção normativa de Living Artifacts e Capability Maps, utilize `continuum-living-artifacts`. Para gestão de trabalho futuro, utilize `continuum-work-items`. Não carregue estas capacidades para mera consulta.
