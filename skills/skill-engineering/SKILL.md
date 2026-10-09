@@ -231,6 +231,14 @@ A `description` deve ser curta e distintiva: comece pela intenção/ação, depo
 
 Quando uma configuração específica da plataforma resolver um caso comprovado, mantenha uma fonte semântica canônica e uma projeção/adaptação por destino, sem duplicar manualmente procedimentos. A distribuição deve verificar quais campos são aceitos, em quais superfícies, e quais controles efetivamente alteram descoberta ou invocação. Não introduza router próprio, catálogo paralelo nem variantes sem necessidade observada.
 
+## Recursos Complementares por Demanda
+
+Quando uma capacidade continuar **coesa**, mas possuir contrato extenso, protocolo, exemplos, tabelas ou referência necessária apenas em alguns casos, mantenha o `SKILL.md` como entrada de descoberta e procedimento principal; coloque o detalhe em arquivos complementares do **mesmo package**, como `references/protocolo.md`. Referencie o caminho explicitamente no corpo e oriente o carregamento somente quando a tarefa exigir. Não crie outra Skill apenas para acomodar esse conteúdo.
+
+Preserve uma fonte canônica na Academy e caminhos relativos estáveis. Não copie o recurso integral para o corpo nem mantenha versões paralelas do contrato. A projeção do plugin deve incluir todos os arquivos referenciados; **não presuma** que um complemento disponível na Academy foi incluído na versão instalada.
+
+Antes de declarar a distribuição correta, confirme no runtime de destino: (1) descoberta da Skill, (2) leitura do `SKILL.md`, (3) leitura efetiva dos complementos referenciados e (4) correspondência do conteúdo e metadata com o package canônico. Uma leitura bem-sucedida de recurso comprova esse recurso naquele destino, não integridade de todas as Skills nem atualização do catálogo inteiro.
+
 ## Preserve Alto Sinal
 
 Para cada instrução, pergunte:
