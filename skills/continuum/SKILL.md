@@ -1,6 +1,6 @@
 ---
 name: continuum
-description: Use para recuperar contexto durável do Continuum do repositório ativo: decisões, handoffs, relações e histórico relevante. Descubra por metadados e abra só Artifacts necessários. Para Implementador com terminal local sem MCP, use continuum-local-cli; para publicar ou editar use continuum-publication.
+description: Use para recuperar contexto durável do Continuum do repositório ativo: decisões, handoffs, relações e histórico relevante. Descubra seletivamente; quando houver terminal e CLI local autorizados, prefira continuum-local-cli mesmo se MCP estiver disponível. Para publicar ou editar use continuum-publication.
 ---
 
 # Um repositório, um Continuum
@@ -65,9 +65,9 @@ Observe seleção ruim, descriptions insuficientes, transporte manual de context
 
 Semântica e procedimento evoluem primeiro na Skill. Backend fornece persistência, identidade, integridade, filtros, índices, relações, revisão, concorrência e paginação. Mude backend somente quando faltar uma primitive estrutural que não possa ser composta com as existentes.
 
-## Canal local para Implementadores
+## Seleção do canal local
 
-Quando o agente possuir **terminal no checkout ou Git Worktree vinculada** e precisar recuperar Artifacts sem MCP, utilize `continuum-local-cli` para `status`, `list` e `get`. Ela governa autenticação local, seleção explícita de `repositoryId` e operação da CLI. Esta Skill continua responsável por **o que descobrir, quando ler e quando parar**. Não force o Implementador a usar o canal MCP quando uma CLI local autorizada fornece o mesmo Continuum.
+Quando o ambiente oferecer **terminal autorizado, CLI funcional, Code Awareness ativo e checkout/Worktree vinculada**, **prefira `continuum-local-cli`** para `status`, `list` e `get`, **mesmo que MCP esteja disponível**. A CLI usa o mesmo Continuum canônico e governa identidade do `repositoryId` e o transporte local. Use MCP apenas quando o acesso local não puder fornecer o resultado necessário ou existir exigência de acesso/prova remota. Esta Skill define **o que descobrir, quando ler e quando parar**, sem presumir que o agente seja Arquiteto ou Implementador.
 
 ## Capacidades especializadas
 
