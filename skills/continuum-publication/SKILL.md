@@ -1,6 +1,6 @@
 ---
 name: continuum-publication
-description: Use para criar, publicar, editar ou atualizar Artifacts no Continuum do repositório ativo, governando metadata, relações, handoffs e revisão. Para Implementador com CLI local sem MCP use continuum-local-cli como canal; offline QUEUED não prova persistência. Para mera leitura use continuum.
+description: Use para criar, publicar, editar ou atualizar Artifacts no Continuum canônico, governando metadata, relações, handoffs e revisão. Quando CLI local autorizada estiver disponível, prefira continuum-local-cli mesmo com MCP acessível; use MCP quando necessário. QUEUED não prova persistência. Para mera leitura use continuum.
 ---
 
 # Continuum Publication
@@ -47,7 +47,7 @@ IDs, revisão e timestamps operacionais (`createdAt`, `updatedAt`) são atribuí
 
 # Publicar e editar
 
-No canal MCP, use `publish_artifact` com `rawMarkdown` completo. No terminal local autorizado, use `continuum-local-cli` para publicar ou atualizar via CLI, com confirmação `PERSISTED`. Ambos chegam ao Store canônico. O destino é o Continuum do repositório ativo. O receipt contém success, artifactId, revisão 1 e updatedAt; não ecoa conteúdo. Preserve artifactId após sucesso e não republique por rotina.
+Com terminal, CLI local funcional e autorização, **prefira `continuum-local-cli`** para publicar ou atualizar com confirmação `PERSISTED`, mesmo quando MCP estiver disponível. Use `publish_artifact`/`update_artifact` via MCP quando a via local não atender à necessidade ou ao ambiente. Ambos chegam ao Store canônico. O destino é o Continuum do repositório ativo. O receipt contém success, artifactId, revisão 1 e updatedAt; não ecoa conteúdo. Preserve artifactId após sucesso e não republique por rotina.
 
 **Referência entregue ao usuário:** após confirmar publicação, informe sempre o **name exato do frontmatter** junto do **artifactId** retornado. Apresente preferencialmente `Nome do Artifact — artifactId`, para que a pessoa identifique e encaminhe o documento a outro agente sem depender apenas do identificador opaco. Use o nome do documento efetivamente publicado; não acrescente chamadas de leitura apenas para repetir metadata já conhecida. Para atualização de Artifact existente, informe nome e artifactId quando comunicar a atualização. Em falha/QUEUED, não apresente o Artifact como publicado.
 
@@ -80,7 +80,7 @@ Quando publicar um `IMPLEMENTATION_HANDOFF` validado **ou receber confirmação 
 
 # Compatibilidade offline
 
-Para o agente com terminal local, prefira a CLI online descrita em `continuum-local-cli`, sem MCP, quando o Code Awareness estiver em execução. Quando o canal online estiver indisponível e a escolha **explícita** for transporte assíncrono offline (não publicação já confirmada):
+Quando houver acesso local funcional e autorizado, prefira a CLI online descrita em `continuum-local-cli`, sem MCP, com o Code Awareness em execução. Quando o canal online estiver indisponível e a escolha **explícita** for transporte assíncrono offline (não publicação já confirmada):
 
 `node scripts/continuum/publish-artifact.cjs publish <arquivo.md>`
 
