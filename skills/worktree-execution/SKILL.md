@@ -48,7 +48,7 @@ Registre o baseline observado no início. O avanço posterior da branch de desti
 
 ## Plano e checkpoint
 
-Valide cada plano conforme `validacao-de-implementacoes` e publique o handoff pelo `continuum-publication`. Um checkpoint local pode preservar um conjunto coerente e validado antes do próximo plano, sem criar commits mecânicos. **Teste, Unidade ou checkpoint aprovado não cria PR por si só**: o gatilho é uma entrega coesa cujo escopo de revisão esteja inteiramente validado e pronto para transferência.
+Valide cada plano conforme `validacao-de-implementacoes` e publique o handoff pelo `continuum-publication`. Um checkpoint local pode preservar um conjunto coerente e validado antes do próximo plano, sem criar commits mecânicos. **Cada Plano Final Executável integralmente validado cria uma entrega para PR**, mesmo que a Worktree siga para outros Planos; sem Plano formal, a mesma regra vale para uma entrega autônoma validada. Testes, Unidades isoladas e checkpoints intermediários não são esse marco.
 
 **Quando o responsável pela sessão estiver autorizado a criar commits**, ele pode fazê-los por Git local, sem delegação artificial a um agente remoto. Também é legítimo delegar a operação a outro agente com capacidade adequada mediante handoff de controle verificável. Confirme o estado e os paths antes de stage/commit; não interrompa uma sessão alheia.
 ## Commit e push
@@ -65,7 +65,7 @@ Use Git local autorizado quando disponível; `git-operations` MCP apenas se o me
 - **Quem revisa:** quem recebe o PR com autorização para decidir integração. Examina commits, diff, evidências, checks, target e drift; aprova ou solicita mudanças. **Só após revisão e checks satisfeitos** executa merge no destino, preferencialmente pelo PR, e confirma a integração e validação proporcional. Receber o link não comprova aprovação.
 - **Transferência:** PR informa finalidade, target, HEAD, evidências e Plano/Continuum quando disponível. Depois de abrir, inclua URL/número verificáveis no Relato Final e publique o handoff pelo `continuum-publication`, mantendo `executionId` e proveniência da Worktree.
 
-**Cadência:** um PR por **entrega validada pronta para revisão**, mesmo quando engloba vários Planos/checkpoints. Correções ou revalidações **antes do merge atualizam o mesmo PR**; depois do merge, uma nova entrega exige base/branch atualizada e novo PR. Reutilizar a Worktree é permitido, sem fechamento automático.
+**Cadência:** **um PR por Plano Final validado** (ou entrega autônoma validada, sem Plano); não acumule vários Planos já validados aguardando o fim da sessão. Testes e checkpoints não abrem PR. Correções e revalidações solicitadas **antes do merge atualizam o PR existente**; após o merge, outro Plano validado gera outro PR. A mesma Worktree pode continuar, desde que a próxima branch seja preparada sobre a base atualizada, sem incluir commits já integrados e sem fechamento automático.
 
 **Exceções:** se falta acesso, autorização, plataforma de PR ou revisor, preserve commits e provas, reporte a etapa bloqueada e faça handoff rastreável; não declare PR ou merge inexistente. Integração direta é exceção expressamente delegada, não padrão.
 
