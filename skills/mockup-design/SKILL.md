@@ -38,6 +38,7 @@ Gere quando:
 - uma UI nova possuir composição não trivial ainda não materializada;
 - um redesign mudar substancialmente composição ou hierarquia;
 - múltiplas direções visuais plausíveis competirem;
+- o Design System estar definido, mas sua aplicação concreta à tela ainda exigir uma decisão visual material;
 - outro agente precisar de referência visual antes da implementação;
 - a tela puder se tornar exemplo gráfico durável do Design System.
 
@@ -47,13 +48,15 @@ Se já houver mockup aprovado e a direção relevante continuar válida:
 
 - use o existente;
 - não crie variação redundante;
-- atualize somente quando houver mudança material de direção.
+- atualize somente quando houver mudança material de direção;
+- confirme que source/runtime e Design System não invalidaram as premissas relevantes da referência.
 
 ### DISPENSAR
 
 Dispense quando:
 
 - o ajuste for local/cosmético;
+- o problema for um bug conhecido de spacing, overflow, contraste ou semântica de estado, sem incerteza de composição a resolver;
 - o padrão visual canônico já determinar a solução;
 - a direção já estiver inequívoca;
 - a imagem não mudaria decisão arquitetural ou de implementação.
