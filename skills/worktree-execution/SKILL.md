@@ -48,7 +48,7 @@ Registre o baseline observado no início. O avanço posterior da branch de desti
 
 ## Plano e checkpoint
 
-Valide cada plano conforme `validacao-de-implementacoes` e publique o handoff pelo `continuum-publication`. Um checkpoint local pode preservar um conjunto coerente e validado antes do próximo plano, sem criar commits mecânicos. **Cada Plano Final Executável integralmente validado cria uma entrega para PR**, mesmo que a Worktree siga para outros Planos; sem Plano formal, a mesma regra vale para uma entrega autônoma validada. Testes, Unidades isoladas e checkpoints intermediários não são esse marco.
+Valide entregas e Planos conforme `validacao-de-implementacoes` e publique o handoff pelo `continuum-publication`. Um checkpoint local pode preservar um conjunto coerente antes do próximo plano, sem criar commits mecânicos. **O gatilho de PR é uma entrega coesa, independentemente integrável e validada**, segundo as fronteiras previstas em `planejamento-executavel`; sem Plano formal, aplique a mesma exigência à entrega autônoma. Um Plano coeso normalmente gera um PR; mais de um PR no mesmo Plano exige fatias autônomas já validadas, sem declarar concluído o Plano ainda parcial. Teste aprovado, Unidade intermediária ou checkpoint não bastam por si só.
 
 **Quando o responsável pela sessão estiver autorizado a criar commits**, ele pode fazê-los por Git local, sem delegação artificial a um agente remoto. Também é legítimo delegar a operação a outro agente com capacidade adequada mediante handoff de controle verificável. Confirme o estado e os paths antes de stage/commit; não interrompa uma sessão alheia.
 ## Commit e push
@@ -65,7 +65,9 @@ Use Git local autorizado quando disponível; `git-operations` MCP apenas se o me
 - **Quem revisa:** quem recebe o PR com autorização para decidir integração. Examina commits, diff, evidências, checks, target e drift; aprova ou solicita mudanças. **Só após revisão e checks satisfeitos** executa merge no destino, preferencialmente pelo PR, e confirma a integração e validação proporcional. Receber o link não comprova aprovação.
 - **Transferência:** PR informa finalidade, target, HEAD, evidências e Plano/Continuum quando disponível. Depois de abrir, inclua URL/número verificáveis no Relato Final e publique o handoff pelo `continuum-publication`, mantendo `executionId` e proveniência da Worktree.
 
-**Cadência:** **um PR por Plano Final validado** (ou entrega autônoma validada, sem Plano); não acumule vários Planos já validados aguardando o fim da sessão. Testes e checkpoints não abrem PR. Correções e revalidações solicitadas **antes do merge atualizam o PR existente**; após o merge, outro Plano validado gera outro PR. A mesma Worktree pode continuar, desde que a próxima branch seja preparada sobre a base atualizada, sem incluir commits já integrados e sem fechamento automático.
+**Cadência:** um PR por **entrega independentemente integrável e validada**, preferencialmente um por Plano coeso. Um mesmo Plano só origina PRs separados quando as fronteiras previstas permitem merge independente sem quebra de contratos; não publique uma fatia incompleta como validada. Testes e checkpoints não abrem PRs. Correções e revalidações **antes do merge atualizam o mesmo PR**; uma nova entrega após o merge usa novo PR. A mesma Worktree pode continuar, desde que a próxima branch parta de base atualizada, não reapresente commits já integrados e não seja fechada automaticamente.
+
+**Revisão progressiva e econômica:** quem recebe o PR inicia por intenção/critério de aceitação, base/HEAD, resumo de paths, tamanho e natureza das mudanças, riscos declarados, handoff e evidências existentes. Aprofunda então **seletivamente** nos diffs, contratos e relações relevantes ao risco observado; amplia a leitura se necessário para cobrir o que é material, sem aprovar apenas por resumo. Reutiliza provas válidas e atuais e solicita novos testes somente quando a propriedade necessária não estiver demonstrada ou puder ter sido alterada pela integração (conforme `validation-evidence-channels`). Não leia todo o repositório nem reexecute toda a suíte por rotina. Avalie custo **total** de revisão/CI/recontextualização, não só tokens por PR. A complexidade e o risco, não um limite arbitrário de linhas/arquivos, determinam a profundidade.
 
 **Exceções:** se falta acesso, autorização, plataforma de PR ou revisor, preserve commits e provas, reporte a etapa bloqueada e faça handoff rastreável; não declare PR ou merge inexistente. Integração direta é exceção expressamente delegada, não padrão.
 
@@ -99,12 +101,13 @@ Não distribua automaticamente unidades do mesmo plano entre agentes apenas porq
 - iniciar implementação em detached HEAD ou checkout principal compartilhado sem isolamento comprovado;
 - confundir handoff VALIDATED com licença para mutar;
 - criar Worktree por plano, misturar staged de autores/escopos diferentes ou cometer push automático;
-- abrir PR por teste/checkpoint, duplicar PR da mesma entrega em revisão ou fazer merge da própria proposta por rótulo presumido;
+- abrir PR por teste/checkpoint, quebrar entrega atômica em micro-PRs, agrupar mudanças independentes em PR gigante sem ganho ou duplicar PR da mesma entrega em revisão;
+- fazer merge da própria proposta por rótulo presumido, revisar apenas o resumo sem evidência crítica ou reler/revalidar todo o repositório por rotina;
 - encerrar ou limpar a Worktree após commit/merge sem solicitação específica;
 - supor que testes isolados validam a integração.
 ## Critério de conclusão
 
-**Entrega para revisão:** implementação validada, branch e HEAD observados, PR aberto verificável (ou impedimento explícito), handoff com proveniência e URL quando existir. Validação e PR não provam integração.
+**Entrega para revisão:** escopo independentemente integrável e validado, branch e HEAD observados, PR aberto verificável (ou impedimento explícito), handoff com proveniência e URL quando existir. Validação e PR não provam integração.
 
 **Integração autorizada:** revisão efetiva, checks/validação proporcional e merge observados no destino, ou bloqueio documentado. Nenhuma operação é presumida a partir da identidade do agente. Merge não encerra a Worktree.
 ## Regra final
