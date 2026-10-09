@@ -1,13 +1,13 @@
 ---
 name: continuum-local-cli
-description: Use quando um agente de implementação com terminal local precisar descobrir, ler, publicar ou atualizar Artifacts do Continuum sem MCP, pela CLI do Code Awareness. Exige aplicativo ativo, repositoryId explícito e checkout/worktree vinculada; distingue PERSISTED de QUEUED. Não use para acesso remoto sem terminal nem para redefinir contratos de Artifact.
+description: Use para descobrir, ler, publicar e atualizar Artifacts do Continuum pela CLI local quando houver terminal autorizado, aplicativo ativo e checkout/worktree vinculada, mesmo que MCP também esteja disponível. Confirme repositoryId e PERSISTED; reserve MCP para necessidade não atendida localmente. Não use sem acesso local nem para redefinir contratos de Artifact.
 ---
 
-# Continuum Local CLI — Implementador
+# Continuum Local CLI
 
 ## Quando usar
 
-Use esta Skill para **operar a CLI local no terminal da IDE**, especialmente ao receber um `artifactId` de Plano Executável, recuperar contexto durante a implementação, publicar o Implementation Handoff e atualizar Work Items. A CLI utiliza um canal IPC local do Code Awareness e o mesmo Continuum canônico acessado pelo Arquiteto. **Não chama MCP.**
+Use esta Skill quando o ambiente oferecer **terminal autorizado e CLI local funcional**, especialmente ao receber um `artifactId` de Plano Executável, recuperar contexto, publicar um Implementation Handoff ou atualizar Work Items. **Prefira esta via quando oferecer acesso equivalente ao Continuum canônico, mesmo que MCP também esteja disponível**; não deduza acesso nem autorização do papel do agente. A CLI utiliza IPC local e **não chama MCP**. Se a condição local falhar, diagnostique o erro e só selecione MCP quando houver necessidade/capacidade/autorização, sem contornar restrições de identidade.
 
 Para decidir *o que buscar e quando parar*, siga `continuum`. Para `name`, `description`, `kind`, `date`, relações, revisões e conteúdo do handoff, siga `continuum-publication`. Esta Skill é dona **somente do uso do canal local**; não replique suas regras de domínio.
 
@@ -36,7 +36,7 @@ node scripts/continuum/local.cjs update --repository <repositoryId> --id <artifa
 - `publish` recebe um arquivo Markdown UTF-8 completo com frontmatter, validado pelo serviço canônico. Para o Relato Final, use `kind: IMPLEMENTATION_HANDOFF`, `date` com horário/fuso e relação `implements` apontando ao Artifact do Plano quando apropriado. O corpo deve preservar exatamente o relato exigido pelo Harness, sem versão concorrente.
 - `update` requer **`artifactId`, revisão atual lida por `get` e arquivo Markdown integral**, inclusive relações ainda válidas. `REVISION_CONFLICT` exige reler e reavaliar, não retry cego. Não publique um segundo Artifact para fugir de conflito.
 
-## Fluxo do Implementador
+## Fluxo pelo canal local
 
 1. Recebeu `artifactId`? Rode `status`, selecione o `repositoryId` informado e use `get` para abrir **o Plano exato**. Sem ID, use `list` com filtros pequenos, selecione, depois `get`.
 2. Execute o Plano e valide as propriedades exigidas, sem misturar prova de software com recibo de transporte.
