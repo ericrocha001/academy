@@ -1,6 +1,6 @@
 ---
 name: worktree-execution
-description: Use ao iniciar ou conduzir uma sessão de implementação isolada em Git Worktree, incluindo branch exclusiva, checkpoints, entrega validada via Pull Request e retomada. Prefira Git local autorizado; para Worktrees remotas protegidas use worktree-mcp-operations, sem presumir capacidade ou autorização pelo papel.
+description: Use ao executar trabalho isolado em Git Worktree ou receber uma entrega validada por Pull Request para revisão e integração. Governa branches, checkpoints, submissão/revisão de PR e retomada; não dependa do rótulo do agente nem contorne autorizações.
 ---
 
 # Worktree Execution
@@ -114,6 +114,6 @@ Não distribua automaticamente unidades do mesmo plano entre agentes apenas porq
 
 **Esta seção é condicional:** aplica-se somente quando a operação Git efetivamente usar o canal remoto Code Awareness. Não é o procedimento obrigatório para quem dispõe de Git local autorizado.
 
-Nesse canal, siga a Skill `worktree-mcp-operations`: descubra e inspecione a Worktree, obtenha aprovação nativa local, lease, snapshots, receipts e idempotência conforme contrato. Hand-off e pausa do escritor são cooperativos; não presuma posse de uma IDE externa. Para integrar, faça preview e APPLY em checkout gerenciado, valide o commit candidato no próprio checkout e promova somente com prova e ownership válidos. Expiração, restart ou resultado desconhecido exigem recuperação, nunca takeover por timeout.
+Nesse canal, siga a Skill `worktree-mcp-operations`: descubra e inspecione a Worktree, obtenha aprovação nativa local, lease, snapshots, receipts e idempotência conforme contrato. Hand-off e pausa do escritor são cooperativos; não presuma posse de uma IDE externa. Se houver **exceção autorizada de integração direta**, faça preview e APPLY em checkout gerenciado, valide o commit candidato no próprio checkout e promova somente com prova e ownership válidos. No fluxo padrão, entregue a branch por PR e deixe o merge para a revisão autorizada. Expiração, restart ou resultado desconhecido exigem recuperação, nunca takeover por timeout.
 
 Na via local, preserve as mesmas invariantes de intenção explícita, ausência de escrita concorrente, rollback não destrutivo e validação, mas **não emule nem solicite leases MCP** para comandar Git pelo terminal.
