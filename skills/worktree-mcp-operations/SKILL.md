@@ -9,6 +9,10 @@ description: Use para descobrir, inspecionar, delegar, mutar, publicar ou integr
 
 Use somente quando a tarefa exigir a superfície tipada remota de Worktrees do Code Awareness. O procedimento Git MCP geral (`git-operations`) é a fonte canônica para estado, optimistic concurrency, hygiene, receipts e proteção contra retry cego quando essas operações forem necessárias. Não inferir autorização por papel, posse da IDE ou acesso à ferramenta.
 
+## Roteamento de entrega para PR
+
+Quando a Worktree remota possui **uma entrega validada pronta para revisão**, siga `worktree-execution`: quem controla e executa a branch de origem, com delegação adequada, publica os commits pela operação autorizada e abre PR pela plataforma Git (este MCP não dispõe de criação de PR). A revisão e a integração ficam com o consumidor autorizado do PR, **não com um papel inferido do nome do agente**. `publish_worktree` comprova push da branch, não PR nem aprovação. `integrate_worktree PROMOTE` continua disponível para integração direta **expressamente delegada**, mas não é o fluxo padrão quando PR é possível. Nenhuma autorização da Worktree de origem transfere automaticamente autoridade sobre a `main`.
+
 ## Worktrees externas: localização, inspeção e não interferência
 
 Quando o resultado de uma implementação foi produzido em outra Worktree do mesmo repositório, **não confunda** o checkout ativo do Code Awareness com o workspace de origem. Recupere somente o handoff/Artifact relevante no Continuum e use os metadados `worktreeId` e/ou `worktreePath` como **pistas de descoberta**, nunca como autorização de mutação. Se precisar agrupar outros Artifacts originados naquela mesma Worktree, filtre o Continuum pelo campo de metadata disponível (`worktreeId` preferencialmente, `worktreePath` como fallback histórico), sem carregar todo o corpus. `executionId` correlaciona a execução, não substitui a identidade da Worktree.
