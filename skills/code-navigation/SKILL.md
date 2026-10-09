@@ -240,7 +240,7 @@ Se a resposta não altera a próxima decisão, a chamada provavelmente teve baix
 
 `get_runtime_identity` responde:
 
-> Qual runtime está realmente atendendo esta requisição e ele corresponde ao source atual?
+> Qual instância, qual checkout de origem e qual estado de freshness realmente atendem esta requisição?
 
 Ele é independente de CodeMap e deve continuar disponível mesmo quando snapshot, maintenance ou navegação de código estiverem degradados.
 
@@ -255,6 +255,12 @@ Use quando:
 - é importante provar que um restart realmente carregou nova instância.
 
 Não use rotineiramente em navegação arquitetural que depende apenas do source.
+
+### Procedência do processo (`sourceOrigin`)
+
+Quando a pergunta depender da **branch cujo código foi carregado**, leia `sourceOrigin` antes de atribuir comportamento ao checkout investigado: `sourceRootPath` é a origem do coletor de fingerprints; `worktree.rootPath`, `branch` e `head` são evidência Git da **inicialização**, não do projeto ativo ou do HEAD corrente. `worktreeId` só identifica o registry canônico quando comprovado; valor `null` não autoriza fabricar vínculo. `NON_GIT`, `UNAVAILABLE` e `NOT_APPLICABLE` não provam uma worktree Git.
+
+Compare a procedência com a worktree esperada descoberta por `discover_worktrees` somente quando essa comparação realmente for necessária. Inspecionar outra worktree, ler seus arquivos ou mudar o projeto ativo não transfere sua identidade ao runtime. `MATCH` significa source monitorado inalterado desde o startup — **não** que o processo executa a branch pretendida. Para suficiência de aceitação integrada, use `validation-evidence-channels`.
 
 ## Freshness
 
