@@ -1,6 +1,6 @@
 ---
 name: continuum
-description: Use para recuperar contexto durável do Continuum do repositório ativo: decisões, handoffs, relações e histórico relevante. Descubra por metadados, abra apenas Artifacts necessários e confirme source atual via Code Navigation. Não acione para publicar ou editar Artifacts; use continuum-publication.
+description: Use para recuperar contexto durável do Continuum do repositório ativo: decisões, handoffs, relações e histórico relevante. Descubra por metadados e abra só Artifacts necessários. Para Implementador com terminal local sem MCP, use continuum-local-cli; para publicar ou editar use continuum-publication.
 ---
 
 # Um repositório, um Continuum
@@ -64,6 +64,10 @@ Relações mostram caminhos; não carregam contexto automaticamente.
 Observe seleção ruim, descriptions insuficientes, transporte manual de contexto, publicação repetitiva ou ausência de primitive real. Use `capability-opportunity` para qualificar causa generalizável e ganho futuro. Não implemente fora do escopo nem crie operação que despeje todo o corpus. Um Artifact aberto, source confirmado ou histórico naturalmente stale não constitui deficiência por si só.
 
 Semântica e procedimento evoluem primeiro na Skill. Backend fornece persistência, identidade, integridade, filtros, índices, relações, revisão, concorrência e paginação. Mude backend somente quando faltar uma primitive estrutural que não possa ser composta com as existentes.
+
+## Canal local para Implementadores
+
+Quando o agente possuir **terminal no checkout ou Git Worktree vinculada** e precisar recuperar Artifacts sem MCP, utilize `continuum-local-cli` para `status`, `list` e `get`. Ela governa autenticação local, seleção explícita de `repositoryId` e operação da CLI. Esta Skill continua responsável por **o que descobrir, quando ler e quando parar**. Não force o Implementador a usar o canal MCP quando uma CLI local autorizada fornece o mesmo Continuum.
 
 ## Capacidades especializadas
 
