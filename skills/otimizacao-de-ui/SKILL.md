@@ -254,45 +254,13 @@ Na validação, cruze os estados afetados com repouso, hover, aberto e foco por 
 
 ## Decida se mockup agrega valor
 
-Não gere mockup por rotina. Faça um gate explícito antes da implementação visual.
+A referência visual só deve ser produzida quando ajudar a resolver uma **decisão de composição ou hierarquia ainda aberta**, comunicar uma direção a outro agente ou atender a pedido explícito do usuário.
 
-### GERAR mockup
+Quando houver essa necessidade, acione `mockup-design`, que é a fonte canônica para decidir **GERAR, REUTILIZAR ou DISPENSAR**, produzir a referência, comparar suas premissas com source/runtime e Design System e distinguir direção válida de conteúdo ilustrativo ou não suportado.
 
-Use `mockup-design` quando pelo menos uma destas condições for material:
+Não acione a produção de mockup por rotina para bug visual localizado, spacing, overflow, contraste, estados conhecidos ou direção já aprovada, quando a referência não mudaria a execução. Use diretamente os contratos de UI desta Skill.
 
-- o usuário pediu explicitamente uma referência visual;
-- a UI é nova e possui composição não trivial ainda sem referência gráfica;
-- o redesign altera substancialmente arquitetura de informação ou composição;
-- existem múltiplos layouts plausíveis e a escolha visual ainda está aberta;
-- a direção precisa ser comunicada a outro agente antes da implementação;
-- o Design System está descrito, mas a aplicação concreta dele à tela ainda é ambígua;
-- uma referência gráfica terá valor durável como exemplo do Design System.
-
-### REUTILIZAR mockup existente
-
-Se já existe mockup aprovado e a direção material não mudou:
-
-- reutilize a referência;
-- não gere outra variação por hábito;
-- confirme apenas se source/runtime e Design System ainda preservam as premissas relevantes.
-
-### NÃO GERAR mockup
-
-Normalmente pule o mockup quando:
-
-- a mudança é pequena e local;
-- trata-se de bug visual, spacing, overflow, contraste ou ajuste de estado conhecido;
-- um padrão canônico já resolve diretamente a composição;
-- a arquitetura visual já está aprovada e inequívoca;
-- o mockup não alteraria nenhuma decisão do Implementador.
-
-O custo do mockup deve comprar redução real de incerteza.
-
-Quando gerado, trate-o segundo a hierarquia de autoridade acima:
-
-> **Mockup defines direction; source/runtime define truth.**
-
-Antes de planejar implementação, identifique explicitamente qualquer elemento ilustrativo do mockup que não seja suportado pelo produto e exclua-o do Plano.
+O mockup nunca substitui a hierarquia de autoridade do design definida acima. Antes do Plano Executável, preserve a distinção entre intenção visual implementável e elementos ilustrativos, sem autorizar capabilities inexistentes.
 
 ## Preserve contratos funcionais
 
