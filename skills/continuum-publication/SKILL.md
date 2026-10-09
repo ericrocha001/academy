@@ -67,6 +67,17 @@ O corpo do IMPLEMENTATION_HANDOFF é exatamente o Relato Final exigido pelo AGEN
 
 Nunca materialize Markdown através de argumentos de shell ou strings interpoladas: backticks, $, ${…}, $(…) e Unicode devem permanecer literais. Use escrita direta de arquivo.
 
+# Reconciliação de conclusão de execução
+
+Quando publicar um `IMPLEMENTATION_HANDOFF` validado **ou receber confirmação documentada de conclusão** de trabalho representado no Continuum, reconcilie **somente** os Artifacts de origem relacionados, sem varredura geral do corpus. Esta é uma responsabilidade de quem tiver a tarefa e a capacidade de escrita autorizada, não de um papel presumido.
+
+1. Confirme persistência do handoff (`PERSISTED` ou receipt equivalente), `status: VALIDATED`, relação `implements` ao Plano correto e `executionId` compatível quando existente. Confira se a evidência cobre **todo** o critério de conclusão do Artifact de origem; handoff parcial, `BLOCKED`, vínculo temático ou mesmo `executionId` isolado não bastam.
+2. Leia a revisão corrente do `EXECUTABLE_PLAN` vinculado e de eventual `WORK_ITEM` realmente resolvido pela mesma evidência. Se o lifecycle existente estiver `PENDING` e a conclusão estiver comprovada, atualize **o próprio Artifact** para `COMPLETED`, preservando corpo, identidade, metadata e relações válidas; acrescente `resolved-by` apontando para o handoff quando pertinente. Para a semântica particular de Work Items siga `continuum-work-items`.
+3. Execute a edição pelo transporte autorizado (MCP ou `continuum-local-cli`) com `expectedRevision`, atualize `date` semântico e confirme a persistência/estado final. Em `REVISION_CONFLICT`, releia e reavalie; nunca sobrescreva silenciosamente. Não crie novo Plano ou Work Item para corrigir status.
+4. Se o Artifact não tiver lifecycle aplicável, a validação for insuficiente, a escrita não estiver autorizada ou só existir `QUEUED`, **não declare a reconciliação concluída**. Informe a pendência específica para um executor com capacidade/autorização, sem inventar status.
+
+**Separação de estados:** implementação validada não prova commit, push nem integração Git. `COMPLETED` aqui registra conclusão do trabalho descrito no Artifact, nunca promoção à `main` por inferência. A verificação das relações e do estado deve ocorrer no Continuum do mesmo repositório, não por título semelhante.
+
 # Compatibilidade offline
 
 Para o agente com terminal local, prefira a CLI online descrita em `continuum-local-cli`, sem MCP, quando o Code Awareness estiver em execução. Quando o canal online estiver indisponível e a escolha **explícita** for transporte assíncrono offline (não publicação já confirmada):
