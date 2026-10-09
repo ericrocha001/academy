@@ -127,6 +127,10 @@ O commit deve representar exatamente o índice inspecionado.
 
 Não misture resíduos desconhecidos com a mudança pretendida apenas para deixar o worktree limpo.
 
+## Roteamento de Pull Request
+
+Para **entrega validada de branch/Worktree**, o padrão de transferência e integração é PR, regido por `worktree-execution`. Esta Skill trata apenas do **Git remoto tipado pelo MCP**; ela não abre nem aprova PR. Se o executor possui a branch validada e autorização, publica **somente essa branch** com `sync_git_remote PUSH` (nunca `main` por inferência) e usa a ferramenta GitHub/CLI autorizada para abrir o PR. Quem recebe a proposta revisa pelo provedor do PR, observa permissões e checks e somente então integra. O merge Git direto via MCP permanece exceção explícita, não substitui o gate de revisão.
+
 ## Branches, upstream e remoto
 
 Use `manage_git_branch` para operações locais tipadas, inclusive o vínculo de upstream da branch atual.
