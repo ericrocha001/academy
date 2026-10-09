@@ -21,7 +21,7 @@ Nunca trate:
 
 > A força da validação vem da correspondência entre a propriedade e a evidência.
 
-Para definir **o que precisa ser provado**, use `validação-de-implementações`.
+Para definir **o que precisa ser provado**, use `validacao-de-implementacoes`.
 
 Para investigação profunda de falhas operacionais, use `system-health-debugging`.
 
@@ -198,7 +198,7 @@ Um teste verde prova apenas o contrato coberto por ele.
 
 Nenhum deles, isoladamente, prova necessariamente comportamento no runtime atualmente carregado.
 
-Use `validação-de-implementações` para selecionar suficiência e escopo da prova.
+Use `validacao-de-implementacoes` para selecionar suficiência e escopo da prova.
 
 ---
 
