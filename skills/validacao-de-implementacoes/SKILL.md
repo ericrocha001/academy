@@ -395,6 +395,14 @@ Mocks reduzem escopo.
 
 Não devem falsificar a força da evidência.
 
+## Paridade das Fronteiras de Validação
+
+Quando uma prova usa fixture, runner ou ambiente substituto, identifique as restrições do runtime real que podem determinar a propriedade testada (por exemplo, políticas de segurança, permissões, configuração de inicialização e canais de integração). Preserve essas restrições relevantes na prova; caso não sejam reproduzidas, limite explicitamente o alcance da evidência e não declare o comportamento integrado como validado.
+
+Prefira compartilhar a fonte canônica das restrições, quando viável, a manter configurações equivalentes por cópia. Quando uma diferença já tiver produzido falso positivo, proteja a fronteira com uma regressão discriminativa: a prova deve falhar sob a restrição incompatível e passar com o contrato correto.
+
+Não exija ambiente integralmente idêntico ao de produção. Exija apenas paridade das fronteiras capazes de alterar a propriedade observada, com custo proporcional.
+
 ## Validação Global
 
 Depois das provas locais, pergunte:
