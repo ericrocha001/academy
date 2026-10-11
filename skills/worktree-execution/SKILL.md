@@ -9,14 +9,14 @@ description: Use ao executar trabalho isolado em Git Worktree ou receber uma ent
 
 Governar uma sessão isolada, preservando a Worktree entre vários planos, checkpoints e integrações sem confundir conclusão de implementação com encerramento do workspace.
 
-**Modelo:** uma sessão, uma Worktree e uma branch exclusiva por linha de trabalho; várias entregas validadas podem usar a mesma sessão. Cada **entrega pronta para revisão**, depois de validada, é oferecida por Pull Request (PR), conforme a política autorizada do projeto. Quem opera Git depende de **capacidade observada + delegação/autorização**, não do rótulo Arquiteto/Implementador. Handoff e validação não concedem permissão automática para qualquer mutação Git.
+**Modelo:** uma sessão, uma Worktree e uma branch exclusiva por linha de trabalho; várias entregas validadas podem usar a mesma sessão. Cada **entrega pronta para revisão**, depois de validada, é oferecida por Pull Request (PR), conforme a política autorizada do projeto. Quem opera Git depende de **capacidade observada + delegação/autorização**, não do rótulo Arquiteto/Implementador. Uma delegação contínua explícita do projeto pode cobrir as entregas seguintes sem nova confirmação a cada execução; a Skill, a validação e o handoff isoladamente não concedem essa autoridade.
 ## Fronteiras
 
 Esta Skill governa o ciclo da sessão, não ensina comandos Git ou contratos MCP. Use `validacao-de-implementacoes` para as provas, `continuum-publication` para publicar handoffs, `continuum` para recuperá-los e `engineering-evidence-economy` para comparar canais.
 
 **Roteamento:** agente com Git local no checkout correto e autorização para a operação prefere o meio local; se não tem acesso local, ou a operação exige garantias remotas específicas, usa `worktree-mcp-operations` para Worktrees protegidas ou `git-operations` para Git remoto comum, quando disponíveis e autorizados. Não acione o MCP só para repetir Git, typecheck ou Vitest locais. A Skill `git-operations` pertence ao transporte MCP e não governa comandos locais.
 
-**Autoridade:** acesso ao terminal não autoriza modificar a `main`, Worktree de outro agente ou remoto. Confirme delegação explícita para commit, merge, push ou operação compartilhada; validação/handoff não autorizam mutação implícita. Para executar via MCP respeite aprovação nativa e lease próprios desse canal; Git local não cria nem contorna lease MCP. Nenhum executor deve interferir em escritores concorrentes.
+**Autoridade:** acesso ao terminal não autoriza modificar a `main`, Worktree de outro agente ou remoto. Antes de mutações, verifique autorização explícita na solicitação vigente ou uma **delegação contínua, verificável e específica do repositório**, com operações e destino delimitados. A delegação contínua para preparar commits, publicar a branch de trabalho e abrir PRs de entregas validadas dispensa reconfirmações por Plano/PR enquanto estiver válida; não nasce apenas de uma Skill, teste ou handoff. Sem delegação suficiente, solicite-a ou registre bloqueio. **Permissão para PR não é permissão para merge**: integração na `main` exige autoridade própria do integrador, revisão e checks; uma delegação contínua para integração só vale quando também explícita para esse destino e escopo. Para executar via MCP respeite aprovação nativa e lease próprios desse canal; Git local não cria nem contorna lease MCP. Nenhum executor deve interferir em escritores concorrentes.
 ## Pré-condição de isolamento
 
 Antes da primeira alteração persistente, confirme repositório, Worktree efetiva, branch exclusiva da sessão e HEAD/baseline. Preferir criação/seleção nativa da IDE ou harness. Se houver terminal Git local com permissão de preparar a sessão, o próprio executor pode criar/ativar a branch; caso contrário, obtenha a preparação por capacidade autorizada ou escale o bloqueio.
@@ -55,14 +55,14 @@ Valide entregas e Planos conforme `validacao-de-implementacoes` e publique o han
 
 Commit local preserva um estado recuperável; push publica commits; nenhum encerra a Worktree. Selecione explicitamente apenas arquivos pertencentes ao trabalho validado, incluindo untracked intencionais e exclusões pretendidas. Não use "add all" indiscriminadamente, não descarte mudanças desconhecidas e evite escritores simultâneos no mesmo checkout.
 
-Use Git local autorizado quando disponível; `git-operations` MCP apenas se o meio remoto for necessário. **Push não é automático** após checkpoint; requer delegação ou política explícita aplicável. A política de PR por entrega validada autoriza publicar **a branch de trabalho** quando a delegação do repositório permitir, nunca push direto ou merge na `main`. Commit, push, PR e merge são resultados distintos.
+Use Git local autorizado quando disponível; `git-operations` MCP apenas se o meio remoto for necessário. **Checkpoint ou teste isolado não disparam push**. Quando a entrega for coesa e validada e a delegação contínua cobrir commit/push/PR, conclua essas operações como parte normal da entrega, sem pedir autorização novamente; confirme sempre estado, escopo e destino reais. Publique **a branch de trabalho**, nunca faça push direto ou merge na `main` por inferência dessa delegação. Commit, push, PR e merge são resultados distintos.
 
 ## Entrega validada via Pull Request — fluxo padrão
 
 **A responsabilidade decorre do estado observável, não da autodenominação do agente.**
 
-- **Quem produz:** o executor que alterou a branch/Worktree de origem e validou a entrega. Com commits selecionados, provas suficientes e revisão pronta, verifica branch/HEAD/índice, publica a branch autorizada sem force e **abre PR contra o destino previsto**. Use Git local para push e cliente GitHub/CLI/API autorizado para abrir PR; a superfície MCP de Worktree não cria PR por si.
-- **Quem revisa:** quem recebe o PR com autorização para decidir integração. Examina commits, diff, evidências, checks, target e drift; aprova ou solicita mudanças. **Só após revisão e checks satisfeitos** executa merge no destino, preferencialmente pelo PR, e confirma a integração e validação proporcional. Receber o link não comprova aprovação.
+- **Quem produz:** o executor que alterou a branch/Worktree de origem e validou a entrega. Com commits selecionados, provas suficientes e revisão pronta, verifica branch/HEAD/índice, publica a branch autorizada sem force e **abre PR contra o destino previsto**, sem reconfirmação quando existir delegação contínua aplicável. Use Git local para push e cliente GitHub/CLI/API autorizado para abrir PR; a superfície MCP de Worktree não cria PR por si.
+- **Quem revisa:** quem recebe o PR com autorização para decidir integração. Examina commits, diff, evidências, checks, target e drift; aprova ou solicita mudanças. **Só após revisão e checks satisfeitos** pode executar merge no destino, preferencialmente pelo PR, quando possuir delegação explícita para integrar (pontual ou contínua). Abertura de PR nunca equivale a aprovação; o autor não ganha autoridade sobre a `main` por ter produzido a entrega.
 - **Transferência:** PR informa finalidade, target, HEAD, evidências e Plano/Continuum quando disponível. Depois de abrir, inclua URL/número verificáveis no Relato Final e publique o handoff pelo `continuum-publication`, mantendo `executionId` e proveniência da Worktree.
 
 **Cadência:** um PR por **entrega independentemente integrável e validada**, preferencialmente um por Plano coeso. Um mesmo Plano só origina PRs separados quando as fronteiras previstas permitem merge independente sem quebra de contratos; não publique uma fatia incompleta como validada. Testes e checkpoints não abrem PRs. Correções e revalidações **antes do merge atualizam o mesmo PR**; uma nova entrega após o merge usa novo PR. A mesma Worktree pode continuar, desde que a próxima branch parta de base atualizada, não reapresente commits já integrados e não seja fechada automaticamente.
@@ -81,7 +81,7 @@ Fim de plano significa validação e handoff, não necessariamente encerramento 
 Confirme estado e disponibilidade do destino, possíveis escritores concorrentes, alterações dirty, commit-base e drift. Resolva conflitos em ambiente isolado quando necessário, preserve ambas as linhas e não substitua o estado da `main` com arquivos antigos. Não confunda ausência de conflito textual com compatibilidade semântica. **Merge não autoriza fechar a Worktree de origem.**
 ## Validação pós-integração
 
-A validação na Worktree prova o estado isolado; o merge pode exigir provas adicionais no estado composto. Execute as validações proporcionais preferencialmente pelo terminal local disponível. Use canais remotos quando forneçam prova/estado realmente diferente ou exigido. Revalide apenas propriedades afetáveis pela integração, conforme `validacao-de-implementacoes`.
+A validação na Worktree prova o estado isolado; o merge pode exigir provas adicionais no estado composto. **Após o merge confirmado, valide o estado integrado da `main`** com a menor evidência capaz de verificar a composição real, sem reexecutar toda a suíte por rotina. Execute as validações proporcionais preferencialmente pelo terminal local disponível; use canais remotos quando forneçam prova/estado realmente diferente ou exigido. Revalide apenas propriedades afetáveis pela integração, conforme `validacao-de-implementacoes`. Para nova entrega, atualize a base da próxima branch a partir do destino já integrado, evitando reapresentar commits antigos.
 ## Encerramento do workspace
 
 **Padrão: conservar a Worktree e sua branch após commits e integração.** Um novo plano pode retomar o checkout existente.
@@ -99,10 +99,10 @@ Não distribua automaticamente unidades do mesmo plano entre agentes apenas porq
 - exigir Code Awareness MCP para Git ou testes locais equivalentes;
 - presumir que terminal disponível autoriza escrita na `main` ou Worktree alheia;
 - iniciar implementação em detached HEAD ou checkout principal compartilhado sem isolamento comprovado;
-- confundir handoff VALIDATED com licença para mutar;
-- criar Worktree por plano, misturar staged de autores/escopos diferentes ou cometer push automático;
+- confundir handoff VALIDATED com licença para mutar ou tratar autorização contínua como permissão universal entre repositórios;
+- criar Worktree por plano, misturar staged de autores/escopos diferentes ou dar push por checkpoint sem delegação;
 - abrir PR por teste/checkpoint, quebrar entrega atômica em micro-PRs, agrupar mudanças independentes em PR gigante sem ganho ou duplicar PR da mesma entrega em revisão;
-- fazer merge da própria proposta por rótulo presumido, revisar apenas o resumo sem evidência crítica ou reler/revalidar todo o repositório por rotina;
+- reconfirmar repetidamente commit/push/PR quando já existir delegação contínua válida, ou fazer merge por mera autoria do PR, sem revisão, checks e autoridade de integração;
 - encerrar ou limpar a Worktree após commit/merge sem solicitação específica;
 - supor que testes isolados validam a integração.
 ## Critério de conclusão
@@ -112,7 +112,7 @@ Não distribua automaticamente unidades do mesmo plano entre agentes apenas porq
 **Integração autorizada:** revisão efetiva, checks/validação proporcional e merge observados no destino, ou bloqueio documentado. Nenhuma operação é presumida a partir da identidade do agente. Merge não encerra a Worktree.
 ## Regra final
 
-> Quem produz uma entrega validada propõe o PR; quem recebe a proposta com autoridade revisa e integra. Execute onde a capacidade e a autorização permitem. Nenhum PR ou merge encerra automaticamente a Worktree.
+> Quem produz uma entrega validada propõe o PR sob delegação aplicável, sem reconfirmações redundantes; quem recebe a proposta com autoridade revisa e integra. Verifique o resultado integrado na `main` antes de tomá-la como base validada. Nenhum PR ou merge encerra automaticamente a Worktree.
 ## Ciclo pelas operações remotas de Worktree
 
 **Esta seção é condicional:** aplica-se somente quando a operação Git efetivamente usar o canal remoto Code Awareness. Não é o procedimento obrigatório para quem dispõe de Git local autorizado.
