@@ -1,6 +1,6 @@
 ---
 name: planejamento-executavel
-description: Use quando a arquitetura de uma solução já estiver resolvida e precisar virar Plano Final Executável para implementação: unidades coerentes, contratos, ordem, evidências e perfil mínimo do executor. Publique o plano no Continuum quando disponível. Não acione para decidir se a feature merece existir (feature-investment-gate) nem para resolver decisões arquiteturais ainda abertas.
+description: Use antes de delegar implementação para verificar se a solução realmente exige um Plano Final Executável, ou se é somente configuração/operação administrativa, e, quando exigir implementação, definir unidades, contratos, prova e executor mínimo. Publique o Plano no Continuum quando cabível. Não use para decidir investimento em feature (feature-investment-gate) nem para decisões arquiteturais abertas.
 ---
 
 
@@ -22,7 +22,7 @@ com a menor carga cognitiva que preserve execução segura.
 
 ## Quando esta Skill começa
 
-Use esta Skill quando as decisões arquiteturais necessárias para a implementação estiverem suficientemente resolvidas.
+Use esta Skill ao decidir se uma solução suficientemente resolvida merece ser entregue como implementação e, somente quando necessário, ao estruturar seu Plano Final Executável.
 
 Antes de estruturar o Plano, deve existir clareza suficiente sobre:
 
@@ -38,6 +38,20 @@ Antes de estruturar o Plano, deve existir clareza suficiente sobre:
 Não use a estruturação do Plano para esconder decisões arquiteturais ainda abertas.
 
 Se uma decisão relevante continua indefinida, resolva-a antes de transferir a solução ao executor.
+
+## Gate anterior ao Plano — natureza do trabalho e executor necessário
+
+**Antes de produzir um Plano Final Executável ou delegar ao Codex/Implementador**, identifique qual transformação concreta falta e qual é o menor executor **capaz e autorizado** para realizá-la. Não infira implementação pelo verbo do pedido (`implantar`, `proteger`, `configurar`) ou pelo fato de pertencer a uma iniciativa de engenharia.
+
+- **Mudança no repositório/produto:** código, workflow versionado, teste, script, infraestrutura como código ou contrato técnico que exige edição e validação. Quando relevante e arquiteturalmente resolvida, cabe Plano Final Executável, Worktree e PR.
+- **Operação administrativa/externa:** habilitar regra em provedor, conceder permissão, selecionar check, login, alternar configuração de painel, sem alterar fonte versionada. Encaminhe diretamente ao proprietário/operador autorizado ou conector com capacidade administrativa real. Entregue **instrução operacional curta**: URL/tela, campos exatos, riscos e prova de confirmação. **Não gere Plano de implementação, Worktree, PR, handoff de implementador ou sessão Codex apenas para executar essa configuração.**
+- **Trabalho misto:** separe a mudança de código realmente necessária da configuração administrativa subsequente. Só a primeira vai ao implementador; descreva a segunda como pré-condição, handoff operacional ao responsável ou checklist de ativação, com dependência real e prova específica. Não transforme uma etapa administrativa em segundo Plano apenas por simetria com a primeira.
+
+A ausência de permissão na ferramenta ou login do agente **não torna a operação administrativa uma implementação**. Identifique o bloqueio como acesso/autoridade e peça intervenção mínima ao proprietário; não consuma ciclos do Codex tentando contornar a ausência de capacidade. Também não direcione ao executor uma tarefa que o próprio Arquiteto já possa realizar com ferramenta autorizada e custo menor.
+
+**Validação proporcional:** diferencie `configuração observada` de `comportamento comprovado`; use leitura do provedor e um PR real subsequente quando suficientes. Reserve ensaio/PR de prova isolado para risco material que exija evidência imediata. Não invente trabalho de implementação nem indefira o resultado administrativo apenas para satisfazer um rito de handoff.
+
+**Saída do gate:** `IMPLEMENTAÇÃO` → Plano quando necessário; `OPERAÇÃO` → instrução/ação administrativa direta; `MISTO` → Plano apenas para o código e checklist operacional separado. Se não houver implementação, encerre esta Skill sem gerar Plano Final.
 
 ## Quando esta Skill termina
 
@@ -473,12 +487,17 @@ Antes de entregar o Plano Final, verifique:
 20. O `executionId`, quando necessário para continuidade entre Plano e Handoff, foi criado ou reutilizado de forma estável?
 21. Fronteiras de PR foram separadas somente quando cada entrega pode ser validada e integrada independentemente, com ganho no custo total?
 22. Quando houver múltiplos Planos, o grafo registra somente dependências materiais e identifica entregas paralelizáveis sem forçar concorrência?
+23. A necessidade real de implementação e de delegação ao executor foi comprovada, descartando antes operações administrativas mais simples?
 
 Se a resposta relevante for não, corrija o Plano ou a transferência antes de considerá-lo entregue.
 
 ## Anti-Padrões
 
 Evite:
+
+**Operação administrativa disfarçada de implementação**
+
+Não gere Plano, Worktree ou PR, nem consuma tokens do Implementador para ajustes manuais de provedor sem código a entregar.
 
 **Plano como diário**
 
