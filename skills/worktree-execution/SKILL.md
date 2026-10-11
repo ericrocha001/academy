@@ -71,6 +71,18 @@ Use Git local autorizado quando disponível; `git-operations` MCP apenas se o me
 
 **Exceções:** se falta acesso, autorização, plataforma de PR ou revisor, preserve commits e provas, reporte a etapa bloqueada e faça handoff rastreável; não declare PR ou merge inexistente. Integração direta é exceção expressamente delegada, não padrão.
 
+## Gate de CI entre PR validado e merge
+
+**Validação da implementação não é autorização de integração.** Testes, aceitação e handoff do executor provam propriedades no checkout/Worktree examinado; o PR apresenta essa entrega para integração. Quando o repositório tiver CI configurado, o check do provedor é uma **prova independente e versionada** sobre o commit/ref do PR e, conforme o workflow, sobre sua combinação proposta com a branch de destino. A Skill `validacao-de-implementacoes` define suficiência das provas; não substitua essa decisão por uma contagem de testes verdes.
+
+**Antes do merge**, o integrador verifica no provedor: PR/base/HEAD atuais, check obrigatório identificado pelo nome/fonte, conclusão válida para a revisão corrente, conflitos e drift da branch de destino; compara o resultado de CI ao escopo realmente coberto e às evidências do handoff. Se a política exigir branch atualizada, sincronize a branch de origem sem destruir trabalho e aguarde novos checks para a composição resultante. Check pendente/falho ou proof de SHA antigo não autorizam antecipação nem bypass. Falhas devem ser diagnosticadas e corrigidas no mesmo PR; não reexecute testes locais equivalentes por ritual.
+
+**CI verde é necessário quando exigido, mas não suficiente para merge:** revisão arquitetural, segurança, contratos não cobertos pelos testes e autorização do integrador continuam necessários. Proteção de branch transforma o check em bloqueio técnico no provedor; sem proteção ativa, o agente deve observar a política deliberadamente, sem alegar enforcement automático. O CI não possui autoridade para aprovar arquitetura ou efetuar merge por si.
+
+**Após o merge**, se houver CI em `push` na branch de destino, acompanhe a execução no commit efetivamente integrado e registre seu resultado como evidência distinta do check pré-merge. Merge realizado não é prova de CI pós-merge aprovado; eventual falha exige diagnóstico e não é apagada pela aprovação anterior. Registre separadamente no handoff: implementação validada, PR/check aprovado no SHA correto, merge confirmado e evidência pós-integração. Não use novos rótulos de status fora do contrato vigente do Continuum.
+
+**Concorrência e custo:** PRs independentes podem passar por CI em paralelo, mas avanços da `main` podem exigir rechecagens dos demais conforme a proteção escolhida. Use resultados atuais do CI, não duplicação sistemática de toda a suíte no revisor. Ajustes de cache, paralelismo e testes devem preservar o check obrigatório e a qualidade da evidência.
+
 ## Encerramento da sessão
 
 Fim de plano significa validação e handoff, não necessariamente encerramento da sessão. Novos planos podem reutilizar a Worktree e seus checkpoints. Se o usuário decidir concluir a linha de trabalho, verifique preservação de commits, integração e pendências explicitamente; não feche o workspace por inatividade ou handoff.
@@ -118,7 +130,7 @@ Não distribua automaticamente unidades do mesmo plano entre agentes apenas porq
 
 **Entrega para revisão:** escopo independentemente integrável e validado, branch e HEAD observados, PR aberto verificável (ou impedimento explícito), handoff com proveniência e URL quando existir. Validação e PR não provam integração.
 
-**Integração autorizada:** revisão efetiva, checks/validação proporcional e merge observados no destino, ou bloqueio documentado. Nenhuma operação é presumida a partir da identidade do agente. Merge não encerra a Worktree.
+**Integração autorizada:** revisão efetiva, CI atual e obrigatório aprovado quando configurado, checks/validação proporcional e merge observados no destino, ou bloqueio documentado. Nenhuma operação é presumida a partir da identidade do agente. Merge não encerra a Worktree.
 ## Regra final
 
 > Quem produz uma entrega validada propõe o PR sob delegação aplicável, sem reconfirmações redundantes; quem recebe a proposta com autoridade revisa e integra. Verifique o resultado integrado na `main` antes de tomá-la como base validada. Nenhum PR ou merge encerra automaticamente a Worktree.
