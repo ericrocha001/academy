@@ -61,6 +61,19 @@ A atualização substitui representação corrente e relações atomicamente, pr
 
 Em REVISION_CONFLICT, releia a versão corrente, reavalie a alteração e use a nova revisão. Não faça retry cego, merge automático ou novo Artifact para contornar conflito. Histórico não é despejado nem possui navegação pública nesta entrega.
 
+## Saúde incremental das relações do Artifact Graph
+
+**Publicar ou atualizar um documento inclui reavaliar suas conexões semânticas, não apenas preservar as já existentes.** Omitir uma relação material torna conhecimento canônico mais difícil de descobrir mesmo quando o corpo está correto. Faça um gate pequeno e proporcional à mudança, inclusive ao promover um Artifact a Living Artifact ou acrescentar prova/decisão.
+
+1. **Identifique vínculos materiais:** origem da decisão, Plano implementado, handoff/prova que a sustenta, Work Item resolvido, política canônica afetada ou mapa que aprofunda. Use os IDs já presentes no contexto e as relações atuais; quando necessário, descubra seletivamente o documento vizinho por filtros e **um salto** no grafo via `list_artifacts`. Não varra o corpus inteiro para achar links possíveis.
+2. **Classifique a relação pelo significado:** `implements` para entrega versus Plano; `resolved-by` para resolução comprovada; `derived-from` para origem/evidência direta; `depends-on` somente para dependência real; `drills-down-to` para aprofundamento de mapa; `related-to` somente para conexão temática com utilidade clara de navegação. Não substitua relação específica por `related-to` genérico. Menção textual ou URL dentro do Markdown **não cria uma aresta no Artifact Graph**.
+3. **Edite com integridade:** confirme `artifactId` e identidade do alvo no mesmo Continuum; preserve arestas ainda válidas, não crie autorrelação, duplicata ou recíproca apenas por simetria. Uma única aresta já permite navegação inbound/outbound. Não mantenha vínculos comprovadamente obsoletos, mas também não os remova por mera mudança de redação.
+4. **Confira a persistência quando criar/corrigir arestas:** use receipt/revisão e, quando necessário, `get_artifact` ou consulta direcional limitada para provar que as novas conexões são encontráveis. Em conflito de revisão, reavalie o conjunto completo; `update_artifact` substitui também as relações.
+
+**Gate de saída:** pergunte “um agente que encontrasse este documento conseguiria navegar até a decisão, prova ou entrega diretamente relevante?”. Se houver vínculo material conhecido ausente, corrija-o na mesma publicação. Se o Artifact for legitimamente autônomo, **zero relações é válido**. Não transforme cada menção em aresta, não abra auditoria global por rotina e não atualize o documento de destino apenas para criar backlink redundante.
+
+Para critérios de manutenção do conteúdo de Living Artifacts, use `continuum-living-artifacts`; esta seção governa somente a **integridade das conexões no ato de publicar/editar**.
+
 # Implementation Handoff
 
 O corpo do IMPLEMENTATION_HANDOFF é exatamente o Relato Final exigido pelo AGENTS.md. Materialize uma única fonte em Markdown UTF-8, preserve verbatim e acrescente somente frontmatter de descoberta. Não gere resumo, segundo relatório ou seções duplicadas. Confirme publicação e preserve artifactId.
