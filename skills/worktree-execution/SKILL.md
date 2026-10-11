@@ -79,6 +79,14 @@ Fim de plano significa validação e handoff, não necessariamente encerramento 
 **Commit, PR e merge são operações distintas.** O caminho padrão é revisar e integrar pelo PR, sem fazer merge direto na `main` a partir da Worktree produtora. Integre somente com autorização para destino e escopo; Git local pode integrar diretamente apenas sob exceção explícita. Se a operação realmente envolver Worktrees protegidas via MCP, use `worktree-mcp-operations`.
 
 Confirme estado e disponibilidade do destino, possíveis escritores concorrentes, alterações dirty, commit-base e drift. Resolva conflitos em ambiente isolado quando necessário, preserve ambas as linhas e não substitua o estado da `main` com arquivos antigos. Não confunda ausência de conflito textual com compatibilidade semântica. **Merge não autoriza fechar a Worktree de origem.**
+## Sincronização local após merge remoto
+
+**Merge no provedor não atualiza automaticamente a branch local.** Após confirmar integração de um PR, quando houver delegação para sincronizar o checkout local de destino, identifique o repositório, a Worktree que realmente contém a branch de destino e a origem remota. Não execute o pull na Worktree produtora apenas porque ela originou o PR.
+
+No checkout correto, observe branch, HEAD, upstream, Git operation e alterações locais; obtenha freshness remota via fetch quando necessário. **Somente com destino correto, nenhuma operação Git ativa e Worktree limpa**, avance por fast-forward-only; nunca crie merge commit local, rebase, reset ou force para apenas sincronizar. Verifique a convergência do HEAD com o remoto antes de declarar a sincronização concluída. Se já estiver atualizado, nenhuma mutação é necessária.
+
+Se houver mudanças staged, unstaged ou untracked, **não faça stash/shelf, commit, descarte ou pull automático**. Preserve o estado, informe os paths e o bloqueio; o responsável deve resolver conscientemente a situação. Se o canal retornar outcome desconhecido, reconcilie com estado/receipts antes de tentar outra mutação. Ausência do checkout local, branch ocupada ou falta de delegação são limites explícitos, não motivo para trocar de Worktree ou agir em checkout alheio. Sincronizar a main local é diferente de validar a composição integrada; esta última requer evidência própria.
+
 ## Validação pós-integração
 
 A validação na Worktree prova o estado isolado; o merge pode exigir provas adicionais no estado composto. **Após o merge confirmado, valide o estado integrado da `main`** com a menor evidência capaz de verificar a composição real, sem reexecutar toda a suíte por rotina. Execute as validações proporcionais preferencialmente pelo terminal local disponível; use canais remotos quando forneçam prova/estado realmente diferente ou exigido. Revalide apenas propriedades afetáveis pela integração, conforme `validacao-de-implementacoes`. Para nova entrega, atualize a base da próxima branch a partir do destino já integrado, evitando reapresentar commits antigos.
@@ -103,6 +111,7 @@ Não distribua automaticamente unidades do mesmo plano entre agentes apenas porq
 - criar Worktree por plano, misturar staged de autores/escopos diferentes ou dar push por checkpoint sem delegação;
 - abrir PR por teste/checkpoint, quebrar entrega atômica em micro-PRs, agrupar mudanças independentes em PR gigante sem ganho ou duplicar PR da mesma entrega em revisão;
 - reconfirmar repetidamente commit/push/PR quando já existir delegação contínua válida, ou fazer merge por mera autoria do PR, sem revisão, checks e autoridade de integração;
+- executar pull no checkout errado, com estado dirty, ou tratar merge remoto como atualização automática da main local;
 - encerrar ou limpar a Worktree após commit/merge sem solicitação específica;
 - supor que testes isolados validam a integração.
 ## Critério de conclusão
