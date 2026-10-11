@@ -397,6 +397,22 @@ Separe somente quando houver uma fronteira técnica real e o trabalho puder ser 
 
 A divisão entre Planos deve refletir arquitetura ou independência técnica, não conveniência administrativa.
 
+## Iniciativas com múltiplos Planos: dependências e concorrência
+
+Quando uma iniciativa contiver **resultados técnicos autônomos**, projete-a como um conjunto pequeno de Planos Finais Executáveis, cada qual com objetivo, contratos, escopo, prova e entrega integrável próprios. Cada Plano deve ser compreensível e executável sem carregar todos os outros, recuperando apenas as precondições materiais. Não fracione uma mudança atômica apenas para obter vários Planos ou vários agentes.
+
+Antes de publicar, distinga três relações entre os Planos:
+
+- **Dependência real:** B precisa do contrato, código integrado, capacidade ou prova de A para começar, concluir ou ser integrado corretamente. Registre a precondição específica e o momento em que ela estará satisfeita; use relação `depends-on` no Continuum apenas nesse caso.
+- **Independência técnica:** A e B podem ser implementados, validados e integrados separadamente, em qualquer ordem. Não declare `depends-on` por fazerem parte da mesma iniciativa.
+- **Preferência de sequência:** é conveniente executar A antes de B por prioridade, custo, risco ou disponibilidade, mas B não exige tecnicamente A. Informe a preferência como orientação operacional, não como dependência arquitetural.
+
+A partir dessas relações, formule uma **ordem parcial de execução**, não uma fila artificial. Identifique quais Planos podem avançar concorrentemente e qual entrega desbloqueia outra. Trabalho concorrente só é candidato quando escopo/ownership, branches/Worktrees e contratos não impõem disputa material; independência de arquivos por si só não prova independência semântica. Quando houver conflito de edição, integração ou escritor, sinalize a fronteira para coordenação por `worktree-execution`, sem reproduzir seu protocolo.
+
+Cada Plano independente deve deixar o destino compartilhado em estado coerente quando integrado; não exigir PR futuro ainda aberto para funcionar. Onde houver dependências reais, preserve a ordem de integração e a validação do estado composto. O planejamento determina **dependências e possibilidades de paralelismo**; o executor decide alocação e sincronização concretas segundo a governança operacional.
+
+**Exame final:** se dois Planos declarados dependentes puderem ser implementados e integrados separadamente sem quebrar contratos, elimine a dependência artificial. Se um Plano só funcionar quando outros forem integrados simultaneamente, reavalie a separação.
+
 ## Fronteiras de entrega integrável para PR
 
 Além das Unidades de Implementação (decomposição cognitiva), identifique **entregas independentemente integráveis** (fronteiras de revisão). Não equipare automaticamente Unidade, Plano, commit ou teste a PR.
@@ -456,6 +472,7 @@ Antes de entregar o Plano Final, verifique:
 19. A referência entregue ao Implementador aponta para a representação canônica, sem cópia concorrente?
 20. O `executionId`, quando necessário para continuidade entre Plano e Handoff, foi criado ou reutilizado de forma estável?
 21. Fronteiras de PR foram separadas somente quando cada entrega pode ser validada e integrada independentemente, com ganho no custo total?
+22. Quando houver múltiplos Planos, o grafo registra somente dependências materiais e identifica entregas paralelizáveis sem forçar concorrência?
 
 Se a resposta relevante for não, corrija o Plano ou a transferência antes de considerá-lo entregue.
 
@@ -482,6 +499,10 @@ Transfira conhecimento consolidado, não toda a matéria-prima.
 **Micro-Unidades**
 
 Não fragmente uma única transformação em passos administrativos.
+
+**Encadeamento artificial de Planos**
+
+Não transforme ordem de preferência em `depends-on`, nem paralelize escopos que disputam a mesma fronteira de integração.
 
 **Unidade impossível**
 
