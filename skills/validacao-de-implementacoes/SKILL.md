@@ -256,6 +256,20 @@ Durante iteração:
 
 > **A força da prova é obrigatória. O canal mais caro não é.**
 
+## Apresentação Econômica de Testes
+
+Use captura integral local e apresentação bounded nos testes e operações longas. Separe execução/prova, logs recuperáveis e projeção para o agente; silent/reporter compacto não substituem captura. No Code Awareness, use os entrypoints econômicos existentes e `npm run test:agent -- <comando e argumentos>` para capturar também scripts compostos; consulte `scripts/TEST-OUTPUT.md` somente quando precisar operar ou aprofundar.
+
+Comece pelo recibo compacto: execução, comando/escopo, estado, contagens verificáveis quando disponíveis, duração, exit code e evidência. Sucesso exige resumo mínimo; falha exige causa/teste e trecho pequeno deduplicado. Alvos iniciais: até 250 tokens no sucesso e 1.000 na falha; sem contador real, identifique o limite conservador usado por bytes/caracteres. Não trate esses proxies como tokens medidos ou economia faturada. Preserve stdout/stderr integrais e o status real, inclusive launch, sinal, cancelamento e timeout.
+
+Aprofunde por execução, teste, padrão ou intervalo somente quando a propriedade ou hipótese exigir. Truncamento da apresentação deve indicar a evidência integral. Libere logs somente após não serem mais necessários; não envie arquivos integrais ao contexto por conveniência. Saída humana convencional é exceção explícita para operação interativa.
+
+Para processos longos, prefira espera bloqueante/evento com prazo e cancelamento; quando isso não existir, espace o polling adaptativamente. Use um único canal de observação associado ao id/processo/evidência atuais; apresente apenas transições relevantes, conclusão ou falha nova. Nova execução invalida observação antiga; snapshot idêntico não é progresso. Payload volumoso deve ser projetado na origem ou no orquestrador antes de chegar ao modelo.
+
+Flakiness não autoriza repetir até passar: registre falha e hipótese material, produza uma nova execução somente se discriminar essa hipótese e pare quando a próxima tentativa não reduzir incerteza. Não repita regressão sem impacto/propriedade nova. Essas regras preservam suficiência, regressão, freshness e fechamento; economia nunca altera asserções, skips, cobertura ou critérios.
+
+O controle técnico cobre somente os entrypoints integrados. Comandos diretos, modos humanos e canais paralelos podem entregar saída ilimitada; a orientação da Skill não prova enforcement universal nem adesão de outros agentes. Verifique versão/hash e distribuição da Academy antes de declarar a revisão disponível em outro runtime.
+
 ## Prova da Unidade
 
 Cada Unidade de Implementação deve terminar com evidência objetiva de que o resultado técnico pretendido foi produzido.
