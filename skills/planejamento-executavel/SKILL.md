@@ -43,7 +43,7 @@ Se uma decisão relevante continua indefinida, resolva-a antes de transferir a s
 
 **Antes de produzir um Plano Final Executável ou delegar ao Codex/Implementador**, identifique qual transformação concreta falta e qual é o menor executor **capaz e autorizado** para realizá-la. Não infira implementação pelo verbo do pedido (`implantar`, `proteger`, `configurar`) ou pelo fato de pertencer a uma iniciativa de engenharia.
 
-- **Mudança no repositório/produto:** código, workflow versionado, teste, script, infraestrutura como código ou contrato técnico que exige edição e validação. Quando relevante e arquiteturalmente resolvida, cabe Plano Final Executável, Worktree e PR.
+- **Mudança no repositório/produto:** código, workflow versionado, teste, script, infraestrutura como código ou contrato técnico que exige edição e validação. Quando relevante e arquiteturalmente resolvida, cabe Plano Final Executável, execução isolada em Worktree e PR na conclusão da sessão.
 - **Operação administrativa/externa:** habilitar regra em provedor, conceder permissão, selecionar check, login, alternar configuração de painel, sem alterar fonte versionada. Encaminhe diretamente ao proprietário/operador autorizado ou conector com capacidade administrativa real. Entregue **instrução operacional curta**: URL/tela, campos exatos, riscos e prova de confirmação. **Não gere Plano de implementação, Worktree, PR, handoff de implementador ou sessão Codex apenas para executar essa configuração.**
 - **Trabalho misto:** separe a mudança de código realmente necessária da configuração administrativa subsequente. Só a primeira vai ao implementador; descreva a segunda como pré-condição, handoff operacional ao responsável ou checklist de ativação, com dependência real e prova específica. Não transforme uma etapa administrativa em segundo Plano apenas por simetria com a primeira.
 
@@ -413,7 +413,7 @@ A divisão entre Planos deve refletir arquitetura ou independência técnica, n�
 
 ## Iniciativas com múltiplos Planos: dependências e concorrência
 
-Quando uma iniciativa contiver **resultados técnicos autônomos**, projete-a como um conjunto pequeno de Planos Finais Executáveis, cada qual com objetivo, contratos, escopo, prova e entrega integrável próprios. Cada Plano deve ser compreensível e executável sem carregar todos os outros, recuperando apenas as precondições materiais. Não fracione uma mudança atômica apenas para obter vários Planos ou vários agentes.
+Quando uma iniciativa contiver **resultados técnicos autônomos**, projete-a como um conjunto pequeno de Planos Finais Executáveis, cada qual com objetivo, contratos, escopo, prova e entrega integrável próprios. Cada Plano deve ser compreensível, executável e validável sem carregar todos os outros, recuperando apenas as precondições materiais. A validação de cada Plano gera um commit rastreável na branch da sessão; **não** exige PR próprio. Não fracione uma mudança atômica apenas para obter vários Planos ou vários agentes.
 
 Antes de publicar, distinga três relações entre os Planos:
 
@@ -423,22 +423,21 @@ Antes de publicar, distinga três relações entre os Planos:
 
 A partir dessas relações, formule uma **ordem parcial de execução**, não uma fila artificial. Identifique quais Planos podem avançar concorrentemente e qual entrega desbloqueia outra. Trabalho concorrente só é candidato quando escopo/ownership, branches/Worktrees e contratos não impõem disputa material; independência de arquivos por si só não prova independência semântica. Quando houver conflito de edição, integração ou escritor, sinalize a fronteira para coordenação por `worktree-execution`, sem reproduzir seu protocolo.
 
-Cada Plano independente deve deixar o destino compartilhado em estado coerente quando integrado; não exigir PR futuro ainda aberto para funcionar. Onde houver dependências reais, preserve a ordem de integração e a validação do estado composto. O planejamento determina **dependências e possibilidades de paralelismo**; o executor decide alocação e sincronização concretas segundo a governança operacional.
+Cada Plano tecnicamente independente deve poder deixar o destino compartilhado coerente quando integrado isoladamente; isso **não obriga** a abrir PR ou integrar após cada validação. Vários Planos relacionados podem compor uma sessão e seguir juntos em um PR na conclusão. Onde houver dependências reais, preserve a ordem de integração e a validação do estado composto. O planejamento determina **dependências e possibilidades de paralelismo**; o executor decide alocação e sincronização concretas segundo a governança operacional.
 
 **Exame final:** se dois Planos declarados dependentes puderem ser implementados e integrados separadamente sem quebrar contratos, elimine a dependência artificial. Se um Plano só funcionar quando outros forem integrados simultaneamente, reavalie a separação.
 
-## Fronteiras de entrega integrável para PR
+## Validação dos Planos e conclusão da sessão
 
-Além das Unidades de Implementação (decomposição cognitiva), identifique **entregas independentemente integráveis** (fronteiras de revisão). Não equipare automaticamente Unidade, Plano, commit ou teste a PR.
+**Não equipare Unidade de Implementação, Plano, commit, PR e merge.** As Unidades organizam execução e prova; cada Plano Final Executável aprovado constitui uma **validação** e origina **um commit de validação** na branch exclusiva da sessão. Esse commit não encerra a sessão nem abre PR.
 
-**Padrão:** um Plano coeso produz um PR. Um Plano maior pode prever mais de um PR apenas quando houver fatias realmente independentes que:
-- preservem contratos e deixem a `main` em estado coerente após cada merge;
-- possam ser compiladas, validadas, revisadas e integradas isoladamente, sem depender de outro PR ainda aberto;
-- tenham escopo e critério de aceitação próprios, com risco/revisão significativamente menores do que a entrega conjunta.
+**Padrão de integração:** vários Planos relacionados podem ser validados e commitados sucessivamente na mesma Worktree/branch. Quando a sessão for **concluída**, o conjunto será apresentado em **um PR consolidado**; revisão e merge são etapas posteriores. A conclusão exige verificar a coerência da composição e demonstrar propriedades integradas ainda não cobertas, sem repetir provas suficientes por ritual.
 
-Delimite no Plano essas fronteiras e sua ordem somente quando existirem. **Tamanho de diff, número de arquivos, testes e checkpoints não definem granularidade.** Não divida uma transformação naturalmente atômica, migração coordenada ou refatoração mecânica apenas para diminuir PRs. Compare ganho de contexto e revisão com custo fixo de recontextualização, CI, handoffs, conflitos e merges: otimize **custo total**, não tokens por PR. Se as fatias gerarem dependências, duplicações ou estados intermediários inválidos, mantenha um PR coeso. Separar em outro Plano continua sujeito a `Quando criar outro Plano`; PRs independentes não exigem Planos artificiais.
+O Plano deve definir o que significa sua própria validação; **não precisa determinar a abertura de PR individual**. A Skill `worktree-execution` governa branch, commits de validação, conclusão de sessão, PR único e integração. A Skill `validacao-de-implementacoes` governa suficiência de evidência.
 
-O Plano especifica **quais fronteiras podem ser integradas com segurança**; a Skill `worktree-execution` governa publicação, revisão progressiva e merge, e `validacao-de-implementacoes` governa suficiência da evidência. Uma fatia validada não conclui automaticamente as demais Unidades nem o Plano completo.
+**Coesão e exceções:** não junte artificialmente Planos independentes em uma sessão longa apenas para economizar PR; tampouco quebre uma sessão coesa em micro-PRs. Se uma parte precisar ser integrada antecipadamente, trate-a como conclusão de uma sessão coerente e prossiga em outra branch/sessão com baseline apropriado. Planeje limites quando dependências, ownership, tamanho de revisão ou risco real justificarem unidades de conclusão diferentes, não por número de commits, arquivos ou testes.
+
+**Integração segura:** mantenha contratos coerentes no destino quando uma sessão for merged. Dependências entre sessões exigem ordem apropriada e provas de composição; não mantenha PRs parciais dependentes abertos por mero checkpoint de Plano. A arquitetura e os limites entre Planos continuam determinados por coesão técnica, não por conveniência administrativa de PR.
 
 ## Critério de Conclusão do Plano
 
@@ -485,7 +484,7 @@ Antes de entregar o Plano Final, verifique:
 18. O Plano final foi publicado no Continuum do repositório ativo quando a capability estava disponível?
 19. A referência entregue ao Implementador aponta para a representação canônica, sem cópia concorrente?
 20. O `executionId`, quando necessário para continuidade entre Plano e Handoff, foi criado ou reutilizado de forma estável?
-21. Fronteiras de PR foram separadas somente quando cada entrega pode ser validada e integrada independentemente, com ganho no custo total?
+21. Os Planos possuem provas próprias para commits de validação e a sessão tem uma fronteira de conclusão coesa para um PR, sem PR por Plano nem agrupamento artificial?
 22. Quando houver múltiplos Planos, o grafo registra somente dependências materiais e identifica entregas paralelizáveis sem forçar concorrência?
 23. A necessidade real de implementação e de delegação ao executor foi comprovada, descartando antes operações administrativas mais simples?
 
