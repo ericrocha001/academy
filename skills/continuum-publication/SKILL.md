@@ -1,6 +1,6 @@
 ---
 name: continuum-publication
-description: Use para criar, publicar, editar ou atualizar Artifacts no Continuum canônico, governando metadata, relações, handoffs e revisão. Quando CLI local autorizada estiver disponível, prefira continuum-local-cli mesmo com MCP acessível; use MCP quando necessário. QUEUED não prova persistência. Para mera leitura use continuum.
+description: Use para criar, publicar, editar ou padronizar Artifacts no Continuum canônico, governando kind/status canônicos, metadata, relações, handoffs e revisão. Quando CLI local autorizada estiver disponível, prefira continuum-local-cli mesmo com MCP acessível; use MCP quando necessário. QUEUED não prova persistência. Para mera leitura use continuum.
 ---
 
 # Continuum Publication
@@ -31,11 +31,37 @@ Conteúdo durável.
 
 `description`: responda quando outro agente deveria abrir o Artifact. Indique problema, decisão, prova ou fronteira que encontrará. Não escreva um resumo longo nem frases vazias. Legados podem não possuir descrição; enriqueça-os por edição apenas quando houver conhecimento suficiente, sem inventar semântica histórica.
 
-`kind`: natureza da comunicação. Reutilize IMPLEMENTATION_HANDOFF, EXECUTABLE_PLAN, WORK_ITEM, VALIDATION_PROOF, ARCHITECTURAL_DECISION, INVESTIGATION ou OBSERVATION quando corresponderem. Verifique convenções antes de introduzir outro termo. Evite sinônimos para a mesma natureza. Esse vocabulário pertence à Skill, não a um enum do backend.
+`kind`: natureza durável da comunicação, não assunto, etapa, resultado de ferramenta ou rótulo de fluxo. **Catálogo canônico de autoria** (10 valores já encontrados no Continuum):
+
+| `kind` | Use quando o Artifact for... |
+|---|---|
+| `EXECUTABLE_PLAN` | plano definido para execução e validação; não mera intenção ou investigação. |
+| `IMPLEMENTATION_HANDOFF` | relato final da implementação, preservado integralmente conforme contrato de handoff. |
+| `WORK_ITEM` | trabalho futuro deliberadamente adiado, com lifecycle de `continuum-work-items`. |
+| `VALIDATION_PROOF` | prova objetiva e recuperável de propriedade verificada. |
+| `ARCHITECTURAL_DECISION` | decisão arquitetural normativa ou Architecture Map canônico com `artifactRole` apropriado. |
+| `INVESTIGATION` | investigação, diagnóstico ou análise que organiza evidências e conclusões sem representar por si uma decisão normativa. |
+| `OBSERVATION` | registro factual, retrospectiva, conclusão de integração/merge ou observação operacional sem lifecycle próprio. |
+| `CAPABILITY_OPPORTUNITY` | oportunidade material qualificada para avaliar capacidade futura; não é Plano executável nem Work Item por si só. |
+| `DOCUMENT` | documento canônico cuja natureza é o próprio texto mantido (ex.: kernels AGENTS/ARCHITECT), diferenciado por `artifactRole`; não é fallback genérico. |
+| `VISUAL_REFERENCE` | referência de mídia visual realmente preservada com contexto/proveniência, não relatório sobre UI. |
+
+A lista é deliberadamente fechada **para a autoria padrão por agentes**, embora o backend ainda aceite strings abertas. **Não crie `kind` novo por iniciativa própria**: primeiro procure equivalência semântica neste catálogo; use `artifactRole` ou metadata especializada somente quando agregarem filtragem real. Um `kind` adicional exige necessidade distinta comprovada e decisão explícita de governança, depois atualização desta única Skill canônica. Valores históricos não ganham legitimidade por existirem no corpus. `INTEGRATION_REPORT`, por exemplo, deve ser `OBSERVATION`; `LIVING_ARTIFACT` e `CAPABILITY_MAP` são papéis (`livingArtifact`/`artifactRole`), não novos kinds.
 
 `date`: obrigatório em todo Artifact novo. Use timestamp ISO 8601 completo com data, hora e offset de fuso, por exemplo `2026-10-06T04:05:00-03:00`. Ele representa quando a representação semântica corrente do documento foi produzida, não apenas quando o backend a persistiu. Ao atualizar materialmente conteúdo, status, decisão, prova ou relações do Artifact, atualize também `date` para o momento da nova representação. Não use data sem hora, hora sem fuso ou termos relativos como hoje/agora.
 
-`status`: use somente quando existir lifecycle relevante. Handoffs/provas podem usar VALIDATED ou BLOCKED; Work Items usam PENDING, COMPLETED ou CANCELLED segundo `continuum-work-items`. Não adicione status decorativo a contexto sem lifecycle.
+`status`: **opcional** e reservado a lifecycle real. Vocabulário canônico de autoria (6 valores já encontrados):
+
+- `PENDING`: Plano ou Work Item ainda aberto; execução em andamento não exige status novo.
+- `COMPLETED`: Plano ou Work Item efetivamente concluído e validado; não significa PR merged nem sincronização local.
+- `CANCELLED`: Plano ou Work Item deliberadamente retirado de execução.
+- `VALIDATED`: handoff/prova cuja validação exigida está comprovada; não autoriza merge.
+- `BLOCKED`: handoff interrompido por impedimento real não resolvido; preserve diagnóstico no corpo.
+- `ACTIVE`: somente política/decisão normativa cuja vigência explícita seja útil para descoberta; não significa que todo documento vivo precise de status.
+
+Matriz padrão: `EXECUTABLE_PLAN` e `WORK_ITEM` → `PENDING | COMPLETED | CANCELLED`; `IMPLEMENTATION_HANDOFF` → `VALIDATED | BLOCKED`; `VALIDATION_PROOF` → `VALIDATED` quando efetivamente demonstrada; `ARCHITECTURAL_DECISION` → normalmente **sem status**, excepcionalmente `ACTIVE` para política vigente. `INVESTIGATION`, `OBSERVATION`, `CAPABILITY_OPPORTUNITY`, `DOCUMENT` e `VISUAL_REFERENCE` → normalmente **sem status**. Artifacts históricos sem status não precisam ser alterados só por essa matriz.
+
+Nunca transforme estágio composto (por exemplo publicação remota concluída mas checkout local ainda pendente), status de Git/PR, receipt, saúde, decisão pendente ou resultado da ferramenta em `status` novo. Preserve a nuance no corpo ou em metadata específica já utilizada (como `deploymentStatus`), quando isso melhorar descoberta. Se um caso real não couber, não invente valor: reavalie a natureza/lifecycle e solicite governança antes de ampliar o catálogo.
 
 Metadata adicional deve responder a uma necessidade concreta de seleção. Reutilize chaves e valores existentes e use JSON/YAML estruturado simples. `metadata` filtra igualdade exata por chave, inclusive objetos e arrays; ordem das chaves de objetos é irrelevante. Não transforme tags livres, sinônimos, provenance técnica, paths de armazenamento, hashes ou cópia do corpo em índice agentivo.
 
@@ -66,7 +92,7 @@ Em REVISION_CONFLICT, releia a versão corrente, reavalie a alteração e use a 
 **Publicar ou atualizar um documento inclui reavaliar suas conexões semânticas, não apenas preservar as já existentes.** Omitir uma relação material torna conhecimento canônico mais difícil de descobrir mesmo quando o corpo está correto. Faça um gate pequeno e proporcional à mudança, inclusive ao promover um Artifact a Living Artifact ou acrescentar prova/decisão.
 
 1. **Identifique vínculos materiais:** origem da decisão, Plano implementado, handoff/prova que a sustenta, Work Item resolvido, política canônica afetada ou mapa que aprofunda. Use os IDs já presentes no contexto e as relações atuais; quando necessário, descubra seletivamente o documento vizinho por filtros e **um salto** no grafo via `list_artifacts`. Não varra o corpus inteiro para achar links possíveis.
-2. **Classifique a relação pelo significado:** `implements` para entrega versus Plano; `resolved-by` para resolução comprovada; `derived-from` para origem/evidência direta; `depends-on` somente para dependência real; `drills-down-to` para aprofundamento de mapa; `related-to` somente para conexão temática com utilidade clara de navegação. Não substitua relação específica por `related-to` genérico. Menção textual ou URL dentro do Markdown **não cria uma aresta no Artifact Graph**.
+2. **Classifique a relação pelo significado:** `implements` para entrega versus Plano; `resolved-by` para resolução comprovada; `derived-from` para origem/evidência direta; `depends-on` somente para dependência real; `drills-down-to` para aprofundamento de mapa; `related-to` somente para conexão temática com utilidade clara de navegação. Não substitua relação específica por `related-to` genérico. **Na autoria padrão, reutilize apenas `related-to`, `derived-from`, `implements`, `validates`, `resolved-by`, `depends-on` e `drills-down-to`**, selecionando o significado mais específico; relation `kind` também é string aberta no backend, não autorização para inventar sinônimos como `integrates`, `documents` ou `follows-up`. Uma nova semântica exige decisão de governança, não inferência do agente. Menção textual ou URL dentro do Markdown **não cria uma aresta no Artifact Graph**.
 3. **Edite com integridade:** confirme `artifactId` e identidade do alvo no mesmo Continuum; preserve arestas ainda válidas, não crie autorrelação, duplicata ou recíproca apenas por simetria. Uma única aresta já permite navegação inbound/outbound. Não mantenha vínculos comprovadamente obsoletos, mas também não os remova por mera mudança de redação.
 4. **Confira a persistência quando criar/corrigir arestas:** use receipt/revisão e, quando necessário, `get_artifact` ou consulta direcional limitada para provar que as novas conexões são encontráveis. Em conflito de revisão, reavalie o conjunto completo; `update_artifact` substitui também as relações.
 
