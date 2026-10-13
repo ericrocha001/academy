@@ -129,7 +129,7 @@ Não misture resíduos desconhecidos com a mudança pretendida apenas para deixa
 
 ## Roteamento de Pull Request
 
-Para **entrega validada de branch/Worktree**, o padrão de transferência e integração é PR, regido por `worktree-execution`. Esta Skill trata apenas do **Git remoto tipado pelo MCP**; ela não abre nem aprova PR. Se o executor possui a branch validada e autorização, publica **somente essa branch** com `sync_git_remote PUSH` (nunca `main` por inferência) e usa a ferramenta GitHub/CLI autorizada para abrir o PR. Quem recebe a proposta revisa pelo provedor do PR, observa permissões e checks e somente então integra. O merge Git direto via MCP permanece exceção explícita, não substitui o gate de revisão.
+Para **Plano Final Executável validado**, registre um commit na branch exclusiva da sessão; **não abra PR por Plano, commit ou checkpoint**. Vários commits validados podem se acumular até a **conclusão da sessão**, quando o padrão de transferência e integração é **um único PR consolidado**, regido por `worktree-execution`. Esta Skill trata apenas de **Git remoto tipado pelo MCP**; ela não abre nem aprova PR. Com autorização, `sync_git_remote PUSH` pode publicar **somente a branch da sessão** (nunca `main` por inferência), inclusive antes da conclusão para backup/sincronização; push intermediário não dispara PR. Na conclusão, use GitHub/CLI autorizada para abrir o PR. Quem recebe revisa no provedor e somente então integra com permissão própria. Merge Git direto via MCP continua exceção expressa, sem eliminar revisão.
 
 ## Branches, upstream e remoto
 
