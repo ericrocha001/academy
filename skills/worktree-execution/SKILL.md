@@ -29,9 +29,21 @@ Uma pasta distinta não prova isolamento; a sessão deve estar vinculada ao chec
 
 **Worktree criada não significa sessão preparada.** Observe no ambiente, antes de editar: (1) repositório/checkout correto; (2) branch local e exclusiva, não a principal; (3) HEAD e baseline conhecidos; (4) ausência de colisão com outra Worktree; (5) identidade rastreável no handoff.
 
-**Detached HEAD não passa no gate de escrita.** Se a IDE criou a Worktree detached, o executor com Git local autorizado pode criar e ativar uma branch semântica nela, verificando em seguida a associação real. Na ausência dessa capacidade ou autorização, solicite preparação segura sem editar. Não recrie nem limpe a Worktree para resolver o vínculo. Worktree estritamente read-only pode permanecer detached.
+**Detached HEAD não passa no gate de escrita.** Se a IDE criou a Worktree detached (padrão do Codex), o executor com Git local autorizado **deve criar e ativar uma branch exclusiva e semanticamente nomeada no próprio checkout antes de editar**, verificando em seguida a associação real. Isso não altera a criação automática da Worktree pelo host: corrige o estado detached imediatamente após sua criação. A ação nativa da IDE, quando funcional, pode ser preferida. Na ausência dessa capacidade ou autorização, solicite preparação segura sem editar. Não recrie nem limpe a Worktree para resolver o vínculo. Worktree estritamente read-only pode permanecer detached.
 
 Para uma Worktree legada dirty/detached, preserve os arquivos e o índice, coordene escritores e estabeleça a branch com segurança antes de novos commits. O gate só passa após verificação objetiva; do contrário, bloqueia apenas a escrita dependente.
+## Nome semântico da branch ao longo da sessão
+
+**O nome pertence à branch Git; não presuma que renomear a branch renomeie o diretório da Worktree, o ID da sessão ou o rótulo exibido pela UI de Orchestration.** O estado autoritativo é o Git observado no checkout, não um rótulo que pode estar desatualizado.
+
+**Na preparação:** antes da primeira edição, leia o objetivo efetivo do Plano e o contexto mínimo necessário para identificar o trabalho. Escolha um nome de branch curto, único e descritivo da mudança (por exemplo, `fix/codemap-grid-alignment` ou `feat/continuum-artifact-search`), conforme convenção do repositório. A nomenclatura nasce do **trabalho solicitado**, não da frase genérica usada para delegá-lo: `implement-plan`, `new-worktree`, `codex-task` e números sem semântica não representam o escopo. Não invente intenção técnica não identificada: investigue o Plano suficientemente antes de nomear. A branch deve ser exclusiva da sessão e não ocupada por outra Worktree.
+
+**Evolução proporcional:** a branch identifica a **linha coesa da sessão**, que pode abranger vários Planos, não apenas o primeiro. Se o escopo real se revelar ou mudar materialmente, reavalie a adequação do nome. **Não renomeie por commit**: o commit descreve a validação de um Plano, enquanto a branch descreve o conjunto da sessão.
+
+**Gate de conclusão antes do PR:** compare o nome atual com o trabalho efetivamente entregue (todos os commits/Planos). Se ainda representar bem a sessão, preserve-o. Se for materialmente impreciso, renomeie **quando seguro e autorizado**, preferencialmente **antes do primeiro push** e antes de abrir o PR. Renomeação não é rito obrigatório nem deve provocar reescrita de commits. Antes de renomear, confirme branch/Worktree corretas, exclusividade, conflitos de nome, upstream, publicação remota e consumidores da referência. Se a branch já foi publicada, é usada por terceiros ou possui PR, **não renomeie automaticamente**: mantenha a referência estável, dê título fiel ao PR e só altere a branch com coordenação explícita e plano de atualização das referências. Não force-push ou apague refs remotas por conveniência de nomenclatura.
+
+**Verificação:** confira que HEAD está anexado à branch pretendida por evidência Git e registre seu nome efetivo no handoff e no PR. Se a UI do Codex continuar exibindo detached ou outro rótulo após uma operação Git confirmada, reporte possível divergência visual; não recrie Worktree, branch ou commits para corrigir apenas a apresentação.
+
 ## Worktree por sessão
 
 Uma mesma worktree pode receber vários Planos Finais Executáveis relacionados. Preserve-a enquanto a sessão continuar sendo uma única linha coerente de implementação e o contexto acumulado continuar útil.
@@ -73,7 +85,7 @@ Use Git local autorizado quando disponível e `git-operations` apenas se exigir 
 
 - **Quem produz:** ao concluir a sessão, confere que todos os Planos destinados ao PR foram validados e têm commits rastreáveis; verifica branch, HEAD, índice, base, composição e pendências. Com delegação adequada, publica a branch sem force e abre **um PR contra o destino previsto** usando GitHub/CLI/API autorizado. A superfície MCP de Worktree não cria PR por si.
 - **Quem revisa:** recebe o PR, examina intenção, lista de Planos/commits, diff consolidado, evidências, target e drift; aprova ou solicita correções. Só integra com autorização explícita para o destino. A abertura do PR não é aprovação nem concede escrita na `main`.
-- **Transferência:** registre objetivo da sessão, Planos e respectivos commits de validação, riscos, evidências, HEAD, base, identidade da Worktree e URL/número reais do PR, quando existirem. Publique o handoff com `continuum-publication`.
+- **Transferência:** registre objetivo da sessão, Planos e respectivos commits de validação, riscos, evidências, HEAD, base, branch final, identidade da Worktree e URL/número reais do PR, quando existirem. Publique o handoff com `continuum-publication`.
 
 **Cadência e coesão:** um PR por sessão concluída, ainda que contenha vários Planos validados. Não prolongue uma sessão artificialmente para agrupar trabalho não relacionado ou produzir PR excessivamente amplo; nesse caso, conclua uma sessão coerente e inicie outra. Não fragmente a mesma sessão em PRs por Plano/checkpoint. Se uma entrega precisar ser integrada antecipadamente por dependência ou urgência, **conclua formalmente a unidade de sessão correspondente** e abra o PR dela, em vez de manter vários PRs parciais dependentes da mesma sessão.
 
@@ -101,7 +113,7 @@ Use Git local autorizado quando disponível e `git-operations` apenas se exigir 
 
 O fim de um Plano significa **validação + commit + handoff pertinente**, não encerramento da sessão. Outros Planos relacionados podem continuar na mesma branch/Worktree.
 
-Na conclusão, confirme a preservação dos commits validados, a composição com prova suficiente, o PR único (ou seu bloqueio explícito) e as pendências. **Sessão concluída não significa PR merged.** Não feche automaticamente a Worktree. Para nova sessão após integração, estabeleça branch exclusiva e baseline atualizado sem reapresentar commits já integrados.
+Na conclusão, confirme a adequação semântica do nome da branch e eventual renomeação segura antes do PR, a preservação dos commits validados, a composição com prova suficiente, o PR único (ou seu bloqueio explícito) e as pendências. **Sessão concluída não significa PR merged.** Não feche automaticamente a Worktree. Para nova sessão após integração, estabeleça branch exclusiva e baseline atualizado sem reapresentar commits já integrados.
 
 ## Integração
 
