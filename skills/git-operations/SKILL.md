@@ -1,6 +1,6 @@
 ---
 name: git-operations
-description: Use operações Git remotas pelo MCP do Code Awareness quando não houver equivalente local autorizado: estado, stage, commit, branches, sync, shelves, conflitos e recuperação com receipts. Para Worktrees remotas protegidas use worktree-mcp-operations; para Git local use worktree-execution.
+description: Use operações Git pelo MCP do Code Awareness quando não houver equivalente local autorizado: estado, evidência remota, mergeabilidade de PR, stage, commit, branches, sync e recuperação com receipts. Para Worktrees remotas protegidas use worktree-mcp-operations; para Git local use worktree-execution.
 ---
 
 # Git Operations
@@ -35,7 +35,7 @@ Observe quando aplicável:
 - branch;
 - HEAD;
 - upstream;
-- ahead/behind;
+- `ahead/behind` (sempre relativos às refs de tracking locais, sem prova do servidor);
 - staged/unstaged/untracked;
 - conflitos;
 - operação Git ativa;
@@ -43,6 +43,18 @@ Observe quando aplicável:
 - `worktreeRevision`.
 
 Use `get_git_changes` somente quando precisar descobrir quais paths compõem o estado dirty.
+
+### Prova remota sob demanda
+
+Se a decisão depender da posição **real** da branch no servidor, prefira `get_git_state({ remoteCheck: 'VERIFY' })` em vez de presumir que `ahead/behind: 0/0` prove sincronização. A chamada padrão não consulta o remoto e retorna `remoteEvidence.status: NOT_CHECKED`; `VERIFY` utiliza leitura autenticada do upstream sem `fetch`, sem atualizar refs, índice, HEAD ou Worktree.
+
+Interprete `remoteEvidence`:
+
+- `VERIFIED`: use `remoteHead`, `trackingHead`, `localHead`, `observedAt`, `tracking` e `relationship` vinculados àquele instante; `TRACKING_STALE` significa que o cache de tracking não corresponde ao servidor. `remoteCounts: null` ou `relationship: UNKNOWN` não autoriza inventar divergência, FF ou quantidade de commits.
+- `NOT_CHECKED`: nenhuma consulta remota foi feita.
+- `UNAVAILABLE`: a verificação falhou ou não existe upstream; preserve `reason` e não alegue `IN_SYNC`.
+
+A leitura remota é uma fotografia pontual e não substitui preconditions em futuras mutações. Faça `sync_git_remote(FETCH)` somente quando a intenção **for atualizar refs locais** para operações que dependam delas; não use FETCH como mero diagnóstico quando VERIFY suficiente.
 
 Não leia diffs amplos por rotina.
 
@@ -131,6 +143,17 @@ Não misture resíduos desconhecidos com a mudança pretendida apenas para deixa
 
 Para **Plano Final Executável validado**, registre um commit na branch exclusiva da sessão; **não abra PR por Plano, commit ou checkpoint**. Vários commits validados podem se acumular até a **conclusão da sessão**, quando o padrão de transferência e integração é **um único PR consolidado**, regido por `worktree-execution`. Esta Skill trata apenas de **Git remoto tipado pelo MCP**; ela não abre nem aprova PR. Com autorização, `sync_git_remote PUSH` pode publicar **somente a branch da sessão** (nunca `main` por inferência), inclusive antes da conclusão para backup/sincronização; push intermediário não dispara PR. Na conclusão, use GitHub/CLI autorizada para abrir o PR. Quem recebe revisa no provedor e somente então integra com permissão própria. Merge Git direto via MCP continua exceção expressa, sem eliminar revisão.
 
+## Mergeabilidade de Pull Request
+
+Quando precisar de evidência de integração de um PR no **GitHub associado ao repositório ativo**, use `inspect_pull_request_mergeability({ prNumber })`, se a ferramenta estiver disponível e a integração REST do Code Awareness estiver configurada. A consulta é somente leitura e distinta do transporte Git usado por `get_git_state(VERIFY)`; Git remoto funcional não prova configuração do GitHub REST.
+
+- `MERGEABLE`: o provedor não detectou impedimento de merge do grafo naquele snapshot; não significa revisões/checks/políticas aprovados.
+- `NOT_MERGEABLE`: não significa necessariamente conflito; somente `conflict: CONFLICT_CONFIRMED` com evidência explícita do provedor justifica afirmar conflito.
+- `UNKNOWN`: provedor ainda não conclusivo; reconsulte depois sob demanda, sem polling contínuo.
+- `UNAVAILABLE` (inclusive `CONFIGURATION_REQUIRED`): limite de configuração/autoridade/alcance, **não** um veredito de mergeabilidade. Use outra via autorizada do GitHub quando necessário, sem inventar resultado.
+
+Compare `base.sha`, `head.sha` e `observedAt` com a revisão que pretende integrar. Siga `worktree-execution` para revisão, autorização e merge; esta tool nunca integra PR.
+
 ## Branches, upstream e remoto
 
 Use `manage_git_branch` para operações locais tipadas, inclusive o vínculo de upstream da branch atual.
@@ -147,7 +170,7 @@ O problema é existir uma branch destinada a sincronizar com remoto e ela perman
 Ao trabalhar em uma branch que deve acompanhar uma branch remota, especialmente a branch principal:
 
 1. observe `get_git_state`;
-2. se `upstream` estiver configurado, use `ahead/behind` como sinal de sincronização;
+2. se `upstream` estiver configurado, interprete `ahead/behind` somente como posição perante a remote-tracking ref local; quando importar servidor real, verifique `remoteEvidence` explicitamente;
 3. se `upstream: null`, determine se isso é intencional;
 4. quando o tracking deveria existir, garanta freshness com `sync_git_remote FETCH` se necessário;
 5. confirme que a remote-tracking branch alvo existe;
@@ -168,7 +191,7 @@ Não use `PUSH` como substituto implícito de tracking. Sincronizar conteúdo re
 
 Quando a branch local e a remote-tracking branch precisarem convergir, primeiro sincronize o conteúdo com as operações remotas seguras e depois estabeleça o upstream.
 
-Antes de decisões dependentes do remoto, prefira `sync_git_remote FETCH` quando freshness remota importar.
+Antes de decisões dependentes do remoto, prefira `get_git_state(remoteCheck: VERIFY)` para observar o servidor sem mutação; faça FETCH deliberado quando a operação exigir refs locais atualizadas.
 
 Use:
 
