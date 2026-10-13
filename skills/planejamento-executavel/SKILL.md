@@ -1,6 +1,6 @@
 ---
 name: planejamento-executavel
-description: Use antes de delegar implementação para verificar se a solução realmente exige um Plano Final Executável, ou se é somente configuração/operação administrativa, e, quando exigir implementação, definir unidades, contratos, prova e executor mínimo. Publique o Plano no Continuum quando cabível. Não use para decidir investimento em feature (feature-investment-gate) nem para decisões arquiteturais abertas.
+description: Use antes de delegar implementação para verificar se a solução realmente exige um Plano Final Executável, ou se é somente configuração/operação administrativa, e, quando exigir implementação, definir unidades, contratos, prova e executor mínimo. Para qualquer Plano Final Executável, publique obrigatoriamente no Continuum do repositório ativo antes de declarar entrega; sem receipt confirmado, não substitua a publicação por texto no chat. Não use para decidir investimento em feature (feature-investment-gate) nem para decisões arquiteturais abertas.
 ---
 
 
@@ -481,7 +481,7 @@ Antes de entregar o Plano Final, verifique:
 15. Existe detalhe tático desnecessariamente prescrito?
 16. Existe contexto ou explicação histórica que pode ser removido sem perda de executabilidade?
 17. Um Implementador que não participou da investigação consegue executar este Plano diretamente?
-18. O Plano final foi publicado no Continuum do repositório ativo quando a capability estava disponível?
+18. A publicação obrigatória do Plano no Continuum do repositório ativo foi confirmada por receipt persistido e `artifactId` válido (ou a entrega foi explicitamente declarada bloqueada)?
 19. A referência entregue ao Implementador aponta para a representação canônica, sem cópia concorrente?
 20. O `executionId`, quando necessário para continuidade entre Plano e Handoff, foi criado ou reutilizado de forma estável?
 21. Os Planos possuem provas próprias para commits de validação e a sessão tem uma fronteira de conclusão coesa para um PR, sem PR por Plano nem agrupamento artificial?
@@ -536,7 +536,7 @@ Não copie para esta Skill procedimentos pertencentes à capacidade especializad
 
 ## Publicação e Handoff via Continuum
 
-Quando o repositório ativo possuir Continuum disponível, o Plano Final Executável deve ser transferido ao Implementador **por meio do Continuum**, não por copy/paste manual.
+**Regra obrigatória e incondicional de entrega:** todo Plano Final Executável deve ser publicado no Continuum canônico do repositório ativo **antes de responder com o handoff**. A redação do Plano, sozinha, não conclui a tarefa; exija confirmação de persistência e `artifactId` real. A ausência de ferramenta é bloqueio de publicação, nunca autorização implícita para entregar o texto integral como se fosse o Artifact.
 
 O Plano publicado é a representação canônica da transferência Arquitetura → Implementação.
 
@@ -575,7 +575,7 @@ Se o Continuum estiver indisponível:
 - não invente `artifactId`;
 - não produza uma versão resumida como substituto silencioso.
 
-A transferência direta do texto é fallback operacional, não o caminho normal. Quando a publicação voltar a estar disponível, materialize a mesma representação canônica conforme a Skill `continuum-publication`.
+A transferência direta do texto só é fallback excepcional, identificado explicitamente como **não publicado**, quando o usuário solicitar essa alternativa ou a publicação estiver comprovadamente indisponível. Não apresente o Plano como entregue nem reproduza o corpo completo por padrão. Quando a publicação voltar a estar disponível, materialize a mesma representação canônica conforme a Skill `continuum-publication`.
 
 ## Forma de Saída
 
@@ -597,7 +597,7 @@ Para cada Unidade, deixe explícito o novo estado que ela deve produzir.
 
 Adapte a forma ao problema sem enfraquecer os contratos necessários para execução segura.
 
-Quando o Continuum estiver disponível, a saída operacional normal após a publicação é **referenciar o Artifact publicado**, não reproduzir novamente o Plano inteiro.
+A saída normal é **confirmar a publicação persistida e referenciar o Artifact canônico pelo nome exato e `artifactId`**, sem reproduzir o Plano no chat. Se a publicação falhar, declare a pendência e o motivo; nunca declare a entrega concluída.
 
 ## Regra Final
 
