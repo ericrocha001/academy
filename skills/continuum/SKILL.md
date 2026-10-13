@@ -42,7 +42,7 @@ Continuum tells you what happened. Code Navigation tells you what exists now. Ar
 
 # Artifact Graph
 
-Relações usam `artifactId` canônicos existentes **no mesmo Continuum** e `kind` aberto. Não use título, filename ou path como alvo. Não crie autorrelações nem repita a mesma aresta.
+Relações usam `artifactId` canônicos existentes **no mesmo Continuum** e `kind` tecnicamente aberto no backend. Para **nova autoria**, o vocabulário controlado de `kind`, `status` e relação `kind` pertence exclusivamente a `continuum-publication`; não derive um valor novo de um caso histórico ou de uma etapa operacional. Não use título, filename ou path como alvo. Não crie autorrelações nem repita a mesma aresta.
 
 Vocabulário recomendado:
 
