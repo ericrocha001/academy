@@ -311,7 +311,7 @@ Uma Unidade pode ser demonstrada por:
 - benchmark;
 - outra evidência apropriada.
 
-Crie ou preserve teste permanente quando houver valor real de proteção futura.
+Fora da correção de bugs, crie ou preserve teste permanente quando houver valor real de proteção futura. Para bugs corrigidos, aplique a regra obrigatória de proteção de regressão abaixo.
 
 Normalmente isso ocorre quando houver:
 
@@ -325,27 +325,31 @@ Normalmente isso ocorre quando houver:
 
 > **A Unidade precisa de uma prova. O comportamento recebe proteção permanente quando merece proteção permanente.**
 
-## Bugs Reproduzíveis
+## Bugs Corrigidos e Proteção de Regressão
 
-Para bugs reproduzíveis, prefira:
+**Todo bug corrigido deve deixar proteção permanente contra sua reincidência.** Crie ou adapte um teste automatizado na suíte existente que discrimine o comportamento defeituoso, sem duplicar cobertura equivalente já comprovada.
+
+Para bugs reproduzíveis, o ciclo obrigatório é:
 
 ```text
 Bug
 ↓
-prova que reproduz a falha
+teste que reproduz a falha
 ↓
-confirmação da falha
+confirmação de que falha antes da correção
 ↓
 correção
 ↓
-mesma prova aprovada
+mesmo teste aprovado
 ↓
-proteção de regressão preservada quando valiosa
+regressão preservada na suíte
 ```
 
-Não altere uma prova correta apenas para acomodar uma implementação defeituosa.
+O teste deve falhar diante do defeito original e passar com a correção; uma prova temporária descartada ao final não constitui proteção permanente. Não altere uma prova correta para acomodar implementação defeituosa, salvo evidência independente de erro na própria prova.
 
-A intenção da prova permanece estável enquanto a correção é realizada, salvo evidência independente de que a própria prova estava incorreta.
+Quando não for tecnicamente viável automatizar a regressão de modo confiável, documente a limitação e a justificativa da exceção e preserve um procedimento verificável de prevenção ou reprodução, adequado ao risco. Quando o bug não puder ser reproduzido previamente, registre a evidência do diagnóstico e proteja o contrato afetado quando viável; não invente uma falha anterior nem declare cobertura automatizada inexistente.
+
+A exigência é proteger o comportamento contra reincidência, não criar necessariamente um novo arquivo ou teste redundante para cada relato.
 
 ## Validação Local
 
