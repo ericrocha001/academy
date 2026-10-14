@@ -771,6 +771,10 @@ Do not produce a long document when the decision is obvious.
 
 ---
 
+# Handoff para desenho orientado a sinal
+
+Após uma decisão favorável de investimento, se **a necessidade do consumidor já é conhecida, mas ainda faltam as decisões, informações e ações específicas que entregarão valor**, use `signal-driven-feature-design` para fechar um Contrato de Sinal e Ação **antes** da arquitetura ou UI. Este gate continua responsável por **se investir e qual superfície tem valor marginal**; não derive nem duplique aqui a matriz de sinais e ações. Se o contrato funcional já estiver definido, prossiga sem etapa adicional.
+
 # 30. Core Principle
 
 Build capabilities according to the consumer that actually needs them.
