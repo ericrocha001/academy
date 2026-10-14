@@ -50,6 +50,10 @@ Consequências:
 - não use o source atual como desculpa para preservar uma composição visual ruim quando o comportamento pode ser apresentado melhor;
 - diferenças entre mockup e runtime final são esperadas quando preservam melhor verdade funcional, Design System e arquitetura aprovada.
 
+## Fronteira com o desenho funcional
+
+Quando uma UI nova ou um redesign **ainda não tem clareza sobre o que o consumidor precisa decidir, quais sinais necessita e quais ações o sistema deve assumir**, use primeiro `signal-driven-feature-design` e receba seu Contrato de Sinal e Ação. Esta Skill continua responsável por **como organizar e representar** capacidades aprovadas em hierarquia, layout, estados, responsividade e Design System. Não recrie a descoberta do valor em cada ajuste visual nem invoque a Skill de sinal para um layout cujo contrato já esteja claro.
+
 ## Antes de desenhar
 
 Estude a UI atual e seu source suficiente para responder:
