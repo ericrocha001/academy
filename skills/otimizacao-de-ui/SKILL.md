@@ -54,6 +54,21 @@ Consequências:
 
 Quando uma UI nova ou um redesign **ainda não tem clareza sobre o que o consumidor precisa decidir, quais sinais necessita e quais ações o sistema deve assumir**, use primeiro `signal-driven-feature-design` e receba seu Contrato de Sinal e Ação. Esta Skill continua responsável por **como organizar e representar** capacidades aprovadas em hierarquia, layout, estados, responsividade e Design System. Não recrie a descoberta do valor em cada ajuste visual nem invoque a Skill de sinal para um layout cujo contrato já esteja claro.
 
+## Design System canônico do Code Awareness — aquisição condicional
+
+Se a interface pertence ao **repositório ativo Code Awareness**, existe um Living Artifact normativo no **Continuum desse repositório**:
+
+- **Nome:** `Code Awareness Design System — Visual Foundation v1`.
+- **artifactId canônico:** `artifact-35fcb807-45fb-42a6-a0e8-eb121847ee39`.
+- **Descoberta:** `list_artifacts` com `metadata: {livingArtifact: true}` e `query: "Design System"`, seguida de `get_artifact` para o Artifact selecionado. Se o ID conhecido ainda corresponder ao repositório ativo, pode ser usado diretamente.
+- **Procedimento de recuperação e seleção de canal:** Skill `continuum`. Não acessar outro repositório ou presumir que esse Artifact exista em qualquer produto.
+
+**Gate de uso:** antes de definir direção visual para UI nova ou redesign material do Code Awareness, recupere a revisão canônica vigente; não trabalhe apenas de memória, por screenshot ou por um mockup isolado. Inicie pela **Entrada Rápida — Preset de Design** e aprofunde as seções relevantes (preset/reprodução, header, gradiente, geometria, estados, exemplares e aceitação), sem inventariar o Continuum. Preserve o Design System como fonte única de identidade, sem copiar seus tokens, receitas ou regras para esta Skill.
+
+Para correção visual pontual cujo padrão já está claro e o source/tokens bastam, não imponha leitura extensa por ritual. Se o acesso ao Continuum falhar, não invente o documento nem alegue adesão verificada: use somente referências disponíveis, registre a limitação e não declare conformidade canônica que não foi conferida.
+
+Em outros projetos, continue usando o Design System próprio, quando existente; o vínculo acima é **específico do Code Awareness**, não um padrão estético universal.
+
 ## Antes de desenhar
 
 Estude a UI atual e seu source suficiente para responder:
