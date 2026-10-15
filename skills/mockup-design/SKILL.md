@@ -141,6 +141,20 @@ Pode simplificar conteúdo textual para legibilidade visual, mas preserve o sign
 
 Se um elemento ilustrativo for necessário para demonstrar composição, ele deve representar uma capability real.
 
+## Design System canônico do Code Awareness — antes do mockup
+
+Quando o mockup for de uma tela do **repositório ativo Code Awareness**, a linguagem visual já possui uma fonte normativa durável no Continuum:
+
+- **Nome:** `Code Awareness Design System — Visual Foundation v1`.
+- **artifactId canônico:** `artifact-35fcb807-45fb-42a6-a0e8-eb121847ee39`.
+- **Recuperação:** use a Skill `continuum` para descobrir por `metadata: {livingArtifact: true}` + `query: "Design System"` e abrir o Artifact selecionado com `get_artifact` (ou acessar o ID conhecido, após confirmar o repositório ativo).
+
+**Antes de gerar ou transformar o mockup**, leia a revisão vigente, use a **Entrada Rápida** e o **brief visual canônico da seção 39.3** como base de identidade; selecione apenas os exemplares visuais pertinentes indicados pelo Artifact, se acessíveis. Acrescente o contrato de sinal/ação da feature, as regiões e estados realmente sustentados pelo source. A receita visual evita redescobrir o estilo do Code Awareness, mas não determina a composição de todas as features nem autoriza capacidades fictícias.
+
+Não reproduza neste SKILL.md o gradiente, raios, tokens ou o brief: pertencem ao Living Artifact e evoluem lá. Uma imagem ou plano mencionado no Design System não é prova de pixels acessíveis: diferencie exemplar de runtime, mockup aprovado e mídia cuja publicação não foi confirmada.
+
+Se o Continuum estiver indisponível, não presuma acesso ou afirme fidelidade canônica; explicite a limitação e use apenas referências verificáveis. Para outros produtos, respeite o Design System do respectivo projeto, sem transplantar a identidade do Code Awareness.
+
 ## Design System primeiro
 
 Quando houver Design System:
