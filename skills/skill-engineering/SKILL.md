@@ -233,7 +233,7 @@ Quando uma configuração específica da plataforma resolver um caso comprovado,
 
 ## Recursos Complementares por Demanda
 
-Quando uma capacidade continuar **coesa**, mas possuir contrato extenso, protocolo, exemplos, tabelas ou referência necessária apenas em alguns casos, mantenha o `SKILL.md` como entrada de descoberta e procedimento principal; coloque o detalhe em arquivos complementares do **mesmo package**, como `references/protocolo.md`. Referencie o caminho explicitamente no corpo e oriente o carregamento somente quando a tarefa exigir. Não crie outra Skill apenas para acomodar esse conteúdo.
+Quando uma capacidade continuar **coesa**, mas possuir contrato extenso, protocolo, exemplos, tabelas ou detalhe necessário apenas em alguns casos, mantenha o `SKILL.md` como entrada de descoberta e procedimento principal; coloque o aprofundamento em arquivos complementares do **mesmo package**. `references/` é a convenção recomendada para documentação adicional, não uma pasta obrigatória nem destino universal. Use `scripts/` para executáveis determinísticos e `assets/` para templates, imagens e arquivos reutilizáveis. A especificação Agent Skills permite também arquivos na raiz ou outras pastas quando sua finalidade concreta justificar. Não crie diretórios vazios, camadas profundas nem nomes alternativos por estética. Referencie os caminhos relativos diretamente no `SKILL.md` e indique quando ler, executar ou utilizar cada recurso; não carregue conteúdo condicional antes de sua necessidade. Não crie outra Skill apenas para acomodar esse conteúdo.
 
 Preserve uma fonte canônica na Academy e caminhos relativos estáveis. Não copie o recurso integral para o corpo nem mantenha versões paralelas do contrato. A projeção do plugin deve incluir todos os arquivos referenciados; **não presuma** que um complemento disponível na Academy foi incluído na versão instalada.
 
@@ -242,11 +242,11 @@ Antes de declarar a distribuição correta, confirme no runtime de destino: (1) 
 ### Gate de representacao: corpo, complemento ou Skill?
 
 - **Corpo da Skill:** o procedimento precisa estar presente em quase todo acionamento da mesma capacidade.
-- **`references/`:** detalhe condicional da mesma capacidade, sem gatilho ou resultado proprio. Deve poder permanecer descarregado quando a tarefa nao o exigir.
+- **Complemento no mesmo package:** detalhe condicional da mesma capacidade, sem gatilho ou resultado próprio. Use `references/` para documentação, `scripts/` para execução determinística, `assets/` para recursos reutilizáveis, ou outro caminho justificado e suportado. Deve permanecer descarregado quando a tarefa não o exigir.
 - **Outra Skill:** existe um pedido autonomo, resultado proprio e gatilhos positivos e negativos distinguiveis, mesmo quando a Skill original nao foi acionada; o ganho de contexto deve superar o custo de descoberta e composicao.
 - **Outra representacao:** procedimento deterministico pertence a ferramenta; estado factual pertence a fonte canonica, nao a mais instrucoes.
 
-Teste contrafactual: o usuario poderia solicitar a nova capacidade sem precisar da Skill original? Se nao, prefira corpo ou `references/`. Se sim, prove independencia de acionamento e ausencia de duplicacao antes de separar. O tamanho do documento, isoladamente, nao decide.
+Teste contrafactual: o usuário poderia solicitar a nova capacidade sem precisar da Skill original? Se não, prefira corpo ou recurso complementar apropriado. Se sim, prove independência de acionamento e ausência de duplicação antes de separar. O tamanho do documento, isoladamente, não decide.
 ## Preserve Alto Sinal
 
 Para cada instrução, pergunte:

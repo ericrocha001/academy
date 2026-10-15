@@ -46,7 +46,23 @@ Para cada decisão, identifique: gatilho/situação, consequência de ignorá-la
 
 Nem toda informação precisa ser alerta. Orientação e contexto úteis podem ser consultados sob demanda.
 
-### 3. Especifique o Pure Signal por decisão
+### 3. Investigue as capacidades dos fornecedores do sinal
+
+Quando a feature depende de biblioteca, framework, API, banco, serviço, ferramenta ou subsistema existente, **estude seletivamente o que esse fornecedor já disponibiliza antes de projetar coleta, correlação ou mecanismo próprios**. Parta das decisões da etapa 2; não inventarie a tecnologia por curiosidade.
+
+Para cada decisão que depende dele, verifique:
+
+- **Fatos nativos:** que dados, eventos, estados, relações, mudanças ou diagnósticos o fornecedor efetivamente oferece e por qual contrato/interface?
+- **Semântica e limites:** o que cada dado prova, o que apenas sugere e o que não permite concluir? Qual sua procedência, cobertura, versão e validade temporal?
+- **Disponibilidade real e custo:** a capacidade existe apenas na documentação ou também na versão e integração utilizadas? Quanto custa consultar, agrupar, atualizar e revalidar?
+- **Composição decisória:** que sinais úteis podem surgir de fatos já disponíveis, combinados sem duplicar lógica, estado ou fonte de verdade?
+- **Lacuna residual:** o que precisa ser desenvolvido de fato para responder à decisão, depois de esgotado o reaproveitamento proporcional das capacidades existentes?
+
+Prefira verificar contratos e saídas reais antes de inferir possibilidades. **Dado disponível não é sinal útil por si só; dado de fornecedor não é autorização para agir.** Distinga fato nativo, interpretação do produto e inferência, com seus limites. Não suponha que o fornecedor já exponha no produto tudo que suporta nativamente.
+
+Investigue na profundidade necessária para fechar o Contrato de Sinal e Ação; interrompa o levantamento quando novas informações não mudarem decisões. Para incertezas materiais que exigirem escolher medições ou Spikes, utilize `engineering-evidence-economy`. A arquitetura posterior define como integrar, preservar invariantes e otimizar a aquisição.
+
+### 4. Especifique o Pure Signal por decisão
 
 Para cada pergunta, determine o **mínimo suficiente** para responder com segurança:
 
@@ -58,9 +74,11 @@ Para cada pergunta, determine o **mínimo suficiente** para responder com segura
 
 Um dado tecnicamente correto pode ser **ruído cognitivo** se não ajudar a decisão. Não exibir campos porque existem no banco, logs ou API. Também não esconder uma limitação material para simplificar visualmente.
 
+**Descoberta ≠ comprovação:** quando houver muitos objetos ou relações, descubra candidatos economicamente e confirme seletivamente os relevantes. Separe universo descoberto de cobertura realmente verificada; conclusões negativas valem apenas no escopo observado. Declare quando mudança de versão, fonte, identidade ou instante tornar um sinal obsoleto.
+
 **Regra de verdade:** falta de evidência não é evidência de ausência; interpretação de potencial não vira fato comprovado; status documental não vira operação ao vivo.
 
-### 4. Aloque as ações e transfira esforço
+### 5. Aloque as ações e transfira esforço
 
 Para cada decisão, pergunte:
 
@@ -73,7 +91,7 @@ Para cada decisão, pergunte:
 
 Um alerta só é útil se informar **o que foi observado, por que importa e qual decisão/ação merece atenção**; sem confiança ou consequência suficiente, mantenha-o como hipótese/cobertura, não ruído urgente.
 
-### 5. Feche o Contrato de Sinal e Ação
+### 6. Feche o Contrato de Sinal e Ação
 
 Registre um quadro pequeno, sem criar documento próprio quando uma seção bastar:
 
@@ -90,7 +108,7 @@ Elimine **órfãos**:
 
 Separe informações **primárias**, **contextuais**, **excepcionais** e **técnicas sob demanda**, sem definir layout, componentes ou design visual. O sistema pode precisar internamente de muitos dados que jamais chegarão ao usuário.
 
-### 6. Verifique com cenários e custo marginal
+### 7. Verifique com cenários e custo marginal
 
 Teste mentalmente ou com evidência barata:
 - O consumidor atinge o resultado **sem reconstruir manualmente a investigação**?
@@ -100,6 +118,8 @@ Teste mentalmente ou com evidência barata:
 - A carga de atenção, número de operações, tempo ou erros caiu em relação ao fluxo atual?
 - A ação proposta respeita permissões e tem uma saída concreta?
 - A solução preserva valor mesmo que IDE, fluxo ou modelo de IA mudem?
+
+**Gate do valor central:** quando o resultado depender de um sinal ainda não comprovado, verifique sua viabilidade com um caso positivo, um negativo/ambíguo, escopo declarado e custo proporcional **antes** de ampliar UI ou infraestrutura. Se o sinal não for sustentável, reduza ou interrompa a proposta; não simule inteligência com heurísticas frágeis nem transfira a investigação central ao consumidor.
 
 Use medições/Spike **somente** quando faltar prova material que mude a decisão. Não gerar telemetria, processo ou interfaces extras por ritual.
 
@@ -121,6 +141,12 @@ Não exigir todas essas Skills em sequência. Chame somente a especialização c
 ## Exemplo generalizável
 
 **Necessidade:** coordenar trabalhos paralelos sem acompanhar cada checkout. **Solução insuficiente:** pedir ao usuário que escolha pares para comparação. **Decisão real:** há interferência que merece minha atenção? **Sinal:** trabalhos envolvidos, relação verificada, escopo/limite e próxima decisão. **Ação do sistema:** descobrir e investigar candidatos automaticamente com custo controlado. **Ação do humano:** coordenar quando houver evidência relevante. O mesmo raciocínio vale para qualquer produto: **não transferir ao consumidor a descoberta que o sistema deveria realizar**.
+
+## Aprendizado transferível (condicional)
+
+Uma decisão de feature bem-sucedida também pode revelar um método de desenho reutilizável, **mesmo sem fricção ou erro**. Quando houver uma decisão não óbvia com ganho material, considere se seu mecanismo orientaria decisões em outros domínios. Não promova regras presas ao fornecedor, à interface ou ao caso original.
+
+Para avaliar e encaminhar esse aprendizado, carregue **`references/aprendizado-transferivel.md` somente quando houver candidato concreto**. Antes de alterar qualquer Skill, verifique cobertura existente e use `skill-engineering` para decidir representação, não duplicação e ganho marginal. Não atualize Skills automaticamente após cada feature; *nenhuma atualização* é resultado válido.
 
 ## Critério final
 

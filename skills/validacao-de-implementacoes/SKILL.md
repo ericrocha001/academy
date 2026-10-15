@@ -413,6 +413,23 @@ Mocks reduzem escopo.
 
 Não devem falsificar a força da evidência.
 
+## Provas de Afirmações Derivadas de Evidência
+
+Quando o produto afirma procedência, autoria, integração, completude ou outro estado derivado de observações, valide a **afirmação apresentada**, não apenas a correção da consulta ou a existência dos dados retornados.
+
+Escolha o menor conjunto discriminativo:
+- um caso com evidência suficiente para a afirmação;
+- um controle com o mesmo indício aparente, mas sem a propriedade afirmada;
+- quando material, uma fonte ausente, parcial ou invalidada, verificando que não se transforma em ausência comprovada ou certeza.
+
+Construa a expectativa a partir de eventos ou estados conhecidos da fixture, independentemente da regra usada pela implementação. Reaplicar o mesmo filtro para calcular o resultado esperado pode reproduzir o erro no oráculo do teste.
+
+Exemplos: commit alcançável pelo HEAD pode ter sido herdado de outro checkout; presença de um documento em um índice não prova que toda a coleção foi examinada. Um controle que preserva o indício e altera sua origem ou cobertura distingue o contrato de uma aproximação enganosa.
+
+Quando a evidência puder deixar de valer, exercite a transição relevante de identidade, versão ou contexto. Confira também o rótulo, a contagem e a ação no consumidor quando puderem ampliar a conclusão do backend. Preserve incerteza material; resultado vazio e cobertura indisponível não são equivalentes.
+
+Não amplie a suíte por combinatória: acrescente somente controles que possam refutar uma inferência material ainda não coberta.
+
 ## Paridade das Fronteiras de Validação
 
 Quando uma prova usa fixture, runner ou ambiente substituto, identifique as restrições do runtime real que podem determinar a propriedade testada (por exemplo, políticas de segurança, permissões, configuração de inicialização e canais de integração). Preserve essas restrições relevantes na prova; caso não sejam reproduzidas, limite explicitamente o alcance da evidência e não declare o comportamento integrado como validado.
