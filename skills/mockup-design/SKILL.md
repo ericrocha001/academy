@@ -286,6 +286,10 @@ Se a ferramenta visual produzir pequenas imperfeições tipográficas, isso não
 
 Não transforme o mockup em fonte para copiar strings.
 
+## Referência visual no Continuum
+
+Quando o usuário quiser publicar um mockup aprovado como `VISUAL_REFERENCE` no Continuum, use `continuum-publication` para preservar a mídia, nome, descrição, contexto e relações; não confunda essa publicação com `repository-file-ingress`, que grava um arquivo no repositório Git. Se o transporte MCP não receber um descriptor HTTPS autorizado, **use o fallback de publicação manual e reconciliação do Artifact existente definido em `continuum-publication`**. Não recrie o procedimento nesta Skill, nem trate uma cópia na Biblioteca ChatGPT como prova de publicação no Continuum.
+
 ## Persistência no repositório
 
 Quando o mockup aprovado merecer valor durável, use a Skill `repository-file-ingress` para materializá-lo no repositório ativo.
