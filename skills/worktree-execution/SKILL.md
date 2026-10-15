@@ -9,7 +9,7 @@ description: Use ao executar trabalho isolado em Git Worktree ou revisar uma ses
 
 Governar uma sessão isolada sem confundir **validação de Plano**, **conclusão de sessão**, **integração por merge** e **encerramento da Worktree**.
 
-**Modelo padrão:** uma sessão, uma Worktree e uma branch exclusiva por linha coerente de trabalho. A sessão pode executar vários Planos Finais Executáveis. Cada Plano concluído e validado gera **um commit de validação** na branch da sessão; nenhum deles abre PR isoladamente. Ao concluir a sessão, o conjunto de commits é submetido em **um único Pull Request (PR)**. Revisão e merge ocorrem apenas com autorização própria. Uma Worktree pode ser reutilizada em outra sessão, com branch e baseline apropriados.
+**Modelo padrão:** uma sessão, uma Worktree e uma branch exclusiva por linha coerente de trabalho. A sessão pode executar vários Planos Finais Executáveis. Cada Plano concluído e validado gera **um commit de validação** na branch da sessão; nenhum deles abre PR isoladamente. Ao concluir a sessão, o conjunto de commits é submetido em **um único Pull Request (PR)**. Revisão e merge ocorrem apenas com autorização própria. Uma execução apenas suspensa pode ser retomada no mesmo ambiente. Após merge verificado ou abandono confirmado, uma nova tentativa exige nova Worktree, branch e PR sobre o destino atualizado.
 
 Quem opera Git depende de **capacidade observada + delegação/autorização**, nunca do rótulo Arquiteto/Implementador. Delegação contínua específica pode cobrir commits e o PR final sem reconfirmações repetidas, mas Skill, validação e handoff não concedem autoridade.
 
@@ -62,7 +62,7 @@ Não crie worktree nova por plano sem razão operacional.
 
 ## Identidade e proveniência da Worktree
 
-No handoff, registre a identidade realmente observada da Worktree (path, branch, HEAD/baseline e sessão, quando conhecidos) e se o workspace continuará reutilizável. Obtenha evidência com a ferramenta disponível; não invente ou marque como verificados dados não observados.
+No handoff, registre a identidade realmente observada da Worktree (path, branch, HEAD/baseline e sessão, quando conhecidos) e se a execução permanece suspensa/retomável ou o workspace está apenas conservado para evidência. Obtenha evidência com a ferramenta disponível; não invente ou marque como verificados dados não observados.
 
 Em Artifacts do Continuum originados dessa execução, use `worktreeId` somente se o registry o verificou, e `worktreePath` quando conhecido. São identificadores históricos, não prova de posse. `executionId` correlaciona o trabalho, não substitui a identidade do checkout.
 
@@ -123,7 +123,7 @@ Use Git local autorizado quando disponível e `git-operations` apenas se exigir 
 
 O fim de um Plano significa **validação + commit + handoff pertinente**, não encerramento da sessão. Outros Planos relacionados podem continuar na mesma branch/Worktree.
 
-Na conclusão, confirme a adequação semântica do nome da branch e eventual renomeação segura antes do PR, a preservação dos commits validados, a composição com prova suficiente, o PR único (ou seu bloqueio explícito) e as pendências. **Sessão concluída não significa PR merged.** Não feche automaticamente a Worktree. Para nova sessão após integração, estabeleça branch exclusiva e baseline atualizado sem reapresentar commits já integrados.
+Na conclusão, confirme a adequação semântica do nome da branch e eventual renomeação segura antes do PR, a preservação dos commits validados, a composição com prova suficiente, o PR único (ou seu bloqueio explícito) e as pendências. **Sessão concluída não significa PR merged.** Não feche automaticamente a Worktree. Para nova tentativa após integração ou abandono confirmado, crie nova Worktree e branch sobre o destino atualizado, com novo PR; não reabra o checkout antigo como ambiente de implementação.
 
 ## Integração
 
@@ -144,9 +144,17 @@ O merge confirmado não impõe testes, builds ou pipelines pós-merge. A valida�
 
 ## Encerramento do workspace
 
-**Padrão: conservar a Worktree após commits, conclusão e merge.** A Worktree física pode ser reutilizada, mas a próxima sessão deve possuir branch exclusiva e baseline apropriado; continuar usando a branch já integrada para novo PR pode reapresentar commits ou dificultar a revisão.
+**Conservar evidência não autoriza retomar um checkout integrado ou abandonado.** Uma execução apenas suspensa continua retomável; depois de merge verificado ou abandono confirmado, nova tentativa usa nova Worktree, branch e PR sobre o destino atualizado, consumindo contexto útil do Continuum.
 
-Fechamento/limpeza exige pedido explícito do usuário, garantia de que nenhum conteúdo necessário depende exclusivamente dali, escritores parados e commits preservados. Ferramentas MCP para cleanup gerenciado nunca removem Worktrees externas. Cleanup não é prova de conclusão.
+Fechamento exige autoridade específica para remover a identidade/path selecionados, liberação comprovada do proprietário/host e preservação ou descarte conscientemente autorizado do conteúdo. Delegação para commit, PR ou merge não autoriza delete. Worktree clean, inatividade, idade, Artifact ou ancestralidade isolada não provam liberação ou merge.
+
+No Code Awareness, a limpeza automática é opt-in revogável por repositório e inscrição individual de Worktree gerenciada, limpa, sem conteúdo auxiliar não classificado, com consentimento duradouro específico de remoção e liberação do proprietário. Exige associação verificada do PR real, SHA/destino, merged e metadata coerente; aprovação/lease pontual não é consentimento para exclusões futuras. Worktrees externas sem protocolo de release nunca recebem automação.
+
+Remoção manual de Worktree externa local exige operador/proprietário legítimo, sessão previamente encerrada/liberada na IDE, atestação consciente e autorização nativa para identidade/path e fingerprint exatos. Se há disputa, writer conhecido/incerto ou recusa da IDE, bloqueie. Não transforme esse handoff humano em gerência automática ou licença para kill.
+
+PREPARE é prévia com validade, não posse nem READY sem consentimento. EXECUTE revalida identidade/generation, projeto, HEAD/branch/índice, conteúdo tracked/untracked/ignored, links, operação, autorização e preservação sob exclusividade. CANCEL invalida preparação e inscrição correspondente. Dirty manual só admite o único force necessário do Git sob descarte integralmente revisado; nunca double-force ou remoção recursiva arbitrária. Branches, refs remotas, PRs e Artifacts permanecem por padrão.
+
+Recibos idempotentes distinguem efeito comprovado de outcome desconhecido. CLOSED exige ausência física e no registry Git/provedor, com preservação verificada; restart/timeout exige reconciliação e bloqueia nova exclusão às cegas. Sem adapter remoto autorizado e comprovado, remoção remota permanece UNSUPPORTED/UNAVAILABLE. Cleanup não é prova de conclusão.
 
 ## Concorrência
 
