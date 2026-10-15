@@ -110,6 +110,16 @@ Em REVISION_CONFLICT, releia a versão corrente, reavalie a alteração e use a 
 
 Para critérios de manutenção do conteúdo de Living Artifacts, use `continuum-living-artifacts`; esta seção governa somente a **integridade das conexões no ato de publicar/editar**.
 
+## Referências visuais — publicação e fallback manual
+
+Quando o usuário solicitar preservação de uma imagem no Continuum, use `publish_visual_artifact` apenas com o **descritor de arquivo autorizado pelo host** (HTTPS + `file_id`), obedecendo o contrato do canal. Os quatro campos semânticos são **nome, descrição, contexto e relações**; a mídia é um arquivo separado. Não confundir `INVALID_FILE` (descritor/transporte inválido, inclusive URL não HTTPS) com `INVALID_VISUAL_MEDIA`, `VISUAL_SIZE_LIMIT`, `FILE_TOO_LARGE` ou falhas de aquisição. A validação real da mídia exige WebP estático lossless, dimensões e tamanho aceitos pelo produto; extensão e MIME declarados não bastam.
+
+**Fallback de publicação pelo usuário:** quando o host não disponibilizar um descritor HTTPS autorizado, a tentativa MCP falhar por transporte, ou o usuário optar pelo upload manual, não repita a chamada com `sediment://`, `sandbox:/`, `file://`, Base64, URL inventada ou URL pública permanente. Entregue o WebP verificado como arquivo para o usuário, junto dos **quatro campos completos**, com texto curto e relações por Artifact ID. Oriente a publicação na interface do Continuum do repositório ativo via **Publicar WebP**. A UI atual aceita inicialmente **uma relação**; indique a conexão principal e preserve as demais para complementação posterior. Não declare publicação concluída antes do recibo.
+
+**Reconciliação após upload:** quando o usuário disser que publicou, localize primeiro o VISUAL_REFERENCE existente por `artifactId` fornecido ou descoberta seletiva (`kind: VISUAL_REFERENCE`, nome/descrição); faça `get_artifact`, confirme identidade/mídia e atualize **in place** somente nome, descrição, contexto e conexões faltantes com `update_artifact(expectedRevision)`. A revisão de texto preserva bytes e SHA-256 imutáveis; nunca republique uma segunda mídia para completar metadata. Se o hash ou a identidade forem incompatíveis, não sobrescreva silenciosamente: investigue e peça evidência específica.
+
+O fallback é **canal alternativo de entrega do mesmo Artifact**, não nova capacidade de armazenamento, fluxo de Git, nem autorização para contornar o controle de origem. Para mockups, `mockup-design` decide quando a referência é necessária; esta Skill governa a publicação no Continuum. Persistência opcional no repositório continua com `repository-file-ingress`.
+
 # Implementation Handoff
 
 O corpo do IMPLEMENTATION_HANDOFF é exatamente o Relato Final exigido pelo AGENTS.md. Materialize uma única fonte em Markdown UTF-8, preserve verbatim e acrescente somente frontmatter de descoberta. Não gere resumo, segundo relatório ou seções duplicadas. Confirme publicação e preserve artifactId.
