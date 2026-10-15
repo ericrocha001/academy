@@ -363,6 +363,12 @@ O runtime pode — e às vezes deve — divergir do mockup para ficar melhor.
 
 Se a implementação eliminar ornamentação desnecessária, reduzir ruído, aumentar densidade útil ou adaptar proporções às restrições reais, isso é uma melhoria legítima.
 
+### Transferência da intenção aprovada para a validação
+
+Se houver direção visual aprovada, **identifique antes da execução quais regiões e decisões de aparência são materiais**, especialmente as que diferenciam um redesign completo de uma repintura da UI antiga. Use isso como contrato de aceitação para o executor: o runtime deve mostrar a incorporação dessas decisões, não apenas preservar o arranjo de painéis ou passar testes.
+
+No fechamento, compare cada região materialmente afetada com a referência e sinalize divergências significativas. **Encaminhe a prova e o gate de conformidade visual à Skill `validacao-de-implementacoes`**, sem duplicar aqui sua matriz, mecanismos ou procedimento. Nem liberdade de adaptação nem ausência de comparação pixel-perfect autorizam omitir uma transformação aprovada. Uma diferença que melhora o resultado pode ser aceita se sua intenção e evidência forem explícitas.
+
 ### Runtime como exemplar
 
 Quando uma UI validada materializar muito bem o Design System:
