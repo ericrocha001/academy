@@ -385,6 +385,17 @@ Computer Use continua útil para exploração interativa quando disponível. Sua
 
 Inspecione efetivamente as screenshots antes de aprovar a aparência. Arquivo PNG gerado ou receipt aprovado não substitui inspeção visual. Registre os estados e viewports observados e os limites da evidência: fixtures de renderer não provam backend, persistência ou integração remota.
 
+## Prova de Aderência à Intenção Visual
+
+Quando uma criação/redesign de UI possui **direção visual aprovada** (Design System, composição acordada ou mockup), a aprovação exige demonstrar **cobertura das decisões visuais materiais**, além de provar que a aplicação renderiza corretamente. A captura de screenshot, a execução de cenários visuais e a impressão geral de que a tela “ficou boa” não provam, isoladamente, essa aderência.
+
+1. Extraia da referência aprovada somente as decisões **observáveis e relevantes**: hierarquia, regiões que devem ser reformuladas, relações espaciais, identidade, densidade, estados e acabamento. Não transforme conteúdo ilustrativo, valores fictícios ou pixels do mockup em requisitos.
+2. Compare com o **runtime real inspecionado** cada região materialmente afetada. Registre de modo compacto: **região/decisão → evidência (captura/estado) → conforme, divergente ou não aplicável → justificativa quando necessária**. Um parágrafo curto ou tabela é suficiente; não crie matriz extensa para ajuste local simples.
+3. Uma adaptação é legítima quando preserva ou melhora a intenção aprovada e é exigida ou sustentada pela verdade funcional, pelo Design System ou pelas restrições reais. Explique a divergência material e a evidência; **não use “mockup não é pixel-perfect” para dispensar decisões de composição**.
+4. **Divergência material não justificada, região obrigatória não inspecionada ou decisão sem evidência suficiente bloqueia `VALIDADO` visual**. Corrija e reinspecione somente as regiões/estados afetados; se a direção aprovada precisar mudar materialmente, obtenha a decisão adequada antes de declarar conformidade.
+
+A exigência é **fidelidade à intenção, não coincidência de pixels**. Concentre a prova nas decisões que poderiam tornar um redesign apenas cosmético apesar de testes, build e screenshots aprovados. Para estruturar experiência e interpretar referências de design, use `otimizacao-de-ui`; este gate governa apenas a suficiência da evidência.
+
 ## Escopo da Prova
 
 Escolha o menor escopo que observe diretamente a propriedade.
