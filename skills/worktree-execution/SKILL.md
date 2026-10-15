@@ -27,11 +27,21 @@ Antes da primeira alteração persistente, confirme repositório, Worktree efeti
 Uma pasta distinta não prova isolamento; a sessão deve estar vinculada ao checkout correto. Não inicie a execução no checkout principal compartilhado quando o trabalho exige Worktree própria.
 ## Gate obrigatório de inicialização — antes da primeira edição
 
-**Worktree criada não significa sessão preparada.** Observe no ambiente, antes de editar: (1) repositório/checkout correto; (2) branch local e exclusiva, não a principal; (3) HEAD e baseline conhecidos; (4) ausência de colisão com outra Worktree; (5) identidade rastreável no handoff.
+**Worktree criada não significa sessão preparada.** Observe no ambiente, antes de editar: (1) repositório/checkout correto; (2) branch local e exclusiva, não a principal; (3) HEAD e baseline conhecidos; (4) ausência de colisão com outra Worktree; (5) dependências preparadas e verificadas no checkout da sessão, quando aplicáveis; (6) identidade rastreável no handoff.
 
 **Detached HEAD não passa no gate de escrita.** Se a IDE criou a Worktree detached (padrão do Codex), o executor com Git local autorizado **deve criar e ativar uma branch exclusiva e semanticamente nomeada no próprio checkout antes de editar**, verificando em seguida a associação real. Isso não altera a criação automática da Worktree pelo host: corrige o estado detached imediatamente após sua criação. A ação nativa da IDE, quando funcional, pode ser preferida. Na ausência dessa capacidade ou autorização, solicite preparação segura sem editar. Não recrie nem limpe a Worktree para resolver o vínculo. Worktree estritamente read-only pode permanecer detached.
 
 Para uma Worktree legada dirty/detached, preserve os arquivos e o índice, coordene escritores e estabeleça a branch com segurança antes de novos commits. O gate só passa após verificação objetiva; do contrário, bloqueia apenas a escrita dependente.
+## Preparação obrigatória das dependências — após vincular a branch
+
+**Ordem de inicialização:** (1) criar/selecionar a Worktree; (2) criar/ativar e verificar a branch exclusiva nessa Worktree; **(3) instalar/preparar as dependências dentro dela**; (4) verificar que o ambiente está apto a executar o aplicativo e as validações pertinentes; (5) iniciar a implementação. A instalação é a primeira ação de preparação do ambiente após o vínculo Git, não uma providência adiada até surgir falha ao rodar o aplicativo.
+
+Identifique os manifests, lockfiles, gerenciador de pacotes, requisitos de runtime e estrutura de workspaces do projeto; execute a instalação no diretório correto **da Worktree ativa**, usando o gerenciador e o modo reproduzível compatíveis com o lockfile. Respeite o arranjo do projeto (inclusive monorepos). Não presuma que dependências disponíveis no checkout principal estejam disponíveis nesta Worktree, nem copie artefatos gerados de outra Worktree como substituto da instalação. Não altere lockfiles, versões ou dependências por efeito colateral da preparação; mudanças realmente necessárias exigem tratamento explícito no escopo do trabalho.
+
+**Gate de prontidão:** confirme que a instalação terminou com êxito e que comandos relevantes do projeto podem localizar suas dependências; a existência da pasta de dependências, isoladamente, não prova prontidão. Se o projeto não possui etapa de instalação, registre essa constatação e prossiga. Falha, falta de acesso, configuração ausente ou dependências indisponíveis devem ser relatadas como impedimento à execução/validação dependente; não declare o ambiente pronto nem prossiga com implementação que dependa dele.
+
+**Reutilização:** não reinstale por Plano ou sessão automaticamente. Ao reutilizar a Worktree, verifique se as dependências continuam prontas e compatíveis com manifests/lockfiles; reinstale quando ausentes, desatualizadas ou incompatíveis. Registre no handoff eventuais limitações de preparação que afetem a execução ou a validação.
+
 ## Nome semântico da branch ao longo da sessão
 
 **O nome pertence à branch Git; não presuma que renomear a branch renomeie o diretório da Worktree, o ID da sessão ou o rótulo exibido pela UI de Orchestration.** O estado autoritativo é o Git observado no checkout, não um rótulo que pode estar desatualizado.
@@ -150,6 +160,7 @@ Não distribua automaticamente unidades do mesmo plano entre agentes apenas porq
 - exigir Code Awareness MCP para Git ou testes locais equivalentes;
 - presumir que terminal disponível autoriza escrita na `main` ou Worktree alheia;
 - iniciar implementação em detached HEAD ou checkout principal compartilhado sem isolamento comprovado;
+- começar implementação sem preparar e verificar as dependências da Worktree após vinculá-la à branch, ou presumir que as dependências de outro checkout servem;
 - confundir handoff VALIDATED com licença para mutar ou tratar autorização contínua como permissão universal entre repositórios;
 - criar Worktree por plano, misturar staged de autores/escopos diferentes ou dar push por checkpoint sem delegação;
 - abrir PR por teste, checkpoint ou Plano validado antes de concluir a sessão; criar múltiplos PRs dependentes na mesma sessão, acumular Planos alheios ao objetivo para reduzir PRs ou duplicar PR em revisão;
