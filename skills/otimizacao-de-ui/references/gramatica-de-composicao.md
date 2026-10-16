@@ -32,8 +32,8 @@ Destino possível: **foco principal**, **contexto visível discreto**, **alerta 
 - **Tipografia:** use poucos níveis distinguíveis de título, rótulo, valor e detalhe; prefira palavras precisas a parágrafos operacionais.
 - **Contraste e cor:** use semântica antes de decoração; mantenha foco e estado legíveis em todos os temas e interações.
 - **Superfícies:** separe regiões quando isso melhora orientação. Evite transformar cada número ou frase em um card.
-- **Profundidade e ornamentação:** sombras, gradientes, ícones e acentos devem apoiar hierarquia, identidade ou legibilidade. Remova efeitos que apenas competem.
-- **Densidade:** maximize sinal por área útil, não elementos por pixel. Branco/vazio funcional é válido; a legibilidade e o percurso prevalecem.
+- **Profundidade e ornamentação:** sombras, gradientes, ícones, brilhos, texturas e acentos podem agregar **beleza e atmosfera por si**, além de identidade e hierarquia. Preserve tratamentos aprovados. Só reduza os que causem conflito concreto de leitura, contraste, desempenho ou coerência visual; não exija função informacional de um ornamento.
+- **Densidade:** maximize sinal informacional por área útil, não elementos por pixel. Espaço vazio é válido, mas não exige aparência austera; beleza e acabamento visual continuam objetivos.
 - **Texto:** elimine repetição, mantenha labels que resolvem ambiguidade e não esconda alertas/ações críticos em tooltip.
 
 Não transforme essas heurísticas em valores fixos de padding, proporção ou quantidade de elementos; valores são do Design System e restrições reais.
@@ -42,12 +42,14 @@ Não transforme essas heurísticas em valores fixos de padding, proporção ou q
 
 **Passagem positiva:** finalidade perceptível? Informação decisória no momento certo? Ação possível? Contexto e limites reconhecíveis?
 
-**Passagem subtrativa:** para cada bloco ou elemento, o que aconteceria se fosse removido? Condensado? Apresentado só sob demanda? Automatizado? Mantenha apenas a representação que paga pelo custo cognitivo; se remover prejudicar o trabalho, preserve ou reposicione.
+**Passagem subtrativa informacional:** para cada informação, controle ou bloco funcional, o que aconteceria se fosse removido, condensado, revelado sob demanda ou automatizado? Preserve o que agrega valor ou é necessário.
+
+**Passagem estética:** para cada ornamento existente, não pergunte se é indispensável a uma decisão; avalie se agrega beleza, identidade ou prazer visual. **Mantenha por padrão a direção estética aprovada.** Proponha removê-lo apenas com razão concreta e alternativa que não empobreça o acabamento. Uma tela mais vazia não é automaticamente melhor.
 
 Considere estados normais, vazios, longos, degradados e telas menores. Uma tela limpa em um único screenshot pode falhar com conteúdo real.
 
 ## 6. Compare alternativas quando houver decisão aberta
 
-Se duas composições forem materialmente plausíveis, compare-as pela mesma tarefa: velocidade de orientação, sinal visível, recuperabilidade do detalhe, economia de atenção, responsividade e fidelidade ao Design System. Prefira uma direção forte; mockups alternativos somente quando esclarecerem um trade-off real. `mockup-design` materializa e critica referências; `validacao-de-implementacoes` verifica a implementação.
+Se duas composições forem materialmente plausíveis, compare-as pela mesma tarefa: velocidade de orientação, sinal visível, recuperabilidade do detalhe, economia de atenção, **qualidade estética e atmosfera**, responsividade e fidelidade ao Design System. Prefira uma direção forte; mockups alternativos somente quando esclarecerem um trade-off real. `mockup-design` materializa e critica referências; `validacao-de-implementacoes` verifica a implementação.
 
-**Regra final:** a melhor composição não é a mais vazia, nem a mais densa. É a que torna o trabalho correto mais fácil, sem esconder a verdade e sem disputar atenção desnecessariamente.
+**Regra final:** a melhor composição não é a mais vazia, nem a mais densa. É aquela que torna o trabalho correto mais fácil e preserva uma experiência visual bela, sem esconder a verdade nem desperdiçar a atenção do usuário.

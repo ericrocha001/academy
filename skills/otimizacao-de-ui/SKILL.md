@@ -124,23 +124,25 @@ Quando finalidade, decisões ou sinais ainda não estiverem definidos, obtenha o
 
 ### Presunção de Ruído — ônus da presença visual
 
-> **Tudo é ruído até que sua contribuição para a finalidade da tela seja demonstrada.**
+> **Presuma ruído em informação, controles e destaques que disputam atenção até que contribuam para a finalidade da tela. Ornamentação estética não é ruído informacional por definição.**
 
-Aplique essa presunção **tanto a elementos existentes quanto a propostas de adição**, incluindo texto, indicadores, controles, cards e ornamentação. Antes de conceder espaço ou destaque, peça uma justificativa concreta: **que compreensão, decisão, ação, orientação, estado crítico, acessibilidade ou identidade visual esse elemento melhora; para quem; e em qual momento?** Pergunte o que se perde sem sua exposição imediata e se há alternativa menos custosa em atenção.
+Aplique a presunção a **conteúdo e elementos funcionais** — existentes ou propostos — como textos, indicadores, métricas, controles, cards informacionais e destaques de estado. Antes de conceder espaço ou atenção a esses elementos, identifique que compreensão, decisão, ação ou orientação melhoram, para quem e em qual momento.
 
-**O ônus é de quem propõe manter ou destacar o elemento**, não de quem sugere retirá-lo. Na ausência de contribuição demonstrável, **não o adicione** ou proponha remover, condensar ou rebaixar sua representação. Não preencha áreas vazias apenas para ocupar espaço.
+**Beleza é valor legítimo e independente.** Gradientes, sombras, texturas, brilhos, fundos, detalhes geométricos e outros tratamentos decorativos podem existir **para embelezar, expressar identidade e dar atmosfera ao produto**, mesmo sem transmitir informação ou acelerar uma tarefa. Não exija que cada ornamento se converta em sinal funcional para permanecer. A Presunção de Ruído **não** é uma presunção de inutilidade estética.
 
-**Presunção não é prova de inutilidade.** Se houver incerteza relevante, especialmente sobre necessidades pouco frequentes, segurança, acessibilidade, erros ou contratos funcionais, investigue antes de excluir. Retirar algo da vista não significa eliminar informação, acesso ou capacidade necessários: preserve caminhos recuperáveis e destaque condicional quando a situação exigir.
+**Para informação e controles**, o ônus é de quem propõe sua presença/destaque; sem contribuição demonstrável, não adicione ou proponha condensar, rebaixar ou retirar a representação. **Para ornamentos existentes ou direção estética aprovada, o ônus é de quem propõe a remoção:** demonstre um problema concreto de legibilidade, contraste, acessibilidade, desempenho, incoerência com o Design System ou conflito visual material, e preserve a qualidade estética ao corrigir. Preferência automática por minimalismo não é justificativa. Não preencha espaços com dados inúteis; embelezamento intencional não equivale a preenchimento informacional.
+
+**Presunção não é prova de inutilidade.** Se houver incerteza relevante, especialmente sobre necessidades pouco frequentes, segurança, acessibilidade, erros ou contratos funcionais, investigue antes de excluir. Retirar algo da vista não significa eliminar informação, acesso ou capacidade necessários: preserve caminhos recuperáveis e destaque condicional quando a situação exigir. **Não confunda redução de ruído cognitivo com redução de riqueza visual**: são avaliações diferentes.
 
 Atribua destino aos elementos existentes e propostos: **destaque imediato**, **contexto discreto**, **aprofundamento sob demanda**, **condensação/automação** ou **remoção da superfície**. Julgue pela contribuição ao objetivo, frequência e momento de uso, consequência de não perceber, urgência e custo de recuperar o elemento. Não confunda dado disponível com sinal, nem utilidade eventual com visibilidade permanente. Informação rara, mas crítica, pode exigir destaque contextual imediato.
 
-**A revisão deve ser também subtrativa, inclusive em redesigns.** Questione labels repetidos, indicadores saudáveis redundantes, cards que só empacotam conteúdo, métricas decorativas, instruções excessivas e controles que transferem ao usuário trabalho realizável pelo sistema. Remover representação visual não autoriza suprimir funcionalidade, evidência, acessibilidade ou informação necessária à decisão.
+**A revisão informacional deve ser também subtrativa, inclusive em redesigns.** Questione labels repetidos, indicadores saudáveis redundantes, cards que só empacotam conteúdo, métricas sem finalidade decisória, instruções excessivas e controles que transferem ao usuário trabalho realizável pelo sistema. **Não use essa revisão para despojar a interface de seu acabamento estético.** Remover informação visível não autoriza suprimir funcionalidade, evidência, acessibilidade ou informação necessária à decisão.
 
 > **Pure Signal decide o que contribui. Clean Screen decide o que merece ocupar atenção e espaço.**
 >
 > **Cada presença visual precisa de justificativa; cada ausência de informação necessária também.**
 
-Tela pouco preenchida pode estar correta; tela densa também. Nem preencher vazios por estética nem esconder sinal importante para simular minimalismo.
+Tela pouco preenchida pode estar correta; tela densa também. Não preencha vazios com conteúdo irrelevante, mas **aceite ornamentação intencional como parte positiva do visual**. Não esconda sinal importante nem empobreça a aparência para simular minimalismo.
 
 ## Arquitetura de informação antes de styling
 
@@ -217,7 +219,7 @@ Use accent forte principalmente para:
 - foco;
 - estado que realmente merece destaque.
 
-Evite transformar a UI inteira em neon, glow ou ornamentação.
+Use neon, glow e ornamentação com intenção e em coerência com o Design System; não elimine acabamentos aprovados só por serem decorativos. Modere efeitos apenas quando houver conflito concreto com legibilidade, contraste, desempenho ou hierarquia.
 
 ## Gramática de composição visual — quando a composição for material
 
@@ -392,9 +394,9 @@ Além da inspeção do runtime, confirme com cenários representativos:
 
 - **Orientação:** o usuário reconhece o objeto, a tarefa e a ação principal sem reconstruir a arquitetura da tela?
 - **Sinal:** a informação necessária aparece no momento adequado com destaque proporcional ao seu impacto?
-- **Subtração:** cada elemento que disputa atenção melhora uma decisão, ação, entendimento ou orientação? O que pode sair sem perda?
+- **Subtração informacional:** cada dado e controle visível ajuda o usuário? O que pode sair sem perda funcional? Não classifique ornamentação como informação inútil.
 - **Ausência responsável:** detalhes rebaixados ainda são descobríveis quando necessários? Erros, incerteza, permissões e informações críticas permanecem perceptíveis?
-- **Composição:** regiões, espaçamentos, tipografia, cores e superfícies orientam a leitura sem excesso de cards, efeitos ou texto?
+- **Composição e beleza:** regiões, espaçamentos, tipografia, cores, superfícies e ornamentos mantêm clareza **e** sofisticação? A proposta preservou ou elevou a aparência aprovada?
 - **Comparação:** no redesign, a tela ficou mais eficiente que a anterior para a finalidade, sem regressão funcional ou cognitiva?
 
 Se houver dúvida material, observe uma tarefa representativa com usuário ou evidência equivalente; não invente ganho de usabilidade a partir de gosto estético. Não use pontuação visual arbitrária ou critérios cosméticos para declarar validação.
@@ -414,7 +416,7 @@ O runtime pode — e às vezes deve — divergir do mockup para ficar melhor.
 
 > **Mockup fidelity is not the goal. Intent fidelity is.**
 
-Se a implementação eliminar ornamentação desnecessária, reduzir ruído, aumentar densidade útil ou adaptar proporções às restrições reais, isso é uma melhoria legítima.
+Reduzir ruído informacional, melhorar densidade útil ou adaptar proporções pode ser legítimo **quando preservar a qualidade estética e a identidade aprovadas**. Não trate retirada de ornamentos como melhoria apenas porque a tela ficou mais vazia; alterações visuais materiais exigem justificativa e comparação do antes/depois.
 
 ### Transferência da intenção aprovada para a validação
 
@@ -469,6 +471,7 @@ Evite:
 - todos os elementos com a mesma hierarquia;
 - mockup inventando produto;
 - novo design system local;
+- minimalismo automático que empobrece acabamento, ornamentos ou atmosfera visual;
 - componente monolítico crescendo durante o redesign;
 - responsividade por esmagamento;
 - validar UI apenas por testes;
@@ -485,10 +488,11 @@ Uma otimização de UI é bem-sucedida quando:
 - estados excepcionais recebem atenção proporcional;
 - detalhes secundários permanecem acessíveis sem gerar ruído;
 - a interface parece pertencer ao produto;
+- a beleza, os ornamentos e a atmosfera aprovados foram preservados ou melhorados;
 - capacidades existentes foram preservadas;
 - breakpoints mantêm usabilidade;
 - o runtime real confirma a qualidade visual.
 
 ## Regra Final
 
-> **Uma UI profissional nasce da arquitetura da experiência antes da decoração. Preserve a verdade funcional, promova o que importa, silencie o estado saudável, revele profundidade sob demanda, use o design system existente e só declare conclusão depois de ver a interface real funcionando.**
+> **Uma UI profissional organiza a experiência sem empobrecer sua beleza. Preserve a verdade funcional, promova o que importa, reduza ruído informacional, revele profundidade sob demanda, honre a linguagem estética do Design System e só declare conclusão depois de ver a interface real funcionando.**
