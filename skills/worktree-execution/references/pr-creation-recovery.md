@@ -16,7 +16,7 @@ A Skill `worktree-execution` permanece fonte canônica para autorização, isola
 
 ## Operação determinística via GitHub CLI
 
-O GitHub CLI já é a ferramenta executável reutilizável. Evite criar um script novo quando comandos estáveis resolvem a operação e seu contrato. A automação deve fornecer repositório `OWNER/REPO`, `HEAD` (branch atual verificada), `BASE`, título e corpo fiel ao handoff, sem inventar dados.
+A via imediata já utilizável é o próprio GitHub CLI. O script portátil `scripts/open-pr-safe.cjs` está planejado para reduzir interpretação e risco em agentes econômicos, **mas não existe neste package até sua implementação e validação**; nunca o invoque ou alegue distribuição antes de verificar sua presença real. Quando estiver efetivamente instalado e verificado, prefira-o neste fluxo. Enquanto isso, a recuperação autorizada usa diretamente os comandos documentados abaixo. A automação deve fornecer repositório `OWNER/REPO`, `HEAD` (branch atual verificada), `BASE`, título e corpo fiel ao handoff, sem inventar dados.
 
 No terminal **da Worktree correta**, de forma sequencial:
 
