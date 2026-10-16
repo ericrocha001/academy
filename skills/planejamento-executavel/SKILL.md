@@ -39,6 +39,16 @@ Não use a estruturação do Plano para esconder decisões arquiteturais ainda a
 
 Se uma decisão relevante continua indefinida, resolva-a antes de transferir a solução ao executor.
 
+## Gate de custo autorizado e restrições do usuário
+
+**Antes de publicar o Plano, preserve expressamente o orçamento e as exclusões indicadas pelo usuário.** "Sem testes", "sem medição", "sem benchmark", "sem Spike" ou limites de cota são restrições de execução, não preferências descartáveis. Registre-as no escopo e nos critérios de conclusão e confira que **nenhuma Unidade, Validação Global, etapa de aceitação ou handoff** reintroduz a atividade excluída sob outro nome.
+
+Quando a decisão técnica já foi escolhida e o usuário quer implementá-la diretamente, **não imponha experimento, baseline antes/depois, comparação de desempenho ou Spike como pré-condição**, mesmo que a métrica pudesse ser interessante. Implante a solução dentro dos contratos e deixe a avaliação posterior como decisão separada, quando autorizada. Não apresente previsibilidade como prova empírica de ganho.
+
+**A proibição explícita de mecanismos não dispensa honestidade da conclusão:** se um contrato crítico realmente não puder ser demonstrado pelas evidências permitidas, descreva a lacuna e limite o status; não execute silenciosamente a prova proibida nem declare VALIDAÇÃO sem evidência. Se a restrição impossibilitar uma alteração segura, sinalize o bloqueio específico em vez de contorná-la.
+
+**Economia por padrão:** fora de riscos materiais, não prescreva matrizes extensas, baterias genéricas, E2E abrangente ou benchmarking por ritual. Delegue à capacidade `validacao-de-implementacoes` somente as provas mínimas autorizadas e necessárias, reutilizando evidência já existente quando suficiente.
+
 ## Gate anterior ao Plano — natureza do trabalho e executor necessário
 
 **Antes de produzir um Plano Final Executável ou delegar ao Codex/Implementador**, identifique qual transformação concreta falta e qual é o menor executor **capaz e autorizado** para realizá-la. Não infira implementação pelo verbo do pedido (`implantar`, `proteger`, `configurar`) ou pelo fato de pertencer a uma iniciativa de engenharia.
