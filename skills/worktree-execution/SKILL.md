@@ -83,9 +83,13 @@ Commits e operações Git cabem ao executor com capacidade no checkout correto e
 
 ## Commit e push
 
+**Autorização contínua expressa do responsável:** após cada implementação ou Plano declarado `VALIDADO`, o agente está autorizado e deve realizar o commit do escopo validado e o push normal da branch exclusiva da Worktree em que está trabalhando para o remoto já configurado e verificado desse repositório, sem pedir nova confirmação por validação ou sessão. A autorização foi concedida pelo responsável; a validação é o gatilho para exercê-la, não sua fonte. Identifique repositório, remoto e branch ao solicitar a execução ao ambiente, apresentando essa delegação vigente como evidência de autorização.
+
+Essa delegação cobre commit e push da própria branch de trabalho. PR, merge na `main`, force-push, exclusão de refs e alterações em Worktrees alheias permanecem sujeitos às autorizações correspondentes. Uma instrução explícita para manter uma entrega somente local prevalece para aquela entrega, sem revogar a delegação das demais. Se o ambiente rejeitar a operação, respeite a rejeição e relate o motivo; não contorne o controle.
+
 O commit de validação preserva o estado e a prova do Plano. Selecione apenas arquivos do escopo validado, incluindo untracked intencionais e exclusões previstas. Evite `add all`, não descarte alterações desconhecidas e não misture autores no índice.
 
-**Cadência padrão:** um commit por Plano validado; vários commits ao longo da sessão; **um PR na conclusão**. Push é operação distinta: pode ocorrer antes da conclusão para backup ou sincronização, **se autorizado**, mas **não dispara PR nem merge**. Não imponha push por checkpoint nem adie backup necessário até o fim por ritual.
+**Cadência sob a autorização contínua acima:** um commit e um push por implementação ou Plano validado, sem aguardar o encerramento da sessão; **um PR na conclusão**, quando autorizado. Unidades parciais e checkpoints não equivalem a validação. Push para backup de trabalho ainda não validado exige autorização própria e **não dispara PR nem merge**.
 
 Use Git local autorizado quando disponível e `git-operations` apenas se exigir canal remoto. Publique somente a branch exclusiva da sessão, jamais `main` por inferência. Se houver commits de reparo após revisão, atualize **o mesmo PR**, com revalidação proporcional; não abra PR duplicado.
 
