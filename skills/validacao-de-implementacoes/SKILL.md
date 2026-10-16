@@ -227,6 +227,16 @@ O Arquiteto pode utilizar esta capacidade durante o planejamento para garantir q
 
 O Implementador utiliza a mesma capacidade durante execução para produzir as evidências.
 
+## Gate de orçamento e veto explícito
+
+**Restrições do usuário governam os mecanismos permitidos de evidência.** Antes de propor ou executar testes, benchmarks, instrumentação, medição antes/depois, Spike, bateria E2E ou repetição de provas, verifique os limites de cota e as exclusões explícitas do Plano e do usuário. Não reintroduza trabalho excluído sob o rótulo de "validação", "baseline", "diagnóstico", "medição simples" ou "teste de regressão".
+
+Quando o usuário já escolheu uma solução tecnicamente plausível e descartou investigação empírica, **avance diretamente à implementação** sem transformar melhoria previsível em benchmark obrigatório. A ausência de medição não demonstra ganho quantitativo; registre essa limitação sem consumos experimentais adicionais.
+
+Sem veto explícito, prefira a menor prova suficientemente forte para o risco real, reutilize provas existentes, evite regressões e matrizes generalistas por hábito, e não amplie escopo de execução para obter métricas apenas interessantes. Uma prova cara precisa reduzir incerteza material sobre decisão ou segurança, não apenas aumentar documentação.
+
+**Se a prova exigida estiver proibida e nenhuma evidência permitida for suficiente, não execute a prova, não invente aprovação e não rotule a implementação como VALIDADA.** Registre precisamente o que foi implementado, o que permanece sem verificação e a consequência para o status; se a fronteira impedir continuação segura, escale a decisão antes de prosseguir. A proteção permanente de bugs e contratos críticos não autoriza violar silenciosamente um veto: explicite o conflito e marque o trabalho afetado como não validado/bloqueado até autorização ou evidência adequada.
+
 ## Economia de Canal Durante a Implementação
 
 Quando o Implementador possui acesso direto ao workspace e aos runners do projeto, a validação deve ocorrer **localmente por padrão**.
