@@ -32,6 +32,14 @@ Uma pasta distinta não prova isolamento; a sessão deve estar vinculada ao chec
 **Detached HEAD não passa no gate de escrita.** Se a IDE criou a Worktree detached (padrão do Codex), o executor com Git local autorizado **deve criar e ativar uma branch exclusiva e semanticamente nomeada no próprio checkout antes de editar**, verificando em seguida a associação real. Isso não altera a criação automática da Worktree pelo host: corrige o estado detached imediatamente após sua criação. A ação nativa da IDE, quando funcional, pode ser preferida. Na ausência dessa capacidade ou autorização, solicite preparação segura sem editar. Não recrie nem limpe a Worktree para resolver o vínculo. Worktree estritamente read-only pode permanecer detached.
 
 Para uma Worktree legada dirty/detached, preserve os arquivos e o índice, coordene escritores e estabeleça a branch com segurança antes de novos commits. O gate só passa após verificação objetiva; do contrário, bloqueia apenas a escrita dependente.
+## Vínculo explícito da execução no Continuum
+
+Quando o repositório oferecer `bind_execution` no Continuum Local Agent Channel, após recuperar o Plano canônico com `executionId` e selecionar/verificar a branch e Worktree da sessão, registre a associação no início do trabalho, a partir do checkout do executor:
+
+`node scripts/continuum/local.cjs bind_execution --repository <repositoryId confirmado por status> --id <artifactId do Plano> --execution <executionId exato do Plano>`
+
+Use `continuum-local-cli` para identidade e transporte. Não forneça branch, HEAD, geração ou path como fatos: a operação os resolve no Git Operations. Preserve o recibo `PERSISTED`; replay da mesma execução/instância retorna o mesmo Artifact mesmo após commits. O registro é declaração autenticada com evidência Git pontual, não prova posse do processo, atividade, autoria ou validação. Em timeout, reconcilie pelo mesmo comando idempotente. Detached, geração desconhecida, drift, fonte divergente ou canal sem a operação não autorizam inventar associação; informe a cobertura real. Rename/recriação exige nova associação sem migrar histórico por nome. Não edite AGENTS.md para duplicar esta instrução.
+
 ## Preparação obrigatória das dependências — após vincular a branch
 
 **Ordem de inicialização:** (1) criar/selecionar a Worktree; (2) criar/ativar e verificar a branch exclusiva nessa Worktree; **(3) instalar/preparar as dependências dentro dela**; (4) verificar que o ambiente está apto a executar o aplicativo e as validações pertinentes; (5) iniciar a implementação. A instalação é a primeira ação de preparação do ambiente após o vínculo Git, não uma providência adiada até surgir falha ao rodar o aplicativo.
