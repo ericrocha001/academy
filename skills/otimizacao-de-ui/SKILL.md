@@ -122,6 +122,16 @@ Não esconda capacidade. Rebaixe visualmente o que não merece atenção constan
 
 Quando finalidade, decisões ou sinais ainda não estiverem definidos, obtenha o Contrato de Sinal e Ação via `signal-driven-feature-design`; **não recrie aqui o desenho funcional**. Com esse contrato, produza a alocação visual de atenção, sem transformá-lo numa segunda especificação de produto.
 
+### Presunção de Ruído — ônus da presença visual
+
+> **Tudo é ruído até que sua contribuição para a finalidade da tela seja demonstrada.**
+
+Aplique essa presunção **tanto a elementos existentes quanto a propostas de adição**, incluindo texto, indicadores, controles, cards e ornamentação. Antes de conceder espaço ou destaque, peça uma justificativa concreta: **que compreensão, decisão, ação, orientação, estado crítico, acessibilidade ou identidade visual esse elemento melhora; para quem; e em qual momento?** Pergunte o que se perde sem sua exposição imediata e se há alternativa menos custosa em atenção.
+
+**O ônus é de quem propõe manter ou destacar o elemento**, não de quem sugere retirá-lo. Na ausência de contribuição demonstrável, **não o adicione** ou proponha remover, condensar ou rebaixar sua representação. Não preencha áreas vazias apenas para ocupar espaço.
+
+**Presunção não é prova de inutilidade.** Se houver incerteza relevante, especialmente sobre necessidades pouco frequentes, segurança, acessibilidade, erros ou contratos funcionais, investigue antes de excluir. Retirar algo da vista não significa eliminar informação, acesso ou capacidade necessários: preserve caminhos recuperáveis e destaque condicional quando a situação exigir.
+
 Atribua destino aos elementos existentes e propostos: **destaque imediato**, **contexto discreto**, **aprofundamento sob demanda**, **condensação/automação** ou **remoção da superfície**. Julgue pela contribuição ao objetivo, frequência e momento de uso, consequência de não perceber, urgência e custo de recuperar o elemento. Não confunda dado disponível com sinal, nem utilidade eventual com visibilidade permanente. Informação rara, mas crítica, pode exigir destaque contextual imediato.
 
 **A revisão deve ser também subtrativa, inclusive em redesigns.** Questione labels repetidos, indicadores saudáveis redundantes, cards que só empacotam conteúdo, métricas decorativas, instruções excessivas e controles que transferem ao usuário trabalho realizável pelo sistema. Remover representação visual não autoriza suprimir funcionalidade, evidência, acessibilidade ou informação necessária à decisão.
