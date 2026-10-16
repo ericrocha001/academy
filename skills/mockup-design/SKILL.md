@@ -244,6 +244,21 @@ Evite:
 - ornamento que compete com conteúdo;
 - proporções impossíveis de implementar.
 
+## Crítica de atenção — Clean Screen + Pure Signal
+
+Um mockup visualmente atraente pode ser funcionalmente ruidoso. Antes de aprová-lo, avalie a **eficiência da atenção**, não apenas o acabamento gráfico. Receba da `otimizacao-de-ui` a finalidade da tela, o contrato de alocação visual e a composição escolhida; **não redescubra decisões de produto nem substitua o Design System**.
+
+Faça duas passagens curtas:
+
+1. **Sinal e percurso:** o primeiro olhar revela tarefa/objeto, estado relevante e ação prioritária? Informações necessárias à decisão ou ação estão visíveis no momento correto? O contexto secundário é recuperável? A composição ajuda o olhar a seguir o trabalho?
+2. **Subtração:** que texto, card, ícone, gráfico, botão ou decoração ocupa atenção sem contribuir para compreensão, decisão, ação, orientação ou identidade visual? Pode ser removido, condensado, rebaixado ou mostrado sob demanda sem ocultar capacidade necessária?
+
+**Não preencha áreas vazias com cards ou métricas ilustrativas.** Espaço livre pode ser uma escolha de design válida; densidade alta também, quando o trabalho exigir. Preserve labels que removem ambiguidade, acessibilidade e alertas que não podem ser perdidos. Remoção da imagem não autoriza eliminação de funcionalidade.
+
+Quando houver **duas direções realmente concorrentes**, compare-as pela mesma tarefa, hierarquia, distribuição de atenção, clareza visual, densidade, plausibilidade responsiva e coerência com o Design System. Produza alternativas apenas se a comparação resolver incerteza material; caso contrário, uma referência forte é preferível.
+
+**Rejeite ou revise** mockups que escondam sinal crítico, tragam ornamentação competitiva, exijam investigação manual desnecessária ou adotem layout genérico inadequado à finalidade, mesmo que pareçam sofisticados. A validação do runtime continua pertencendo a `otimizacao-de-ui` e `validacao-de-implementacoes`.
+
 ## Geração e iteração
 
 Use a capacidade visual disponível para gerar o mockup.
@@ -378,6 +393,10 @@ Depois que o runtime for validado visualmente:
 Mockup e runtime cumprem papéis diferentes:
 
 > **Mockup explores direction. Runtime proves embodiment.**
+
+## Aceitação da direção visual
+
+Antes da entrega, confirme que a referência permite ao implementador distinguir **o que deve chamar atenção, o que deve ficar discreto e o que foi intencionalmente excluído da apresentação**. Quando uma simplificação visual afetar posição/acesso a uma capacidade real, registre o caminho de recuperação e preserve o contrato. A crítica não deve virar um checklist extenso nem uma promessa de usabilidade comprovada sem avaliação do runtime.
 
 ## Critério de sucesso
 
