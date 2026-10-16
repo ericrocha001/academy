@@ -110,6 +110,28 @@ Não esconda capacidade. Rebaixe visualmente o que não merece atenção constan
 
 > **Healthy state should be quiet. Exceptional state should be loud.**
 
+## Clean Screen + Pure Signal — contrato de atenção
+
+**Uma tela existe para um resultado, não para expor o inventário de dados.** Antes de escolher componentes ou alterar uma tela, responda com base na finalidade já aprovada e no ponto de vista de quem a utiliza:
+
+1. **Finalidade:** para que a tela existe e qual resultado deve possibilitar?
+2. **Momento do usuário:** o que ele precisa compreender, decidir ou executar agora?
+3. **Sinal:** quais dados, orientações e ações são suficientes para esse resultado, com a evidência e os limites necessários?
+4. **Atenção:** quais precisam estar diante dos olhos, quais apenas acessíveis, e quando?
+5. **Subtração:** o que remover, condensar, deslocar ou automatizar para eliminar competição sem perder capacidade?
+
+Quando finalidade, decisões ou sinais ainda não estiverem definidos, obtenha o Contrato de Sinal e Ação via `signal-driven-feature-design`; **não recrie aqui o desenho funcional**. Com esse contrato, produza a alocação visual de atenção, sem transformá-lo numa segunda especificação de produto.
+
+Atribua destino aos elementos existentes e propostos: **destaque imediato**, **contexto discreto**, **aprofundamento sob demanda**, **condensação/automação** ou **remoção da superfície**. Julgue pela contribuição ao objetivo, frequência e momento de uso, consequência de não perceber, urgência e custo de recuperar o elemento. Não confunda dado disponível com sinal, nem utilidade eventual com visibilidade permanente. Informação rara, mas crítica, pode exigir destaque contextual imediato.
+
+**A revisão deve ser também subtrativa, inclusive em redesigns.** Questione labels repetidos, indicadores saudáveis redundantes, cards que só empacotam conteúdo, métricas decorativas, instruções excessivas e controles que transferem ao usuário trabalho realizável pelo sistema. Remover representação visual não autoriza suprimir funcionalidade, evidência, acessibilidade ou informação necessária à decisão.
+
+> **Pure Signal decide o que contribui. Clean Screen decide o que merece ocupar atenção e espaço.**
+>
+> **Cada presença visual precisa de justificativa; cada ausência de informação necessária também.**
+
+Tela pouco preenchida pode estar correta; tela densa também. Nem preencher vazios por estética nem esconder sinal importante para simular minimalismo.
+
 ## Arquitetura de informação antes de styling
 
 Não tente corrigir uma UI estruturalmente ruim apenas com:
@@ -186,6 +208,14 @@ Use accent forte principalmente para:
 - estado que realmente merece destaque.
 
 Evite transformar a UI inteira em neon, glow ou ornamentação.
+
+## Gramática de composição visual — quando a composição for material
+
+Componha a tela **a partir da tarefa e da atenção**, não a partir de uma coleção de componentes ou de um layout-padrão. Identifique objeto dominante, caminho de leitura, regiões responsáveis, contexto adjacente, ações e mudanças de estado; traduza-os em proporções, agrupamentos, alinhamento, ritmo, tipografia, contraste e profundidade coerentes com o Design System.
+
+A identidade visual e seus tokens pertencem ao **Design System do produto**, não a uma receita universal de layout. Telas de diagnóstico, exploração e edição podem exigir composições diferentes e ainda obedecer às mesmas regras de clareza e consistência.
+
+**Quando criar tela nova ou mudar materialmente hierarquia, alocação ou composição**, leia `references/gramatica-de-composicao.md` para decidir trade-offs espaciais, subtração, sofisticação gráfica e revisão crítica. Dispense esse aprofundamento para ajustes locais com solução inequívoca. Não copie a referência para esta Skill, nem crie templates fixos de telas.
 
 ## Densidade
 
@@ -345,6 +375,19 @@ Verifique estados representativos, incluindo quando aplicável:
 - scroll ownership;
 - contraste;
 - proximidade com a direção visual aprovada.
+
+### Prova de atenção e limpeza
+
+Além da inspeção do runtime, confirme com cenários representativos:
+
+- **Orientação:** o usuário reconhece o objeto, a tarefa e a ação principal sem reconstruir a arquitetura da tela?
+- **Sinal:** a informação necessária aparece no momento adequado com destaque proporcional ao seu impacto?
+- **Subtração:** cada elemento que disputa atenção melhora uma decisão, ação, entendimento ou orientação? O que pode sair sem perda?
+- **Ausência responsável:** detalhes rebaixados ainda são descobríveis quando necessários? Erros, incerteza, permissões e informações críticas permanecem perceptíveis?
+- **Composição:** regiões, espaçamentos, tipografia, cores e superfícies orientam a leitura sem excesso de cards, efeitos ou texto?
+- **Comparação:** no redesign, a tela ficou mais eficiente que a anterior para a finalidade, sem regressão funcional ou cognitiva?
+
+Se houver dúvida material, observe uma tarefa representativa com usuário ou evidência equivalente; não invente ganho de usabilidade a partir de gosto estético. Não use pontuação visual arbitrária ou critérios cosméticos para declarar validação.
 
 ### Compare intenção, não pixels
 
