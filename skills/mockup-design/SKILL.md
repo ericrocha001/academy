@@ -232,7 +232,8 @@ Busque:
 - contraste apropriado;
 - iconografia coerente;
 - uso disciplinado de accent, gradiente e glow;
-- sensação de produto real, não concept art.
+- sensação de produto real, não concept art;
+- beleza intencional, acabamento refinado, atmosfera e ornamentos coerentes com a identidade visual.
 
 Evite:
 
@@ -241,7 +242,7 @@ Evite:
 - dashboard SaaS genérico;
 - textos microscópicos;
 - excesso de cards;
-- ornamento que compete com conteúdo;
+- ornamentação que comprovadamente compromete leitura, contraste ou hierarquia (sem eliminar tratamentos estéticos que dão beleza ao produto);
 - proporções impossíveis de implementar.
 
 ## Crítica de atenção — Clean Screen + Pure Signal
@@ -251,13 +252,13 @@ Um mockup visualmente atraente pode ser funcionalmente ruidoso. Antes de aprová
 Faça duas passagens curtas:
 
 1. **Sinal e percurso:** o primeiro olhar revela tarefa/objeto, estado relevante e ação prioritária? Informações necessárias à decisão ou ação estão visíveis no momento correto? O contexto secundário é recuperável? A composição ajuda o olhar a seguir o trabalho?
-2. **Subtração:** que texto, card, ícone, gráfico, botão ou decoração ocupa atenção sem contribuir para compreensão, decisão, ação, orientação ou identidade visual? Pode ser removido, condensado, rebaixado ou mostrado sob demanda sem ocultar capacidade necessária?
+2. **Subtração informacional:** que texto, card, indicador ou controle ocupa atenção sem contribuir para compreensão, decisão, ação ou orientação? Pode ser removido, condensado, rebaixado ou revelado sob demanda sem ocultar capacidade necessária? **Não aplique esse teste funcional à ornamentação:** beleza, identidade e atmosfera são valores independentes, e uma tela limpa não precisa ser austera.
 
 **Não preencha áreas vazias com cards ou métricas ilustrativas.** Espaço livre pode ser uma escolha de design válida; densidade alta também, quando o trabalho exigir. Preserve labels que removem ambiguidade, acessibilidade e alertas que não podem ser perdidos. Remoção da imagem não autoriza eliminação de funcionalidade.
 
 Quando houver **duas direções realmente concorrentes**, compare-as pela mesma tarefa, hierarquia, distribuição de atenção, clareza visual, densidade, plausibilidade responsiva e coerência com o Design System. Produza alternativas apenas se a comparação resolver incerteza material; caso contrário, uma referência forte é preferível.
 
-**Rejeite ou revise** mockups que escondam sinal crítico, tragam ornamentação competitiva, exijam investigação manual desnecessária ou adotem layout genérico inadequado à finalidade, mesmo que pareçam sofisticados. A validação do runtime continua pertencendo a `otimizacao-de-ui` e `validacao-de-implementacoes`.
+**Rejeite ou revise** mockups que escondam sinal crítico, produzam conflitos visuais concretos, exijam investigação manual desnecessária ou adotem layout genérico inadequado à finalidade. **Não rejeite ornamentos apenas por serem decorativos**: acabamento, identidade e beleza podem justificar sua presença por si. A validação do runtime continua pertencendo a `otimizacao-de-ui` e `validacao-de-implementacoes`.
 
 ## Geração e iteração
 
@@ -366,20 +367,20 @@ O runtime final deve preservar principalmente:
 - densidade;
 - foco;
 - atmosfera visual;
+- ornamentos e tratamentos estéticos materiais da direção aprovada;
 - relação entre primary e secondary surfaces.
 
 Ele pode divergir em:
 
 - medidas;
 - spacing;
-- quantidade de ornamentação;
 - iconografia local;
 - labels;
 - distribuição exata;
 - detalhes de cardification;
 - simplificações necessárias para aderir melhor ao produto real.
 
-Se o runtime ficar mais claro, mais denso, mais coerente com o Design System e funcionalmente verdadeiro, uma divergência visual pode ser uma melhoria.
+Uma divergência visual só representa melhoria se preservar ou elevar **também a qualidade estética**, além da clareza, coerência com o Design System e verdade funcional. **Não aceite empobrecimento do acabamento visual como efeito colateral automático de Clean Screen ou Pure Signal.**
 
 ### Pós-implementação
 
@@ -396,7 +397,7 @@ Mockup e runtime cumprem papéis diferentes:
 
 ## Aceitação da direção visual
 
-Antes da entrega, confirme que a referência permite ao implementador distinguir **o que deve chamar atenção, o que deve ficar discreto e o que foi intencionalmente excluído da apresentação**. Quando uma simplificação visual afetar posição/acesso a uma capacidade real, registre o caminho de recuperação e preserve o contrato. A crítica não deve virar um checklist extenso nem uma promessa de usabilidade comprovada sem avaliação do runtime.
+Antes da entrega, confirme que a referência permite ao implementador distinguir **o que deve chamar atenção, o que deve ficar discreto e o que foi intencionalmente excluído da apresentação**, além dos **ornamentos, detalhes e atmosfera que devem ser preservados**. Quando uma simplificação visual afetar posição/acesso a uma capacidade real, registre o caminho de recuperação e preserve o contrato. Se um elemento estético aprovado for proposto para retirada, exija justificativa concreta e alternativa de qualidade equivalente. A crítica não deve virar um checklist extenso nem uma promessa de usabilidade comprovada sem avaliação do runtime.
 
 ## Critério de sucesso
 
