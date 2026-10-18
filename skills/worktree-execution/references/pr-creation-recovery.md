@@ -16,7 +16,15 @@ A Skill `worktree-execution` permanece fonte canônica para autorização, isola
 
 ## Operação determinística via GitHub CLI
 
-A via imediata já utilizável é o próprio GitHub CLI. O script portátil `scripts/open-pr-safe.cjs` está planejado para reduzir interpretação e risco em agentes econômicos, **mas não existe neste package até sua implementação e validação**; nunca o invoque ou alegue distribuição antes de verificar sua presença real. Quando estiver efetivamente instalado e verificado, prefira-o neste fluxo. Enquanto isso, a recuperação autorizada usa diretamente os comandos documentados abaixo. A automação deve fornecer repositório `OWNER/REPO`, `HEAD` (branch atual verificada), `BASE`, título e corpo fiel ao handoff, sem inventar dados.
+O script portátil `scripts/open-pr-safe.cjs` integra o package canônico desta Skill para reduzir interpretação e risco em agentes e modelos econômicos. Ao acionar este complemento condicional, se o runtime confirmar a presença do script no package da Skill distribuído ao cliente (verifique sua existência antes de invocá-lo), **execute-o prioritariamente no terminal da Worktree selecionada**:
+
+```powershell
+node <caminho-da-skill>/scripts/open-pr-safe.cjs --repo OWNER/REPO --head HEAD --base BASE --title "TÍTULO" --body "DESCRIÇÃO"
+```
+
+O script valida parâmetros, confirma autenticação do `gh`, assegura que o commit remoto confere com o HEAD local/esperado sem mutações, detecta PR existente (reutilizando `OPEN` ou bloqueando duplicatas em `CLOSED`/`MERGED`), cria o PR sem `--web` ou `--draft`, e reconcilia o estado remoto no GitHub antes de retornar resultado estruturado (`CREATED`, `EXISTING_OPEN`, `BLOCKED`, `UNKNOWN`).
+
+Caso o script não esteja presente no runtime ou o ambiente não disponha de Node para sua execução, utilize diretamente os comandos manuais sequenciais documentados a seguir. A automação deve fornecer repositório `OWNER/REPO`, `HEAD` (branch atual verificada), `BASE`, título e corpo fiel ao handoff, sem inventar dados.
 
 No terminal **da Worktree correta**, de forma sequencial:
 

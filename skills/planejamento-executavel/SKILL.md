@@ -1,6 +1,6 @@
 ---
 name: planejamento-executavel
-description: Use antes de delegar implementação para verificar se a solução realmente exige um Plano Final Executável, ou se é somente configuração/operação administrativa, e, quando exigir implementação, definir unidades, contratos, prova e executor mínimo. Para qualquer Plano Final Executável, publique obrigatoriamente no Continuum do repositório ativo antes de declarar entrega; sem receipt confirmado, não substitua a publicação por texto no chat. Não use para decidir investimento em feature (feature-investment-gate) nem para decisões arquiteturais abertas.
+description: Use antes de delegar implementação para verificar se a solução realmente exige um Plano Final Executável, ou se é somente configuração/operação administrativa, e, quando exigir implementação, definir unidades, contratos, prova e executor mínimo. Para cada Plano Final Executável pronto, publique no Continuum e, após receipt persistido, forneça também instrução curta copiável ao Implementador; sem receipt não declare publicação. Não use para decidir investimento em feature (feature-investment-gate) nem para decisões arquiteturais abertas.
 ---
 
 
@@ -497,6 +497,7 @@ Antes de entregar o Plano Final, verifique:
 21. Os Planos possuem provas próprias para commits de validação e a sessão tem uma fronteira de conclusão coesa para um PR, sem PR por Plano nem agrupamento artificial?
 22. Quando houver múltiplos Planos, o grafo registra somente dependências materiais e identifica entregas paralelizáveis sem forçar concorrência?
 23. A necessidade real de implementação e de delegação ao executor foi comprovada, descartando antes operações administrativas mais simples?
+24. Após receipt persistido de um Plano pronto para execução, a resposta inclui uma instrução curta, copiável e vinculada ao nome/artifactId correto para o Implementador?
 
 Se a resposta relevante for não, corrija o Plano ou a transferência antes de considerá-lo entregue.
 
@@ -564,6 +565,18 @@ Não mantenha duas versões semanticamente concorrentes do mesmo Plano em chat, 
 
 Se a finalidade e identidade do Plano permanecerem as mesmas, uma revisão material deve atualizar o Artifact existente segundo a Skill `continuum-publication`, em vez de publicar outro Plano concorrente. Crie outro Artifact somente quando houver uma execução ou finalidade realmente independente.
 
+### Instrução de encaminhamento ao Implementador
+
+**Entrega conjunta obrigatória:** quando um Plano Final Executável estiver **publicado com receipt persistido** e pronto para implementação, a resposta ao usuário deve conter, **além da identificação do Artifact**, uma **instrução curta e copiável para encaminhar ao Implementador** (preferencialmente bloco de mensagem editável, quando disponível). Esta é a mensagem de acionamento, **não outro Plano** nem outro Artifact no Continuum.
+
+A instrução deve:
+- identificar o Plano pelo **nome exato e `artifactId` real**, orientando o agente a recuperá-lo no Continuum antes de executar;
+- explicitar o trabalho solicitado em uma frase e, **somente quando relevantes e confirmados**, a Worktree/branch/sessão existente, restrições de ownership/concorrência e condições de autorização;
+- delegar a execução conforme as unidades, contratos e critérios de prova do Artifact, solicitar testes proporcionais e handoff no Continuum;
+- **não** reproduzir o Plano, inventar checkout/identidade/acesso, ampliar a autorização para mutações/merge ou alterar a política de commits/PRs.
+
+A instrução é **entregue no chat juntamente com a confirmação da publicação**, não copiada como corpo concorrente do Artifact. Se a publicação falhar ou o trabalho ainda não estiver pronto para implementação, não apresentar o prompt como convocação de um Plano publicado; informar o bloqueio.
+
 ### Recuperação do Plano pelo executor
 
 O executor não precisa receber uma segunda cópia do texto do Plano. Use a capacidade `continuum` para decidir o que recuperar e `continuum-local-cli` como transporte preferido quando houver terminal, CLI local funcional, Worktree vinculada e autorização — **mesmo com MCP disponível**. Use MCP somente quando necessário e autorizado.
@@ -607,7 +620,7 @@ Para cada Unidade, deixe explícito o novo estado que ela deve produzir.
 
 Adapte a forma ao problema sem enfraquecer os contratos necessários para execução segura.
 
-A saída normal é **confirmar a publicação persistida e referenciar o Artifact canônico pelo nome exato e `artifactId`**, sem reproduzir o Plano no chat. Se a publicação falhar, declare a pendência e o motivo; nunca declare a entrega concluída.
+A saída normal é **confirmar a publicação persistida, referenciar o Artifact canônico pelo nome exato e `artifactId` e entregar junto a instrução copiável de encaminhamento ao Implementador**, sem reproduzir o Plano no chat. Se a publicação falhar, declare a pendência e o motivo; nunca declare a entrega concluída.
 
 ## Regra Final
 

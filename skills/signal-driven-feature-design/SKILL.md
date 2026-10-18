@@ -1,6 +1,6 @@
 ---
 name: signal-driven-feature-design
-description: Defina decisões, informações Pure Signal e ações necessárias a partir da necessidade real do consumidor antes de projetar uma feature, fluxo ou experiência. Use para concepção/redesign funcional quando ainda não está claro o que o produto deve informar ou fazer; não use para decidir investimento (feature-investment-gate), desenhar layout (otimizacao-de-ui) ou converter solução resolvida em Plano (planejamento-executavel).
+description: Defina decisões, informações Pure Signal e ações necessárias a partir da necessidade real do consumidor antes de projetar uma feature, fluxo ou experiência. Use para concepção/redesign funcional ou quando uma otimização técnica mudar o esforço ou o sinal recebido pelo consumidor; não use para otimização puramente interna, decisão de investimento, layout ou planejamento executável.
 ---
 
 # Signal-Driven Feature Design
@@ -19,8 +19,9 @@ Derivar **o que o consumidor precisa decidir, quais sinais permitem decidir corr
 - Quando uma feature já existente exige que o usuário investigue, filtre, correlacione ou interprete dados manualmente para atingir seu objetivo.
 - Antes de arquitetura/UI, quando não estiver resolvido **quais informações e ações** geram valor.
 - Para reorientar solução aparentemente funcional que falha em atender ao trabalho real do consumidor.
+- Quando uma otimização técnica pretende retirar ou adiar trabalho automático **e pode alterar o resultado, as informações ou as ações exigidas do consumidor**.
 
-**Não acionar** para bug localizado com contrato conhecido, ajuste visual/scroll/tema, implementação de requisitos já definidos, validação de código, pesquisa exploratória sem decisão de produto ou configuração meramente operacional. Não tornar o procedimento obrigatório a toda tarefa.
+**Não acionar** para otimização puramente interna que preserva o contrato funcional, bug localizado com contrato conhecido, ajuste visual/scroll/tema, implementação de requisitos já definidos, validação de código, pesquisa exploratória sem decisão de produto ou configuração meramente operacional. Não tornar o procedimento obrigatório a toda tarefa.
 
 Se ainda não estiver decidido **se** investir na feature ou **para quem**, use primeiro `feature-investment-gate`. Esta Skill começa quando a necessidade de produto merece definição, não substitui esse gate.
 
@@ -88,6 +89,8 @@ Para cada decisão, pergunte:
 4. Que próximo passo específico, viável e justificado pode ser oferecido?
 
 **Automatize o trabalho preparatório quando houver evidência, custo e autoridade suficientes.** Não converta trabalho automatizável em botões ou filtros. Também não confunda automação de análise com autorização para executar mutações ou consequências irreversíveis.
+
+**Gate de regressão de esforço em otimizações:** ao remover ou adiar coleta, verificação ou atualização automática, identifique qual **resultado útil** o consumidor recebia, como ele continuará disponível e quais **ações recorrentes** passará a exigir. Uma redução de processamento que impõe verificações manuais repetitivas não é melhoria líquida apenas pelo ganho técnico. Preserve o último estado comprovado com honestidade sobre sua validade e recorra à atualização ou ao diagnóstico quando houver necessidade real; não confunda configuração histórica com conexão ativa, nem elimine verificações necessárias à segurança.
 
 Um alerta só é útil se informar **o que foi observado, por que importa e qual decisão/ação merece atenção**; sem confiança ou consequência suficiente, mantenha-o como hipótese/cobertura, não ruído urgente.
 

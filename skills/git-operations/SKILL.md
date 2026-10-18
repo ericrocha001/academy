@@ -1,13 +1,13 @@
 ---
 name: git-operations
-description: Use operações Git pelo MCP do Code Awareness quando não houver equivalente local autorizado: estado, evidência remota, mergeabilidade de PR, stage, commit, branches, sync e recuperação com receipts. Para Worktrees remotas protegidas use worktree-mcp-operations; para Git local use worktree-execution.
+description: Use para operar Git e Pull Requests pelo MCP do Code Awareness: estado, evidência, branches, sync, consulta, criação, revisão, fechamento, merge autorizado e reconciliação. Escolha CLI, plugin GitHub ou MCP conforme acesso e autoridade; para Worktrees protegidas use worktree-mcp-operations.
 ---
 
 # Git Operations
 
 ## Finalidade
 
-Esta Skill governa **operações Git pelo canal MCP remoto do Code Awareness**. Não é o caminho obrigatório para quem dispõe de Git local autorizado; o transporte decorre das capacidades e garantias exigidas, não do papel presumido.
+Esta Skill governa **operações Git pelo Code Awareness MCP**, acessível localmente ou via Cloudflare. CLI, plugin GitHub e Code Awareness MCP são opções que o agente escolhe conforme contexto, capacidade efetiva, custo e autorização, sem preferência universal. **Se escolher Code Awareness MCP, prefira a conexão local à remota Cloudflare quando forem equivalentes e disponíveis; caso contrário, o remoto é permitido.** Os dois transportes são acesso à mesma capability, não duas implementações Git.
 
 Princípio:
 
@@ -141,7 +141,33 @@ Não misture resíduos desconhecidos com a mudança pretendida apenas para deixa
 
 ## Roteamento de Pull Request
 
-Para **Plano Final Executável validado**, registre um commit na branch exclusiva da sessão; **não abra PR por Plano, commit ou checkpoint**. Vários commits validados podem se acumular até a **conclusão da sessão**, quando o padrão de transferência e integração é **um único PR consolidado**, regido por `worktree-execution`. Esta Skill trata apenas de **Git remoto tipado pelo MCP**; ela não abre nem aprova PR. Com autorização, `sync_git_remote PUSH` pode publicar **somente a branch da sessão** (nunca `main` por inferência), inclusive antes da conclusão para backup/sincronização; push intermediário não dispara PR. Na conclusão, use GitHub/CLI autorizada para abrir o PR. Quem recebe revisa no provedor e somente então integra com permissão própria. Merge Git direto via MCP continua exceção expressa, sem eliminar revisão.
+Para **Plano Final Executável validado**, registre um commit na branch exclusiva da sessão; **não abra PR por Plano, commit ou checkpoint**. Vários commits validados podem se acumular até a **conclusão da sessão**, quando o padrão de transferência e integração é **um único PR consolidado**, regido por `worktree-execution`. Esta Skill trata apenas de **Git remoto tipado pelo MCP**; aprovação nativa e permissões do provedor continuam obrigatórias para PRs. Com autorização, `sync_git_remote PUSH` pode publicar **somente a branch da sessão** (nunca `main` por inferência), inclusive antes da conclusão para backup/sincronização; push intermediário não dispara PR. Na conclusão, use um canal autorizado e operacional para abrir o PR (GitHub CLI, plugin GitHub ou ferramenta Code Awareness MCP quando esta efetivamente existir no catálogo). Quem recebe revisa no provedor e somente então integra com permissão própria. Merge Git direto via MCP continua exceção expressa, sem eliminar revisão.
+
+## Identidade do App e diagnóstico de grants
+
+O produto incorpora a identidade pública do App oficial. Não crie .env por Worktree, copie credenciais ou repita variáveis para inicialização comum. Um App customizado exige o par completo CODE_AWARENESS_GITHUB_CLIENT_ID/CODE_AWARENESS_GITHUB_APP_SLUG; override parcial falha fechado. Sessões cifradas continuam no perfil canônico do Desktop; expiração ou revogação ainda pode exigir reautorização.
+
+Quando disponível, examine diagnostics/evidence de get_pull_request_access. O user token interno do Desktop observa instalação, repositórios acessíveis e grants; gh e o conector GitHub não provam essa autorização. GET público bem-sucedido nunca concede operations.read nem permissões de escrita. Ausência na listagem de repositórios acessíveis pode ser seleção da instalação ou acesso do usuário: não invente qual deles falta.
+
+INSTALLATION_GRANT_MISSING pede conferir cadastro do App e instalação. INSTALLATION_PERMISSION_UPDATE_NOT_GRANTED significa que o cadastro anuncia um grant que a instalação ainda não concede: o proprietário deve revisar eventual atualização. REAUTH_REQUIRED pede conexão/reauthorização no Desktop; resposta inconclusiva, suspensão e 403 preservam negação. Informe operação afetada, requiredGrant e nextAction do diagnóstico. Ajustes administrativos exigem autorização própria; nunca amplie grants, apague tokens ou encaminhe a outro canal para contornar uma negativa. A presença dos grants não substitui aprovação nativa específica, políticas ou recibos de mutação.
+
+## Descoberta, leitura e criação REST de PR
+
+Antes de abrir um PR, confirme projeto/repositório ativo, branch remota efetivamente publicada, HEAD e SHA esperado, destino e autorização para a ação. Descubra se `get_pull_request_access`, `list_pull_requests`, `get_pull_request` e `create_pull_request` estão expostas no catálogo da sessão; implementação no source não garante exposição no cliente. Use listagem paginada e consulta individual para detectar PR já aberto da mesma origem/destino e não multiplicar PRs após um timeout.
+
+`create_pull_request` pertence à **conclusão autorizada da sessão**, não a cada commit/Plano; necessita grant Pull requests: write, aprovação nativa específica para repositório, head/base e SHA publicado, `operationId` durável e preconditions de identidade. `worktreeId`, quando informado, vincula a origem sem trocar checkout ou criar posse sobre ele. Reconciliar o mesmo ID e recibo antes de qualquer nova tentativa; `OUTCOME_UNKNOWN` não autoriza novo POST. A criação REST não publica branch, não valida commits, não faz merge nem fecha Worktree. Se canal ou grant faltar, registre o bloqueio; use via alternativa **somente com autoridade própria legítima**, nunca para contornar uma negativa de segurança do produto.
+
+## Revisão e integração REST de PR
+
+Descubra o catálogo e use `get_pull_request_access` antes de escolher estas operações: a versão instalada e a configuração podem não expô-las. CLI e plugin GitHub continuam alternativas autorizadas. A versão com identidade de produto incorporada usa o App oficial sem variáveis por checkout; `CONFIGURATION_REQUIRED` pode indicar override incompleto. Não envie tokens pelo chat. Leituras PR/reviews, check runs, statuses, close e merge possuem permissões distintas.
+
+Use `get_pull_request`, `get_pull_request_reviews` e `get_pull_request_checks` para conferir identidade, head/base, revisão efetiva e evidências atuais. Histórico bruto não é aprovação efetiva; aprovação descartada ou de head antigo não conta. `INCOMPLETE`, `UNKNOWN` e `UNAVAILABLE` não aprovam integração. `NO_CHECKS` não prova ausência de checks obrigatórios. Políticas cumulativas, fila ou stack materialmente desconhecidos bloqueiam merge.
+
+`merge_pull_request` exige PR, `operationId`, `expectedHeadSha`, `expectedBaseSha` e autorização nativa própria de curta validade. Usa merge assíncrono com ação `default` e sem bypass; fila controla o método e método incompatível com preservação de commits bloqueia. PR stacked é recusado. CREATE nunca autoriza MERGE ou CLOSE.
+
+`close_pull_request` exige PR, `operationId` e `expectedHeadSha`; a base observada também é vinculada na aprovação nativa independente. Nenhuma dessas APIs oferece CAS atômico da base. Drift e mudança de projeto invalidam a autorização. Não alteram Git local, sincronizam main, apagam branches ou encerram Worktrees.
+
+Após timeout ou aceitação pendente, preserve o ID e consulte `get_pull_request_operation`; repetir a mesma operação somente reconcilia, nunca reenvia PUT/PATCH. `PENDING` e `ENQUEUED` não significam `MERGED`. Merge exige comprovação remota e SHA de integração; fila requer leitura posterior do PR. UUID do GitHub expira após retenção de 24h: reconsulte PR, sem inferir sucesso ou repetir merge. UUID recebido em 409 de terceiro não é recibo próprio. `OUTCOME_UNKNOWN` bloqueia nova mutação cega. Sincronização e cleanup exigem intenção e autorização separadas.
 
 ## Mergeabilidade de Pull Request
 
