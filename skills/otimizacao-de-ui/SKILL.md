@@ -424,6 +424,18 @@ Se houver direção visual aprovada, **identifique antes da execução quais reg
 
 No fechamento, compare cada região materialmente afetada com a referência e sinalize divergências significativas. **Encaminhe a prova e o gate de conformidade visual à Skill `validacao-de-implementacoes`**, sem duplicar aqui sua matriz, mecanismos ou procedimento. Nem liberdade de adaptação nem ausência de comparação pixel-perfect autorizam omitir uma transformação aprovada. Uma diferença que melhora o resultado pode ser aceita se sua intenção e evidência forem explícitas.
 
+### Ciclo curto de comparação visual
+
+Quando houver mockup fornecido ou direção visual aprovada, use um ciclo proporcional: referência → runtime → comparação → correção. Antes de alterar, identifique composição, proporções, densidade, ornamentos e estados materiais que devem sobreviver. Instruções explícitas do usuário sobre fidelidade e exceções prevalecem sobre a liberdade de adaptação desta Skill; não redesenhe silenciosamente uma composição já decidida.
+
+Compare cedo uma região representativa e, antes de concluir, os estados materialmente afetados. Normalize viewport, escala, tema, datas e dados para distinguir mudança de layout de mudança de conteúdo. Use lado a lado ou sobreposição quando ajudarem; diferença de pixels isolada não comprova qualidade. O mockup orienta a composição; uma captura do produto aprovada serve como baseline de não regressão, sem substituir o Design System ou o contrato funcional.
+
+Reutilize o harness visual existente quando disponível. Exercite o componente e os estilos de produção com poucos cenários estáveis que cubram os riscos reais: conteúdo esparso/denso, nomes longos, seleção, filtros e painéis, conforme o escopo. Fixtures sintéticas devem ser explícitas; confirme separadamente a integração real necessária. Não crie uma segunda infraestrutura nem exija matriz exaustiva para ajuste pequeno.
+
+Encaminhe propriedades objetivas de geometria à validação: ausência de sobreposição indevida, rótulos legíveis, cobertura correta do intervalo/eixo, conteúdo coerente com filtros e uso da área útil conforme a composição aprovada. Espaço vazio intencional não é falha por si. Automatize verificações proporcionais quando viável, mantendo inspeção humana ou agentiva para hierarquia, beleza e legibilidade.
+
+Inspecione efetivamente as capturas e corrija divergências materiais antes de declarar aceitação visual; gerar arquivos, obter PASS do harness ou aprovar testes funcionais não substitui essa inspeção. Preserve evidência compacta com estado, viewport, tema e revisão do código, distinguindo desvios justificados de pendências.
+
 ### Runtime como exemplar
 
 Quando uma UI validada materializar muito bem o Design System:
