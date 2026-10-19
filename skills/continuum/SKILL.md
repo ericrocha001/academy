@@ -1,6 +1,6 @@
 ---
 name: continuum
-description: Use para recuperar contexto durável do Continuum do repositório ativo: decisões, handoffs, relações e histórico relevante. Descubra seletivamente; quando houver terminal e CLI local autorizados, prefira continuum-local-cli mesmo se MCP estiver disponível. Para publicar ou editar use continuum-publication.
+description: Recupere contexto durável do Continuum do repositório ativo, descobrindo Artifacts por metadata/relações e escolhendo leitura seletiva ou integral conforme a necessidade. Prefira continuum-local-cli quando houver terminal autorizado; para publicar/editar use continuum-publication.
 ---
 
 # Um repositório, um Continuum
@@ -27,13 +27,13 @@ Recupere histórico quando implementação anterior, decisão, prova, pendência
 
 Metadata Before Content é estrutural:
 
-necessidade → filtros → discovery records → seleção → inspect_artifact_structure → read_artifact_section → conteúdo suficiente.
+necessidade → filtros → discovery records → seleção → aquisição proporcional (estrutura/trecho OU Artifact integral) → contexto suficiente.
 
 1. Formule a necessidade específica de contexto.
 2. Use `list_artifacts` com filtros em interseção: `query` pesquisa somente name/description; `kind`, `status`, `metadata`, `updatedAfter` e `updatedBefore` restringem a seleção. Intervalos usam updatedAt e limites inclusivos.
 3. Comece com limite pequeno (default 20, máximo 100). Continue por `nextCursor` somente se a próxima página puder mudar a decisão; envie-o como `cursor` preservando os filtros. Cursor pertence ao Continuum em que foi emitido.
 4. Leia apenas discovery records. Metadata adicional não vem por padrão; use `metadataKeys` para solicitar somente chaves que ajudam seleção.
-5. Escolha um `artifactId` explícito. Quando o runtime expuser navegação estrutural, use `inspect_artifact_structure`, selecione a seção necessária e leia com `read_artifact_section`. Use `get_artifact` para necessidade integral, edição CAS ou fallback quando a capacidade estrutural estiver indisponível. Nunca abra todos os resultados automaticamente.
+5. Escolha um `artifactId` explícito e decida a profundidade conforme a finalidade: para questão localizada ou escopo incerto, prefira `inspect_artifact_structure` e depois `read_artifact_section` apenas no trecho escolhido; para leitura integral necessária, edição CAS ou Artifact sabidamente pequeno cujo conteúdo completo seja útil, use `get_artifact` diretamente. Não torne a inspeção etapa obrigatória nem adquira documento inteiro só para descobrir seu tamanho. Se a navegação estrutural não estiver disponível no canal, use `get_artifact` de maneira deliberada e registre a limitação quando material. Nunca abra todos os resultados automaticamente.
 6. Siga relações relevantes um hop por vez e pare quando houver o menor contexto suficiente para agir.
 
 O objetivo é contexto suficiente sem reconstruir a conversa original. Meça qualidade pela precisão da seleção, número de aquisições e tamanho da representação fornecida ao agente.
@@ -41,15 +41,25 @@ O objetivo é contexto suficiente sem reconstruir a conversa original. Meça qua
 Continuum tells you what happened. Code Navigation tells you what exists now. Artifact histórico não prova source atual ou runtime fresco. Confirme essas propriedades pelas capacidades correspondentes.
 
 
-## Leitura estrutural seletiva
+## Leitura proporcional: escolher a profundidade
 
-Quando disponível no runtime, `inspect_artifact_structure({artifactId, limit?, cursor?})` devolve somente outline paginado (padrão 50, máximo 100), com `sectionId`, título, nível, pai, indicação de filhos, offsets UTF-16 e linhas base 1. O intervalo é `[start, end)`; títulos longos são limitados a 512 caracteres. Não transfere corpo ou mídia. Preâmbulos e documentos sem headings têm seção sintética; frontmatter validado permanece na metadata.
+O agente escolhe a menor representação suficiente para a decisão, **sem pipeline obrigatório**. A intenção governa a ferramenta, não a mera existência de um outline.
 
-Use `read_artifact_section({artifactId, sectionId, expectedRevision})` com a revisão do outline. `includeDescendants` é true por padrão; false limita ao conteúdo próprio antes do primeiro subtítulo. A resposta contém somente o slice literal original, limitado a 12288 unidades UTF-16 por página, preservando pares surrogate. Continue `nextCursor` como `cursor` mantendo todos os outros argumentos; concatene `content` sem separadores.
+- **Trecho, pergunta específica, interesse em uma ou poucas seções, Artifact potencialmente extenso ou escopo ainda incerto:** `inspect_artifact_structure` antes de adquirir conteúdo; escolha seções ou blocos e pare assim que houver evidência suficiente.
+- **Síntese abrangente, auditoria do documento inteiro, comparação dependente do texto completo, edição que exige Markdown integral/CAS ou Artifact já conhecido como pequeno e integralmente útil:** `get_artifact` diretamente; não faça inspeção cerimonial.
+- **Várias partes identificadas:** leia apenas as necessárias, em sequência ou lote se o transporte suportar; não expanda outras seções, relações ou Artifacts por precaução.
+- **Escopo desconhecido:** não busque o Markdown inteiro para estimar tamanho. Um outline barato permite decidir sem pagar antecipadamente pelo corpo completo. Tamanho isolado não é limiar universal; avalie intenção, evidência já disponível, chamadas e contexto realmente recebido.
 
-Para detalhe menor, inspecione explicitamente `{artifactId, sectionId, includeBlocks:true}`: são blocos diretos efêmeros (parágrafo, lista, tabela, código, citação etc.), sem corpo. Passe o `blockId` retornado na leitura. IDs são seletores daquela revisão, não referências duráveis por título. Revisão/cursor obsoleto, manipulado ou de outro repositório é recusado; em `REVISION_CONFLICT`/`STRUCTURE_STALE`, consulte estrutura atual antes de ler novamente.
+### Contrato da navegação estrutural
 
-A CLI oferece os mesmos nomes via `node scripts/continuum/local.cjs <operação> --repository <repositoryId> --id <artifactId> --filter '<JSON dos demais argumentos>'`, também pelo prefixo `node scripts/local-agent/local.cjs continuum`. Preserve as verificações de repositório/Worktree de `continuum-local-cli`. Falha de estrutura permite `get_artifact`/`get` integral; não reescreva nem normalize o Markdown para recuperá-lo.
+Quando o runtime/canal realmente expuser a capacidade, `inspect_artifact_structure({artifactId, limit?, cursor?})` devolve somente outline paginado (padrão 50, máximo 100), com `sectionId`, título, nível, pai, indicação de filhos, offsets UTF-16 e linhas base 1. O intervalo é `[start, end)`; títulos longos são limitados a 512 caracteres. Não transfere corpo ou mídia. Somente **preâmbulos com conteúdo significativo** produzem seção `Preamble`; whitespace antes do primeiro título não vira seção. Documento sem headings preserva uma seção sintética `Document content` recuperável. O frontmatter validado permanece na metadata.
+
+Para adquirir conteúdo escolhido, use `read_artifact_section({artifactId, sectionId, expectedRevision})`, com revisão obtida na inspeção. `includeDescendants` é true por padrão; false limita ao conteúdo próprio antes do primeiro subtítulo. Cada página devolve slice **literal** do Markdown original (até 12288 unidades UTF-16, preservando pares surrogate). Continue `nextCursor` como `cursor` mantendo todos os outros argumentos; concatene `content` sem separadores e pare quando o necessário estiver completo.
+
+Para detalhe menor, inspecione explicitamente `{artifactId, sectionId, includeBlocks:true}`: blocos diretos (parágrafo, lista, tabela, código, citação etc.) são descobertos sem corpo. Passe o `blockId` devolvido à leitura. Seletores e cursores são vinculados ao Artifact, repositório, revisão e escopo, não IDs duráveis por título. Diante de `REVISION_CONFLICT` ou `STRUCTURE_STALE`, obtenha outline/revisão atuais antes de reler; não reutilize cursor antigo nem substitua silêncio por sucesso. Indisponibilidade **da superfície estrutural** pode justificar `get_artifact` integral conforme a necessidade; erro de integridade/corrupção não autoriza contornar a proteção com fallback.
+
+**Transporte:** escolha CLI local funcional/autorizada quando equivalente; os comandos e verificações de Worktree/`repositoryId` pertencem a `continuum-local-cli`. Para leitura remota via MCP, use as mesmas operações agent-facing expostas pelo runtime. A possibilidade de leitura integral não implica que ela seja o default.
+
 
 # Artifact Graph
 
@@ -78,7 +88,7 @@ Semântica e procedimento evoluem primeiro na Skill. Backend fornece persistênc
 
 ## Seleção do canal local
 
-Quando o ambiente oferecer **terminal autorizado, CLI funcional, Code Awareness ativo e checkout/Worktree vinculada**, **prefira `continuum-local-cli`** para `status`, `list` e `get`, **mesmo que MCP esteja disponível**. A CLI usa o mesmo Continuum canônico e governa identidade do `repositoryId` e o transporte local. Use MCP apenas quando o acesso local não puder fornecer o resultado necessário ou existir exigência de acesso/prova remota. Esta Skill define **o que descobrir, quando ler e quando parar**, sem presumir que o agente seja Arquiteto ou Implementador.
+Quando o ambiente oferecer **terminal autorizado, CLI funcional, Code Awareness ativo e checkout/Worktree vinculada**, **prefira `continuum-local-cli`** para descoberta, inspeção de estrutura, leitura seletiva e leitura integral, **quando a operação requerida existir na versão local**; não duplique chamadas MCP equivalentes. A CLI utiliza o Continuum canônico e valida `repositoryId`/Worktree. Use MCP quando a via local não puder fornecer a capacidade necessária ou houver necessidade/prova remota. Esta Skill define **o que descobrir, quando ler e quando parar**, sem presumir papel nem autorização.
 
 ## Capacidades especializadas
 
