@@ -1,6 +1,6 @@
 ---
 name: continuum-local-cli
-description: Use para descobrir, ler, publicar e atualizar Artifacts do Continuum pela CLI local quando houver terminal autorizado, aplicativo ativo e checkout/worktree vinculada, mesmo que MCP também esteja disponível. Confirme repositoryId e PERSISTED; reserve MCP para necessidade não atendida localmente. Não use sem acesso local nem para redefinir contratos de Artifact.
+description: Opere o Continuum pela CLI local quando houver terminal autorizado, app ativo e checkout/Worktree vinculada: descoberta, leitura estrutural seletiva ou integral e escrita. Valide repositoryId e PERSISTED; use MCP quando a CLI não atender. Para decidir a profundidade do contexto, siga continuum.
 ---
 
 # Continuum Local CLI
@@ -25,6 +25,9 @@ A referência de execução no repositório é `scripts/continuum/LOCAL.md`; os 
 ```powershell
 node scripts/continuum/local.cjs status
 node scripts/continuum/local.cjs list --repository <repositoryId> --filter '{"kind":"EXECUTABLE_PLAN","limit":10}'
+node scripts/continuum/local.cjs inspect_artifact_structure --repository <repositoryId> --id <artifactId> --filter '{"limit":50}'
+node scripts/continuum/local.cjs inspect_artifact_structure --repository <repositoryId> --id <artifactId> --filter '{"sectionId":"<sectionId>","includeBlocks":true}'
+node scripts/continuum/local.cjs read_artifact_section --repository <repositoryId> --id <artifactId> --filter '{"sectionId":"<sectionId>","expectedRevision":2}'
 node scripts/continuum/local.cjs get --repository <repositoryId> --id <artifactId>
 node scripts/continuum/local.cjs get --repository <repositoryId> --id <artifactId> --format markdown
 node scripts/continuum/local.cjs publish --repository <repositoryId> --file handoff.md
@@ -32,13 +35,14 @@ node scripts/continuum/local.cjs update --repository <repositoryId> --id <artifa
 ```
 
 - `list` devolve **somente registros de descoberta**, nunca o Markdown. Filtre por `query`, `kind`, `status`, `metadata` ou relações, conforme o contrato atual; para páginas seguintes, reapresente os mesmos filtros e passe `nextCursor` em `cursor`. Relações têm **um hop**, sem carregamento automático.
-- `get` abre **um Artifact selecionado** e devolve JSON com revisão, metadata e `rawMarkdown`. `--format markdown` devolve somente o Markdown literal, incluindo seu frontmatter. Não solicite tudo por precaução.
+- `inspect_artifact_structure` recebe `--id` e `--filter` JSON com `limit`, `cursor`, ou `sectionId` + `includeBlocks:true`; devolve outline/blocos sem corpo e a revisão corrente. `read_artifact_section` recebe `--id` e `--filter` JSON com `sectionId`, `expectedRevision`, `includeDescendants?`, `blockId?`, `cursor?`; devolve o Markdown literal selecionado e, se paginado, `nextCursor`. No exemplo, `expectedRevision:2` é **ilustrativo**: use sempre a revisão real da inspeção. Reapresente as mesmas opções ao continuar a paginação e concatene `content` sem separadores. Ambas as operações são reais em `scripts/continuum/local.cjs` do PR #38; verifique versão da CLI/runtime antes de depender delas. Também existem via `node scripts/local-agent/local.cjs continuum <operação> ...`.
+- `get` abre **um Artifact selecionado** e devolve JSON com revisão, metadata e `rawMarkdown`. `--format markdown` devolve somente o Markdown literal, incluindo seu frontmatter. Use para necessidade integral, edição ou fallback seguro; não solicite tudo por precaução.
 - `publish` recebe um arquivo Markdown UTF-8 completo com frontmatter, validado pelo serviço canônico. Para o Relato Final, use `kind: IMPLEMENTATION_HANDOFF`, `date` com horário/fuso e relação `implements` apontando ao Artifact do Plano quando apropriado. O corpo deve preservar exatamente o relato exigido pelo Harness, sem versão concorrente.
 - `update` requer **`artifactId`, revisão atual lida por `get` e arquivo Markdown integral**, inclusive relações ainda válidas. `REVISION_CONFLICT` exige reler e reavaliar, não retry cego. Não publique um segundo Artifact para fugir de conflito.
 
 ## Fluxo pelo canal local
 
-1. Recebeu `artifactId`? Rode `status`, selecione o `repositoryId` informado e use `get` para abrir **o Plano exato**. Sem ID, use `list` com filtros pequenos, selecione, depois `get`.
+1. Recebeu `artifactId`? Rode `status` e selecione o `repositoryId` informado. Sem ID, use `list` com filtros pequenos e selecione um Artifact. **A profundidade é decidida por `continuum`:** para pergunta localizada/escopo incerto, use `inspect_artifact_structure` e depois `read_artifact_section` com revisão/ID retornados; para Plano completo, auditoria integral ou atualização, use `get` diretamente. Não imponha inspeção antes de toda leitura nem use `get` para estimar o tamanho de um documento.
 2. Execute o Plano e valide as propriedades exigidas, sem misturar prova de software com recibo de transporte.
 3. Prepare o arquivo Markdown único do Relato Final com metadata e relação ao Plano. Rode `publish` e registre o `artifactId` retornado.
 4. Confirme **`state: PERSISTED`** no receipt da CLI antes de informar que o Artifact está publicado. A escrita online é concluída pelo Store canônico; `status: VALIDATED` no frontmatter descreve a validação do trabalho, não substitui confirmação da publicação.
@@ -48,7 +52,7 @@ node scripts/continuum/local.cjs update --repository <repositoryId> --id <artifa
 
 - `APP_UNAVAILABLE`: Code Awareness/canal/perfil não acessível. Não declare publicação e não caia automaticamente no caminho offline.
 - `REPOSITORY_MISMATCH`, `NO_ACTIVE_REPOSITORY`, `WORKTREE_UNLINKED`: corrija contexto/vínculo; **não** selecione outro repositório por aproximação.
-- `ARTIFACT_NOT_FOUND`, `INVALID_ARGUMENT`, `REQUEST_TOO_LARGE`, `IPC_TIMEOUT`, `IPC_CLOSED` e conflitos: não invente conteúdo/IDs; investigue a causa mínima.
+- `ARTIFACT_NOT_FOUND`, `INVALID_ARGUMENT`, `REQUEST_TOO_LARGE`, `IPC_TIMEOUT`, `IPC_CLOSED` e conflitos: não invente conteúdo/IDs; investigue a causa mínima. Na navegação, `REVISION_CONFLICT` e `STRUCTURE_STALE` requerem nova inspeção/revisão, não retry com cursor antigo; erro de integridade não autoriza contorno por `get`.
 - Após perda de comunicação numa escrita, o resultado pode ser **desconhecido** mesmo sem receipt. **Consulte o Continuum antes de reenviar** para evitar publicações duplicadas; a CLI não faz retries automáticos.
 - `scripts/continuum/publish-artifact.cjs` é um **publicador offline separado**: `QUEUED` indica apenas entrada na inbox, **não `PERSISTED`**. Use-o somente quando for explicitamente necessário, com confirmação posterior de ingestão; não presuma que inbox de outra Worktree será observada.
 - O canal aceita até 8 MiB por request, 16 MiB por response e usa prazo de 15 segundos. Não há truncamento silencioso. O perfil local é fronteira de autorização por usuário; não assume isolamento entre agentes do mesmo usuário.
