@@ -7,7 +7,7 @@ description: Use para recuperar contexto durável do Continuum do repositório a
 
 Repository is the Continuum boundary. Metadata is the internal segmentation mechanism.
 
-Cada repositório possui um Store e um corpus próprios. Continuum Global significa o corpus global **daquele repositório**, nunca um corpus compartilhado do Code Awareness. Artifacts não atravessam a fronteira do repositório. As quatro primitives operam no contexto ativo; para acessar outro Continuum, troque explicitamente o repositório ativo na fronteira do Code Awareness. Não tente selecionar outro repositório por projectId, nome ou filtros.
+Cada repositório possui um Store e um corpus próprios. Continuum Global significa o corpus global **daquele repositório**, nunca um corpus compartilhado do Code Awareness. Artifacts não atravessam a fronteira do repositório. As operações operam no contexto ativo; para acessar outro Continuum, troque explicitamente o repositório ativo na fronteira do Code Awareness. Não tente selecionar outro repositório por projectId, nome ou filtros.
 
 Dentro do corpus não existem sub-Continuums para implementações, execuções, assuntos ou tipos. Use metadata e relações para segmentação interna. A identidade durável do Store vem do RepositoryRecord.id; nomes e paths não são identidade semântica.
 
@@ -27,18 +27,29 @@ Recupere histórico quando implementação anterior, decisão, prova, pendência
 
 Metadata Before Content é estrutural:
 
-necessidade → filtros → discovery records → seleção → get_artifact → conteúdo.
+necessidade → filtros → discovery records → seleção → inspect_artifact_structure → read_artifact_section → conteúdo suficiente.
 
 1. Formule a necessidade específica de contexto.
 2. Use `list_artifacts` com filtros em interseção: `query` pesquisa somente name/description; `kind`, `status`, `metadata`, `updatedAfter` e `updatedBefore` restringem a seleção. Intervalos usam updatedAt e limites inclusivos.
 3. Comece com limite pequeno (default 20, máximo 100). Continue por `nextCursor` somente se a próxima página puder mudar a decisão; envie-o como `cursor` preservando os filtros. Cursor pertence ao Continuum em que foi emitido.
 4. Leia apenas discovery records. Metadata adicional não vem por padrão; use `metadataKeys` para solicitar somente chaves que ajudam seleção.
-5. Escolha um `artifactId` explícito e use `get_artifact`. Nunca abra todos os resultados automaticamente.
+5. Escolha um `artifactId` explícito. Quando o runtime expuser navegação estrutural, use `inspect_artifact_structure`, selecione a seção necessária e leia com `read_artifact_section`. Use `get_artifact` para necessidade integral, edição CAS ou fallback quando a capacidade estrutural estiver indisponível. Nunca abra todos os resultados automaticamente.
 6. Siga relações relevantes um hop por vez e pare quando houver o menor contexto suficiente para agir.
 
 O objetivo é contexto suficiente sem reconstruir a conversa original. Meça qualidade pela precisão da seleção, número de aquisições e tamanho da representação fornecida ao agente.
 
 Continuum tells you what happened. Code Navigation tells you what exists now. Artifact histórico não prova source atual ou runtime fresco. Confirme essas propriedades pelas capacidades correspondentes.
+
+
+## Leitura estrutural seletiva
+
+Quando disponível no runtime, `inspect_artifact_structure({artifactId, limit?, cursor?})` devolve somente outline paginado (padrão 50, máximo 100), com `sectionId`, título, nível, pai, indicação de filhos, offsets UTF-16 e linhas base 1. O intervalo é `[start, end)`; títulos longos são limitados a 512 caracteres. Não transfere corpo ou mídia. Preâmbulos e documentos sem headings têm seção sintética; frontmatter validado permanece na metadata.
+
+Use `read_artifact_section({artifactId, sectionId, expectedRevision})` com a revisão do outline. `includeDescendants` é true por padrão; false limita ao conteúdo próprio antes do primeiro subtítulo. A resposta contém somente o slice literal original, limitado a 12288 unidades UTF-16 por página, preservando pares surrogate. Continue `nextCursor` como `cursor` mantendo todos os outros argumentos; concatene `content` sem separadores.
+
+Para detalhe menor, inspecione explicitamente `{artifactId, sectionId, includeBlocks:true}`: são blocos diretos efêmeros (parágrafo, lista, tabela, código, citação etc.), sem corpo. Passe o `blockId` retornado na leitura. IDs são seletores daquela revisão, não referências duráveis por título. Revisão/cursor obsoleto, manipulado ou de outro repositório é recusado; em `REVISION_CONFLICT`/`STRUCTURE_STALE`, consulte estrutura atual antes de ler novamente.
+
+A CLI oferece os mesmos nomes via `node scripts/continuum/local.cjs <operação> --repository <repositoryId> --id <artifactId> --filter '<JSON dos demais argumentos>'`, também pelo prefixo `node scripts/local-agent/local.cjs continuum`. Preserve as verificações de repositório/Worktree de `continuum-local-cli`. Falha de estrutura permite `get_artifact`/`get` integral; não reescreva nem normalize o Markdown para recuperá-lo.
 
 # Artifact Graph
 
