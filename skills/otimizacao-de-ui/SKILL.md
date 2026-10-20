@@ -196,6 +196,19 @@ Evite:
 - cards crescendo sem limite;
 - textarea/editor expandindo o documento inteiro.
 
+## Grafos e cronologias: geometria como afirmação
+
+**Acione este gate apenas quando a UI representar relações factuais** — DAGs, dependências, fluxos, linhagens, timelines causais ou arquiteturas — e não diagramas meramente ilustrativos.
+
+Em tais superfícies, **a geometria também é contrato semântico**: nó, origem, destino, sentido da aresta, continuidade, ordenação, agrupamento temporal, rótulo e destaque podem afirmar algo sobre os dados. Antes de aprovar o layout, explicite qual fato cada elemento comunica, diferencie fonte de verdade de projeção visual e verifique se o sentido percebido coincide com o fato real.
+
+- Uma conexão deve permitir reconhecer quem contribui e quem recebe, quando essa direção existir; não reposicione fatos para embelezar o desenho.
+- Ordem causal/topológica e tempo de calendário não são intercambiáveis. Agrupar e rotular datas requer a mesma convenção de fuso/calendário; não invente continuidade onde a cobertura é parcial.
+- Preserve nomes/identidades legíveis quando distinguem entidades. Cor, tamanho e destaque podem expressar relevância contextual, **não redefinir** identidade ou direção factual.
+- Ao redesenhar, faça ao menos uma leitura de caso normal e um caso ambíguo/denso, por evidência disponível e dentro da autorização. Se a geometria ainda puder induzir interpretação falsa, não declare a visualização semanticamente resolvida.
+
+Para gerar referência visual, use `mockup-design`; para provar runtime, utilize `validacao-de-implementacoes`. Este gate não cria um procedimento concorrente de mockup nem exige testes ou medições não autorizados.
+
 ## Hierarquia visual
 
 Construa hierarquia por uma combinação coerente de:
