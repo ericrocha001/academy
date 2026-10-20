@@ -395,6 +395,8 @@ Computer Use continua útil para exploração interativa quando disponível. Sua
 
 Inspecione efetivamente as screenshots antes de aprovar a aparência. Arquivo PNG gerado ou receipt aprovado não substitui inspeção visual. Registre os estados e viewports observados e os limites da evidência: fixtures de renderer não provam backend, persistência ou integração remota.
 
+Quando for necessário preparar lado a lado/overlay de uma referência aprovada e uma captura real no **Code Awareness**, e o checkout contiver esse Harness, use a Skill operacional `comparacao-visual-de-ui`. Ela produz evidência para inspeção; **não** substitui este contrato de suficiência, aceitação visual e separação entre fixture e integração. Não imponha o comparador a projetos sem essa ferramenta, UI sem referência aprovada ou provas não visuais.
+
 ## Prova de Aderência à Intenção Visual
 
 Quando uma criação/redesign de UI possui **direção visual aprovada** (Design System, composição acordada ou mockup), a aprovação exige demonstrar **cobertura das decisões visuais materiais**, além de provar que a aplicação renderiza corretamente. A captura de screenshot, a execução de cenários visuais e a impressão geral de que a tela “ficou boa” não provam, isoladamente, essa aderência.

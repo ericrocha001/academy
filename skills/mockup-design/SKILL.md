@@ -113,6 +113,8 @@ Mockup não substitui Plano Final.
 
 Depois da direção visual estar resolvida, `planejamento-executavel` transforma arquitetura + contratos + referência visual em execução.
 
+Quando a tarefa incluir **comparar** um mockup já aprovado à UI implementada, acione `comparacao-visual-de-ui` para preparar evidências com o Harness existente e disponível; não carregue o comparador para **criar** mockups, nem trate sua saída como aprovação estética. A validação continua com `validacao-de-implementacoes`.
+
 ## Fontes de verdade
 
 Antes de desenhar, adquira somente o necessário de:
