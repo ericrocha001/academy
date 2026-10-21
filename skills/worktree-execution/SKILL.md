@@ -117,7 +117,7 @@ Use Git local autorizado quando disponível e `git-operations` apenas se exigir 
 
 **Preservação da rastreabilidade:** prefira método de merge que preserve os commits individuais de validação no destino. Squash destrói essa granularidade no histórico integrado; somente o utilize se uma política explícita do repositório prevalecer, registrando a limitação. Não reescreva commits validados por conveniência.
 
-**Exceções:** sem acesso, autorização, plataforma de PR ou revisor, preserve commits e provas; reporte o bloqueio e faça handoff rastreável, sem declarar PR ou merge inexistente. Integração direta é exceção expressamente delegada, não padrão.
+**Exceções:** enquanto o responsável não aprovar o PR, registre **PR AGUARDANDO APROVAÇÃO**, sem chamar isso de falha da implementação. Após aprovação, se faltar acesso, ferramenta de PR ou revisor, preserve commits/pushes e provas; relate o bloqueio sem declarar PR ou merge inexistente. Integração direta é exceção que também requer aprovação explícita do responsável para o merge concreto.
 
 ## Revisão e integração sem CI
 
@@ -135,9 +135,9 @@ Use Git local autorizado quando disponível e `git-operations` apenas se exigir 
 
 ## Encerramento da sessão
 
-O fim de um Plano significa **validação + commit + handoff pertinente**, não encerramento da sessão. Outros Planos relacionados podem continuar na mesma branch/Worktree.
+O fim de um Plano significa **validação + commit + push confirmado + handoff pertinente**, não encerramento da sessão. Outros Planos relacionados podem continuar na mesma branch/Worktree.
 
-Na conclusão, confirme a adequação semântica do nome da branch e eventual renomeação segura antes do PR, a preservação dos commits validados, a composição com prova suficiente, o PR único (ou seu bloqueio explícito) e as pendências. **Sessão concluída não significa PR merged.** Não feche automaticamente a Worktree. Para nova tentativa após integração ou abandono confirmado, crie nova Worktree e branch sobre o destino atualizado, com novo PR; não reabra o checkout antigo como ambiente de implementação.
+Na conclusão, confirme a adequação semântica do nome da branch e eventual renomeação segura, os commits e pushes validados, a composição com prova suficiente e o estado da **proposta de PR aguardando aprovação** (ou do PR já criado com aprovação explícita), além das pendências. **Sessão concluída não significa PR aberto nem merged.** Não feche automaticamente a Worktree. Para nova tentativa após integração ou abandono confirmado, crie nova Worktree e branch sobre o destino atualizado; não reabra o checkout antigo como ambiente de implementação.
 
 ## Integração
 
@@ -183,7 +183,7 @@ Não distribua automaticamente unidades do mesmo plano entre agentes apenas porq
 - presumir que terminal disponível autoriza escrita na `main` ou Worktree alheia;
 - iniciar implementação em detached HEAD ou checkout principal compartilhado sem isolamento comprovado;
 - começar implementação sem preparar e verificar as dependências da Worktree após vinculá-la à branch, ou presumir que as dependências de outro checkout servem;
-- confundir handoff VALIDATED com licença para mutar ou tratar autorização contínua como permissão universal entre repositórios;
+- tratar handoff VALIDATED como licença para mutações fora da branch validada, usar commit/push normal como pretexto para abrir PR ou fazer merge, ou considerar a autorização operacional contínua permissão universal para operações destrutivas;
 - criar Worktree por plano, misturar staged de autores/escopos diferentes ou dar push por checkpoint sem delegação;
 - abrir PR por teste, checkpoint ou Plano validado antes de concluir a sessão; criar múltiplos PRs dependentes na mesma sessão, acumular Planos alheios ao objetivo para reduzir PRs ou duplicar PR em revisão;
 - pedir autorização a cada commit/push de Plano validado apesar da política operacional contínua; abrir PR ou fazer merge sem as respectivas aprovações explícitas e distintas do responsável;
