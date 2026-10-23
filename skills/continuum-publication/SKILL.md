@@ -1,6 +1,6 @@
 ---
 name: continuum-publication
-description: Use para criar, publicar, editar ou padronizar Artifacts no Continuum canônico, governando kind/status canônicos, metadata, relações, handoffs e revisão. Quando CLI local autorizada estiver disponível, prefira continuum-local-cli mesmo com MCP acessível; use MCP quando necessário. QUEUED não prova persistência. Para mera leitura use continuum.
+description: Publique, edite e reconcilie Artifacts no Continuum; crie ou atribua tags e copie ou salve Context Bundle por tag somente sob pedido explícito do usuário. Governe CAS, recibos, metadata, relações e handoffs. Prefira continuum-local-cli autorizado; para consulta ou prévia use continuum.
 ---
 
 # Continuum Publication
