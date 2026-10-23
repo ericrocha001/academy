@@ -60,3 +60,9 @@ node scripts/continuum/local.cjs update --repository <repositoryId> --id <artifa
 ## Condição de conclusão
 
 O agente recuperou o Artifact correto do repositório correto, consultou só o contexto necessário, concluiu provas de implementação separadamente e, quando houve escrita, confirmou persistência com identidade/revisão reais. Se não conseguiu acesso ou confirmação, relatou precisamente o bloqueio — jamais um falso sucesso.
+
+## Transporte de Tags e Bundle
+
+Quando as quatro operações dedicadas estiverem implementadas e descobríveis no runtime corrente, a CLI aceita `list_continuum_tags`, `create_continuum_tag`, `assign_continuum_tag` e `create_context_bundle`. Use `--repository` confirmado por status, no checkout/Worktree vinculado, e argumentos JSON em `--filter`; os mesmos nomes existem em `node scripts/local-agent/local.cjs continuum <operação>`. Exemplos e schemas operacionais: `scripts/continuum/LOCAL.md`. O filtro de `list` aceita `tag`.
+
+Na atribuição, o argumento de domínio é `action: add|remove`; `operation` pertence ao envelope de transporte. Não forneça repositoryId/worktreeId dentro de `--filter`. Cada mutação aceita um Artifact/revisão explícitos. Sem suporte na versão carregada, reporte `METHOD_NOT_FOUND` sem prometer capacidade. A política de pedido explícito, autoria e efeitos é de `continuum-publication`; descoberta/prévia é de `continuum`. Recibos compactos não transportam Markdown/pixels; Save requer janela Electron visível/focada e destino escolhido no diálogo, nunca path enviado pelo agente.
