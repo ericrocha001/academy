@@ -98,7 +98,7 @@ Para publicação, edição, metadata de autoria e transporte offline, utilize `
 
 ## Tags e Context Bundle sob solicitação
 
-Quando o usuário precisar descobrir tags, use `list_continuum_tags`: catálogo do repositório ativo com slug, nome, cor, objetivo e contagem, sem corpos. Para membros, use `list_artifacts({tag: slug})`; para tags de um Artifact, `get_artifact`. Não atribua nem crie tags apenas para ler, navegar, resumir ou atualizar texto.
+Quando o usuário precisar descobrir tags, use `list_continuum_tags`: catálogo do repositório ativo com slug, nome e contagem; cor e objetivo não fazem parte da tag, sem corpos. Para membros, use `list_artifacts({tag: slug})`; para tags de um Artifact, `get_artifact`. Não atribua nem crie tags apenas para ler, navegar, resumir ou atualizar texto.
 
 Quando o usuário pedir um pacote por tag, `create_context_bundle({tag, action: "preview"})` prepara fontes atuais e devolve somente recibo econômico: count, bytes, tokens estimados/encoding, hasVisuals e snapshotId. O snapshot não sincroniza cópias externas. Ações `copy`, `markdown` e `zip` exigem solicitação explícita; contratos de autoria/efeitos pertencem a `continuum-publication`, transporte a `continuum-local-cli`. Texto não contém pixels: use ZIP para WebP original. Limites preservados: 50 Artifacts/8 MiB Markdown/64 MiB ZIP; não há truncamento.
 
