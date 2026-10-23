@@ -1,6 +1,6 @@
 ---
 name: continuum
-description: Recupere contexto durável do Continuum do repositório ativo, descobrindo Artifacts por metadata/relações e escolhendo leitura seletiva ou integral conforme a necessidade. Prefira continuum-local-cli quando houver terminal autorizado; para publicar/editar use continuum-publication.
+description: Recupere contexto durável do Continuum por metadata, relações, tags e leitura proporcional; descubra catálogo ou membros de tags e prepare prévia econômica de Context Bundle. Para criação ou atribuição de tags, clipboard e Save, use continuum-publication. Prefira continuum-local-cli autorizado.
 ---
 
 # Um repositório, um Continuum
