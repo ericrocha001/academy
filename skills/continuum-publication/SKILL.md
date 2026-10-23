@@ -153,3 +153,12 @@ Se o runtime ativo ainda expuser somente o protocolo v1, publique handoff pelo c
 
 Se publicação falhar, preserve o Relato Final e informe que o handoff não foi publicado. Nunca deixe falha de transporte apagar contexto necessário.
 
+## Autoria dedicada de tags e exportação solicitada
+
+Tags canônicas podem ser criadas/atribuídas por agentes **somente quando o usuário solicitar**, usando ferramentas dedicadas do Channel autenticado no repositório ativo. `create_continuum_tag` recebe nome; cor/descrição são opcionais, slug é derivado no servidor e imutável. `selected: [{artifactId, expectedRevision}]` cria+atribui em uma transação: falha CAS não deixa tag órfã. Recibo verdadeiro: `state: PERSISTED`, `creation: CREATED|EXISTING`, tag e revisões. Colisão real de identidade falha; não invente sinônimos.
+
+`assign_continuum_tag({slug, action: "add"|"remove", selected: [...]})` aceita **um Artifact explícito por chamada**, com revisão observada. Mesmo membership e revisão atual é no-op; revisão antiga sempre conflita e exige releitura. Preserva corpo literal, metadata alheia, outras tags e mídia. Não há edição/exclusão agentiva nesta versão. Lotes amplos usam o fluxo humano; `confirmed: true` não comprova consentimento. Respeite as permissões reais do host e nunca transforme leitura/navegação em autorização de escrita.
+
+**As rotas genéricas publish/update/import/ingest continuam vetando alteração de tags no YAML**. Ao atualizar texto, preserve as tags existentes; nunca tente escapar das ferramentas dedicadas.
+
+Para Bundle expressamente solicitado, `create_context_bundle` com `copy` escreve o Markdown integral no clipboard nativo e retorna apenas recibo; `markdown`/`zip` usam diálogo Save na janela Electron visível e focada. Sem essa sessão, `INTERACTIVE_SESSION_REQUIRED`: encaminhe a ação ao gerenciador humano, sem popup invisível. Não envie caminho arbitrário nem snapshotId do renderer. Fontes/membership são revalidados até o efeito; vazio, limites e staleness falham sem exportação parcial. Para descoberta/prévia, consulte `continuum`; para a CLI, `continuum-local-cli`.
