@@ -155,7 +155,7 @@ Se publicação falhar, preserve o Relato Final e informe que o handoff não foi
 
 ## Autoria dedicada de tags e exportação solicitada
 
-Tags canônicas podem ser criadas/atribuídas por agentes **somente quando o usuário solicitar**, usando ferramentas dedicadas do Channel autenticado no repositório ativo. `create_continuum_tag` recebe nome; cor/descrição são opcionais, slug é derivado no servidor e imutável. `selected: [{artifactId, expectedRevision}]` cria+atribui em uma transação: falha CAS não deixa tag órfã. Recibo verdadeiro: `state: PERSISTED`, `creation: CREATED|EXISTING`, tag e revisões. Colisão real de identidade falha; não invente sinônimos.
+Tags canônicas podem ser criadas/atribuídas por agentes **somente quando o usuário solicitar**, usando ferramentas dedicadas do Channel autenticado no repositório ativo. `create_continuum_tag` recebe apenas nome como atributo; cor e objetivo foram removidos. O slug é identidade interna derivada no servidor e imutável. `selected: [{artifactId, expectedRevision}]` cria+atribui em uma transação: falha CAS não deixa tag órfã. Recibo verdadeiro: `state: PERSISTED`, `creation: CREATED|EXISTING`, tag e revisões. Colisão real de identidade falha; não invente sinônimos.
 
 `assign_continuum_tag({slug, action: "add"|"remove", selected: [...]})` aceita **um Artifact explícito por chamada**, com revisão observada. Mesmo membership e revisão atual é no-op; revisão antiga sempre conflita e exige releitura. Preserva corpo literal, metadata alheia, outras tags e mídia. Não há edição/exclusão agentiva nesta versão. Lotes amplos usam o fluxo humano; `confirmed: true` não comprova consentimento. Respeite as permissões reais do host e nunca transforme leitura/navegação em autorização de escrita.
 
