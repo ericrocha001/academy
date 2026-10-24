@@ -415,6 +415,16 @@ Exemplos conceituais:
 
 Não reutilize mecanicamente a mesma estratégia para todas as Unidades.
 
+## Responsividade durante operações em andamento
+
+Mudanças com alcance material até tarefas prolongadas do Main, custo de persistência, IPC, concorrência ou atualizações de backend refletidas no renderer exigem prova de janela interativa **durante a operação**. Selecione por risco semântico do diff e do contrato, não apenas por nomes ou caminhos de arquivos.
+
+Use o Harness e o cenário existentes do projeto. Observe navegação/inputs e IPC essencial continuamente enquanto o trabalho significativo acontece, incluindo atualização/renderização; medir somente o Main ou esperar a conclusão não prova responsividade. Falha de renderização, interação ou IPC impede PASS mesmo com Main saudável e operação concluída. Preserve as provas de integridade, durabilidade e recuperação relevantes.
+
+Alterações documentais, cosméticas ou refatorações comprovadamente sem alcance até essas fronteiras dispensam essa prova: registre `REQUIRED: não / NOT_RUN` e uma justificativa causal curta. Um arquivo de IPC alterado sem efeito na operação pode ser dispensado; uma mudança de backend que provoque refetch ou remontagem durante trabalho pode exigi-la mesmo sem alterar a UI. Dúvida material requer aprofundar a fronteira, não inferir ausência de risco.
+
+No caso com risco, registre `REQUIRED: sim / RUN`, resultado, checkout/HEAD realmente exercitado, ambiente, orçamento de tempo/latência justificado, métricas úteis e receipt. Ausência ou falha da prova obrigatória é lacuna de validação; não a converta em `NOT_RUN` por conveniência. Separe deadline do runner e limite de responsividade, e limite a conclusão ao perfil e hardware observados.
+
 ## Evidência Visual em Electron
 
 Quando houver harness local equivalente de Electron real, prefira-o para evidência visual reproduzível, com perfil isolado, interações reais e captura nativa. No Code Awareness, utilize a lane `scripts/ui-visual-validation/` e seu contrato local, sem duplicar aqui sua documentação.
