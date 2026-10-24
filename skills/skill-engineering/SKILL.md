@@ -310,6 +310,12 @@ questione se ela realmente precisa ser representada cognitivamente por uma Skill
 
 Não transforme automaticamente toda automação ou regra mecânica em procedimento agentic.
 
+## Preflight de mudanças canônicas na Academy
+
+Antes de persistir alterações com impacto possível em **triggering, contratos, instruções, relações entre Skills ou recursos**, use o Academy Change Impact Preflight quando disponível e autorizado. Carregue `references/academy-change-impact.md` somente para essa tarefa ou para auditoria de versões/consumidores. Preserve a análise de impacto como evidência, não como veredito automático de compatibilidade.
+
+Não exija essa aquisição para brainstorming, projeto abstrato sem edição ou ajustes editoriais comprovadamente neutros. Não trate ausência de referências como garantia de ausência de impacto; reporte indisponibilidade da ferramenta sem fingir execução.
+
 ## Refatorações Devem Preservar Capacidade
 
 Ao:
