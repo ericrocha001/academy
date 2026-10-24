@@ -1,6 +1,6 @@
 ---
 name: feature-investment-gate
-description: Use before proposing, expanding or productizing a software feature to decide whether it merits investment and which minimum surface (backend, agent/tool or UI) adds value. Assess real consumers, duplication, workflow coupling and full cost. Do not use to convert resolved architecture into an executable plan (planejamento-executavel) or to choose the format of an already-qualified Harness improvement (harness-productization).
+description: Avalie ideias de features ou capacidades de produto assim que surgirem, forem propostas ou entrarem em planejamento, antes de investir em arquitetura ou implementação. Decida mérito, prioridade e superfície mínima. Chame market-intelligence-mining se evidência externa puder alterar a decisão; não use para correções obrigatórias ou para planejar implementação já aprovada.
 ---
 
 # Feature Investment Gate
@@ -14,6 +14,12 @@ The goal is:
 > Build the smallest durable surface that captures the real value.
 
 ---
+
+## Gatilho de entrada — momento da ideia
+
+Ao surgir uma nova ideia, solicitação, oportunidade ou capacidade **de produto** — mesmo sem pedido formal de planejamento — aplique imediatamente uma **triagem curta de investimento**: qual problema e consumidor ela atende, se é uma obrigação já comprovada ou uma aposta, e se há decisão de construir, adiar ou explorar. Não espere pela etapa de arquitetura, Sprint ou Plano Final para perguntar se vale construir. Em brainstorming sem decisão de investimento, faça só a triagem proporcional e preserve a ideia sem interromper a ideação com pesquisa extensa. Não transforme uma conversa sobre Harness interno, correção comprovada ou execução já aprovada em pesquisa comercial.
+
+Quando faltar sinal externo que possa alterar a escolha, encaminhe a investigação a `market-intelligence-mining`. A Skill de mercado **não é um segundo gate**: retorna evidências para esta decisão. Quando houver múltiplas candidatas disputando recursos, carregue o complemento de comparação apenas nesse caso. Uma ideia valiosa pode não merecer prioridade agora.
 
 # 1. Separate Capability from Product Feature
 
