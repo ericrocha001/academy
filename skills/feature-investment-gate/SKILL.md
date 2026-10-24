@@ -673,6 +673,20 @@ Require the UI value to be justified independently from backend value.
 
 ---
 
+# Market intelligence and priority at decision time
+
+For a **market-facing idea or product expansion**, first ask whether uncertainty about external demand, alternatives or monetization could change the investment decision. If so, invoke `market-intelligence-mining` selectively and consume its compact, sourced findings. Do not require research for obligatory corrections, proven internal needs or when existing evidence already resolves the decision; do not force landing pages, offer experiments, external validation campaigns or lengthy discovery into the engineering workflow.
+
+Separate:
+- **Consumer demand** (pain/desired outcome) from **commercial signal** (preexisting spending, paid substitutes, economic cost and identifiable buyer). GitHub popularity and Reddit mentions are not purchase proof.
+- **Commercial contribution**: directly sells/upgrades, indirectly improves conversion/retention, or enables other paid capabilities. Infrastructure/performance may be mandatory without separate willingness to pay.
+- **Evidence** from **inference** and **uncertainty**: missing market evidence does not mean no market; historical market evidence is not proof of current pricing or behavior.
+- **Absolute merit** (is it worth building?) from **relative priority** (is it the best investment NOW?). Consider dependencies, strategic alignment, available resources, lifetime cost, urgency, alternative opportunities and risk of delaying the foundation.
+
+When **two or more candidate investments** actually compete for resources, read `references/priority-comparison.md` to decide relative priority without inventing numerical scores or reconstructing the market research. A promising feature can receive DEFER for timing even when it deserves eventual investment. If comparative backlog evidence is unavailable, never invent an ordering: state the conditional priority and what known constraint controls it.
+
+Market intelligence should make the decision faster and better, not introduce a new product-discovery project. Stop gathering when additional evidence is unlikely to change the verdict.
+
 # 26. Decision Outcomes
 
 Every evaluation should end in one of:
@@ -765,6 +779,8 @@ Cost drivers
 Decision
 Reason
 Evidence still missing
+Commercial evidence / contribution (when relevant)
+Why now rather than known alternatives (when relevant)
 ```
 
 Do not produce a long document when the decision is obvious.
