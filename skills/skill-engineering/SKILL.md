@@ -1,6 +1,6 @@
 ---
 name: skill-engineering
-description: Projete ou refatore Skills por capacidade, intenção e contexto de uso. Verifique necessidade, não duplicação, triggering e granularidade discriminativa; preserve compatibilidade entre Claude Code e Codex. Não use para edição textual simples.
+description: Projete, refatore ou encadeie Skills (Skill Chains) por capacidade e gatilhos condicionais. Verifique necessidade, não duplicação, triggering, descoberta independente e granularidade, preservando compatibilidade entre Claude Code e Codex. Não use para edição textual simples.
 ---
 
 # Skill Engineering
