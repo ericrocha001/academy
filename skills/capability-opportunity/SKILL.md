@@ -1,6 +1,6 @@
 ---
 name: capability-opportunity  
-description: Detecte e registre Capability Opportunities materiais durante ou após trabalho agentivo, independentemente do destino provável: Harness, ferramenta, código, validação ou processo. Qualifique evidência, causa generalizável, reutilização e ganho; encaminhe sem implementar. Não substitua análise especializada de Harness já identificado (harness-improvement) nem o projeto de Skills (skill-engineering).
+description: Detecte e registre Capability Opportunities materiais durante ou após trabalho agentivo, inclusive a partir de achados relevantes em auditorias e revisões, independentemente do destino provável: Harness, ferramenta, código, validação ou processo. Qualifique evidência, causa generalizável, reutilização e ganho; encaminhe sem implementar. Não substitua análise especializada de Harness já identificado (harness-improvement) nem o projeto de Skills (skill-engineering).
 ---
 
 # SKILL
@@ -39,6 +39,15 @@ Esses sinais iniciam investigação.
 
 Não provam, sozinhos, que uma nova capacidade deve existir.
 
+## Feedback de Auditoria como Nova Evidência
+
+Uma revisão de PR, implementação ou validação que identifique **falha material não percebida antes**, retrabalho relevante ou prova insuficiente é um **gatilho para reavaliar** Capability Opportunities, inclusive quando o handoff anterior registrou `Nenhuma`. O feedback acrescenta evidência; não prova por si só que uma oportunidade existe.
+
+- Identifique a deficiência que permitiu a falha passar despercebida ou se repetir: contrato esquecido, prova inadequada, lacuna de ferramenta, informação ausente ou outro mecanismo geral. Não registre o bug específico como oportunidade apenas porque exigiu correção.
+- Aplique o Gate desta Skill à **causa generalizável**, confronte com capacidades existentes e use o teste contrafactual: uma capacidade reutilizável teria prevenido ou reduzido materialmente o retrabalho?
+- Se qualificada, encaminhe a proposta com a evidência da auditoria e a capacidade existente afetada; registre no fluxo de relato/handoff aplicável sem criar duplicatas. Um `Nenhuma` anterior descreve a evidência disponível à época e não impede avaliação posterior.
+- Se não houver ganho reutilizável suficiente, mantenha `Nenhuma`. Não reabra a avaliação por comentários cosméticos, achados já tratados ou a cada ciclo de review; reavalie somente quando surgir **evidência material nova**.
+- Essa reflexão não substitui corrigir e validar a mudança, nem bloqueia o PR ou exige criar Skills, testes ou ferramentas sem o gate de valor.
 ## Gate de Capability Opportunity
 
 Uma candidata deve satisfazer quatro condições.
