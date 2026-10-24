@@ -1,6 +1,6 @@
 ---
 name: market-intelligence-mining
-description: Investigue rapidamente demanda, dores, alternativas e sinais de monetização já existentes no mercado para orientar o investimento em uma feature de software. Use quando a decisão de produto depender de evidência externa, incluindo GitHub, Reddit e ofertas pagas. Não use para escolher arquitetura (implementation-mining), decidir superfície/BUILD por si só (feature-investment-gate), ou exigir landing pages e novos experimentos comerciais.
+description: Investigue sinais preexistentes de demanda, público comprador, concorrência e monetização quando surgir ou estiver sendo priorizada uma feature/capacidade de produto voltada ao mercado e essas evidências puderem mudar o investimento. Use GitHub, Reddit e ofertas pagas seletivamente. Entregue sinal à feature-investment-gate; não decida BUILD nem exija testes de oferta.
 ---
 
 # Market Intelligence Mining
@@ -15,7 +15,7 @@ Esta Skill investiga **se há problema, para quem, qual valor econômico e quais
 
 ## Gatilho proporcional
 
-Use quando há ideia, necessidade ou expansão de feature **voltada a usuários externos**, e incerteza sobre demanda, diferenciação ou potencial econômico pode mudar a decisão. Também funciona isoladamente quando o pedido é investigar uma oportunidade de mercado.
+Use já no **surgimento de uma ideia ou capacidade de produto voltada ao mercado**, inclusive quando ainda não existe Plano, se evidência externa sobre demanda, diferenciação ou monetização puder modificar a decisão de investimento. Pode ser chamada pela `feature-investment-gate` durante sua triagem inicial ou diretamente para investigar uma oportunidade comercial, sem exigir que o usuário formule antes uma pergunta explícita sobre pesquisa de mercado. A análise permanece proporcional: não pesquise extensamente quando a decisão já estiver suficientemente sustentada.
 
 Não exija pesquisa mercadológica para bug reproduzível, correção de regressão, requisito técnico obrigatório, manutenção interna ou trabalho cujo valor já está comprovado no consumidor real. Infraestruturas fundamentais podem ter valor comercial **indireto ou habilitador** mesmo sem compra isolada.
 
