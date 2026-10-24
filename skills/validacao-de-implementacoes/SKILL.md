@@ -109,6 +109,22 @@ Para cada risco material, escolha a menor **prova discriminativa** que conseguir
 
 Esse exame **não é checklist universal**, não exige matriz adicional nem amplia testes por combinatória; aplique-o apenas a riscos plausíveis e não duplique provas existentes suficientemente fortes. Se uma invariante obrigatória afetada não tiver evidência suficiente, declare a lacuna e não classifique a implementação como `VALIDADO` até resolvê-la, respeitando os vetos e o orçamento de validação existentes.
 
+## Gate Condicional — Ciclos de Vida Assíncronos
+
+Acione este exame **quando uma mudança alterar materialmente execução em segundo plano, agendamento, concorrência, timeout, retry, cancelamento, inicialização/encerramento ou vida útil de recursos compartilhados**. O simples uso de `async`/`await`, sem mudança nessas fronteiras, não justifica expandir a validação.
+
+Antes de declarar `VALIDADO`, identifique somente os riscos alcançáveis no fluxo afetado:
+
+- **Confirmação versus efeito posterior:** diferencie persistência/aceitação, trabalho pendente, falha e convergência; não atribua sucesso de uma etapa às demais.
+- **Chamadores e consumidores:** verifique se o novo retorno assíncrono é aguardado onde obrigatório e se estados, erros e prazos são interpretados corretamente na fronteira real.
+- **Prazo e cancelamento:** descubra o que continua depois de timeout, desconexão ou cancelamento. `Promise.race` ou prazo expirado não provam interrupção efetiva da operação.
+- **Encerramento e recursos:** tarefas ainda em voo não podem acessar recursos já fechados; observe a ordem real de shutdown e a presença de continuidades tardias, efeitos colaterais ou rejeições não tratadas.
+- **Recuperação e concorrência:** quando pertinentes, comprove retomada após reinício, preservação do commit, idempotência e ausência de promoção de resultados de versões obsoletas.
+
+**Prova discriminativa:** quando o risco exigir, retenha uma operação numa barreira controlada, produza a transição relevante (nova versão, erro, timeout ou fechamento), libere a operação **depois** da transição e observe tanto o resultado quanto aquilo que não poderia ocorrer. Para shutdown, um teste isolado de `close()` não prova que seu chamador real o aguarda; examine também essa integração, ou evidência equivalente. Prefira o menor cenário que realmente discrimine a falha e reaproveite provas já suficientes.
+
+Não converta isto em checklist universal, E2E obrigatório ou matriz combinatória. Se a mudança não afetar determinada fronteira, descarte-a explicitamente na análise, sem criar testes para ela.
+
 ## Validação não é Teste
 
 Teste é somente uma categoria possível de evidência.
