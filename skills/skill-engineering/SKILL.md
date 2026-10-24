@@ -153,6 +153,22 @@ A Skill chamadora deve preservar apenas:
 
 A Skill chamada permanece responsável pelo procedimento especializado.
 
+## Skill Chain — encadeamento condicional entre capacidades
+
+Quando duas ou mais Skills formarem uma continuidade recorrente e com fronteira de responsabilidade clara, expresse uma **passagem condicional de trabalho**, não uma ordem rígida nem um roteiro obrigatório. Esta convenção aprofunda `Skill Chama Skill`; não cria outra categoria de Skill, mecanismo de invocação, catálogo ou grafo paralelo.
+
+Para cada transição material, deixe claro na Skill que delega:
+- **Condição de entrada:** que incerteza ou resultado ainda não resolvido exige a próxima capacidade;
+- **Skill de destino:** nome canônico existente, descobrível pelo índice nativo;
+- **Contrato de retorno:** evidência, decisão ou artefato mínimo que o chamador necessita;
+- **Saída/dispensa:** quando não chamar, quando encerrar ou seguir por outro caminho.
+
+A passagem pode ser **consulta com retorno ao chamador** (por exemplo, gate de investimento solicita evidência de mercado e então decide) ou **handoff para etapa seguinte** (por exemplo, investimento aprovado habilita desenho funcional quando faltam contratos). Não confunda retorno com ciclo infinito. Skills devem poder ser descobertas e utilizadas isoladamente quando a intenção do usuário começar naquela etapa; a cadeia nunca substitui os gatilhos independentes de `name`/`description`.
+
+Use somente quando houver necessidade recorrente **evidenciada** de composição, e quando a passagem reduzir descoberta ou erros. Não encadeie por proximidade temática, não antecipe capacidades opcionais nem duplique nas Skills o procedimento da capacidade chamada. Se a mesma sequência puder ser resolvida por uma única Skill coesa, preserve a coesão. Quando a cadeia se tornar complexa, modele apenas transições verificáveis e avalie se a complexidade realmente agrega valor, antes de propor ferramenta/índice dedicado.
+
+Avalie com `surgical-evals` quando houver incerteza material: caso que requer a transição, caso que a dispensa e caso que começa diretamente na Skill especializada; observe seleção correta, omissão, chamadas desnecessárias e custo de contexto. Prova textual de referências não é prova comportamental.
+
 ## Defina uma Capacidade Coerente
 
 Trate o escopo como uma responsabilidade de software. **Uma Skill representa uma intenção operacional coerente, não uma quantidade máxima de palavras.** Tamanho, número de seções e etapas não justificam divisão.
