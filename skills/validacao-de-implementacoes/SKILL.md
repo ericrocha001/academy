@@ -97,6 +97,18 @@ quando a propriedade real é outra.
 
 Ferramentas são mecanismos para observar propriedades.
 
+## Invariantes Afetadas e Provas de Não Ocorrência
+
+Quando a mudança tocar contratos preexistentes, persistência, concorrência, cache, integrações, segurança ou restrições explícitas de custo/efeitos colaterais, identifique **somente as invariantes materialmente afetadas**, comparando o contrato previsto, o comportamento anterior e o escopo real do diff, inclusive alterações incidentais:
+
+- **Produzir:** o novo resultado que deve ocorrer.
+- **Preservar:** comportamentos, validações e relações que não podem regredir.
+- **Impedir:** estados incorretos, operações ou trabalho que não podem ocorrer, inclusive leituras, escritas, recomputações e efeitos colaterais evitáveis quando fizerem parte do contrato.
+
+Para cada risco material, escolha a menor **prova discriminativa** que conseguiria refutar a propriedade se a implementação estivesse errada. Use, quando relevante, entradas inválidas, revisões obsoletas, interleavings controlados, instrumentação de consultas/operações ou observação da fronteira real. Resultado correto **não prova**, por si só, ausência de trabalho indevido: um cache pode devolver a contagem certa e ainda ler o documento inteiro. Verifique diretamente a propriedade alegada e preserve as limitações da evidência.
+
+Esse exame **não é checklist universal**, não exige matriz adicional nem amplia testes por combinatória; aplique-o apenas a riscos plausíveis e não duplique provas existentes suficientemente fortes. Se uma invariante obrigatória afetada não tiver evidência suficiente, declare a lacuna e não classifique a implementação como `VALIDADO` até resolvê-la, respeitando os vetos e o orçamento de validação existentes.
+
 ## Validação não é Teste
 
 Teste é somente uma categoria possível de evidência.
