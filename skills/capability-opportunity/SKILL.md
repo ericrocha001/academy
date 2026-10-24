@@ -48,6 +48,7 @@ Uma revisão de PR, implementação ou validação que identifique **falha mater
 - Se qualificada, encaminhe a proposta com a evidência da auditoria e a capacidade existente afetada; registre no fluxo de relato/handoff aplicável sem criar duplicatas. Um `Nenhuma` anterior descreve a evidência disponível à época e não impede avaliação posterior.
 - Se não houver ganho reutilizável suficiente, mantenha `Nenhuma`. Não reabra a avaliação por comentários cosméticos, achados já tratados ou a cada ciclo de review; reavalie somente quando surgir **evidência material nova**.
 - Essa reflexão não substitui corrigir e validar a mudança, nem bloqueia o PR ou exige criar Skills, testes ou ferramentas sem o gate de valor.
+
 ## Gate de Capability Opportunity
 
 Uma candidata deve satisfazer quatro condições.
