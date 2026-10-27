@@ -1,6 +1,6 @@
 ---
 name: architecture-map
-description: Consulte o Architecture Map canônico de um repositório para compreender topologia, subsistemas, ownership, dependências, runtime boundaries e invariantes globais antes de aprofundar seletivamente em Capability Maps ou source. Não use para navegar código rotineiramente, inspecionar detalhes de feature ou criar/revisar o mapa; para autoria e correções use architecture-map-authoring.
+description: Consulte o Architecture Map canônico de um repositório para compreender topologia, subsistemas, ownership, dependências, runtime boundaries e invariantes globais antes de aprofundar seletivamente em Feature Maps ou source. Não use para navegar código rotineiramente, inspecionar detalhes de feature ou criar/revisar o mapa; para autoria e correções use architecture-map-authoring.
 ---
 
 # Architecture Map
@@ -13,11 +13,11 @@ O Architecture Map responde:
 
 > **Como este sistema está organizado hoje?**
 
-Ele é Layer 0 de orientação.
+Ele é Layer 0 de orientação **arquitetural substantiva**, não um sumário genérico: um agente deve entender o software como sistema sem ler todas as features.
 
 Fluxo preferencial:
 
-**Architecture Map → Capability Map relevante → Code Navigation → source mínimo**
+**Architecture Map → Feature Map relevante → Code Navigation → source mínimo**
 
 ## Representação canônica
 
@@ -53,25 +53,25 @@ Descubra por:
 
 Se existir um único mapa canônico, leia-o primeiro.
 
-Não use por rotina quando a tarefa já está confinada a uma feature e seu Capability Map ou source conhecido bastam.
+Não use por rotina quando a tarefa já está confinada a uma feature e seu Feature Map ou source conhecido bastam.
 
 ## Drill-down
 
-Architecture Map deve permanecer raso.
+Architecture Map deve ser **suficiente para compreender o sistema**, não um resumo superficial. Registre topologia, ownership, dependências, runtime boundaries, fluxos e invariantes globais; mantenha a profundidade própria das features somente nos Feature Maps. Profundidade suficiente não significa inventário exaustivo.
 
-Quando uma feature possuir Capability Map, relacione:
+Quando uma feature possuir Feature Map, relacione:
 
-`Architecture Map --drills-down-to--> Capability Map`
+`Architecture Map --drills-down-to--> Feature Map`
 
 Para aprofundar:
 
 1. leia o Architecture Map;
 2. liste relações outbound `drills-down-to`;
-3. selecione somente o Capability Map relevante;
+3. selecione somente o Feature Map relevante;
 4. abra esse mapa;
 5. use Code Navigation apenas para lacunas, confirmação ou implementação.
 
-Não carregue todos os Capability Maps preventivamente.
+Não carregue todos os Feature Maps preventivamente.
 
 ## Quando o mapa precisar mudar
 
@@ -91,4 +91,4 @@ E continua sendo barato o suficiente para ser usado como bootstrap.
 
 ## Regra Final
 
-> **Mantenha uma imagem arquitetural pequena, atual e navegável do sistema. Use-a primeiro para orientação, desça para Capability Maps quando necessário e trate source/runtime como verdade sempre que houver discrepância.**
+> **Mantenha uma imagem arquitetural pequena, atual e navegável do sistema. Use-a primeiro para orientação, desça para Feature Maps quando necessário e trate source/runtime como verdade sempre que houver discrepância.**
