@@ -1,6 +1,6 @@
 ---
 name: continuum-living-artifacts
-description: Use ao criar ou manter documentos canônicos vivos no Continuum (Living Artifacts, Capability Maps e sua governança), sem duplicar source ou Skills. Use architecture-map para consultar Architecture Maps e architecture-map-authoring para criá-los, revisá-los ou corrigi-los e continuum-publication para persistir revisões. Não acione para consulta histórica comum.
+description: Use ao criar ou manter documentos canônicos vivos no Continuum (Living Artifacts, Feature Maps e sua governança), sem duplicar source ou Skills. Use architecture-map para consultar Architecture Maps e architecture-map-authoring para criá-los, revisá-los ou corrigi-los e continuum-publication para persistir revisões. Não acione para consulta histórica comum.
 ---
 
 # Continuum Living Artifacts
@@ -49,7 +49,7 @@ sempre em combinação com:
 
 `livingArtifact: true`
 
-Architecture Map é a projeção arquitetural canônica de alto sinal do **repositório como sistema**.
+Architecture Map é a projeção arquitetural canônica de alto sinal do **repositório como sistema**. **Não é resumo superficial**: mantém visão global suficiente de subsistemas, ownership, dependências, runtime boundaries, fluxos e invariantes; não aprofunda a implementação de uma única feature.
 
 Regra padrão:
 
@@ -65,7 +65,7 @@ Ele responde principalmente:
 - quais fluxos atravessam subsistemas;
 - quais invariantes arquiteturais governam o todo.
 
-Architecture Map não deve repetir em profundidade as features. Para drill-down, relacione Capability Maps com:
+Architecture Map não deve repetir em profundidade as features. Para drill-down, relacione Feature Maps com:
 
 `drills-down-to`
 
@@ -73,7 +73,7 @@ Exemplo de aquisição:
 
 Architecture Map
 → `list_artifacts(relatedToArtifactId, direction: "outbound", relationKind: "drills-down-to")`
-→ selecionar Capability Map relevante
+→ selecionar Feature Map relevante
 → abrir somente esse Artifact.
 
 Discovery direto:
@@ -82,23 +82,23 @@ Discovery direto:
 
 Criação, revisão, discrepância e gatilhos de atualização pertencem à Skill `architecture-map-authoring`.
 
-### Capability Maps
+### Feature Maps
 
 Use o papel semântico:
 
-`artifactRole: CAPABILITY_MAP`
+`artifactRole: FEATURE_MAP`
 
 sempre em combinação com:
 
 `livingArtifact: true`
 
-Capability Map é uma projeção arquitetural canônica de alto sinal para compreender rapidamente **o que uma feature/subsistema é hoje**, sem reconstruir sua arquitetura pelo source.
+Feature Map é a representação canônica de alto sinal para compreender **uma feature ou subsistema coerente como unidade funcional e arquitetural**, sem reconstruí-la pelo source. É um aprofundamento do Architecture Map e **incorpora as capacidades, contratos e garantias que antes justificavam Capability Maps**; não mantenha um terceiro nível paralelo. Ele pode explicar arquitetura interna, fluxos, estados, persistência, fronteiras, superfícies humanas e agent-facing, interações com features vizinhas e limites, na profundidade necessária para decisões seguras.
 
 Ele não é novo `kind`. Preserve a natureza do Artifact e use `artifactRole` apenas para discovery.
 
 #### Gate de criação
 
-Crie um Capability Map somente quando a feature/subsistema:
+Crie um Feature Map somente quando a feature/subsistema:
 
 - possui arquitetura ou fronteiras não triviais;
 - é consultada repetidamente por agentes;
@@ -106,6 +106,8 @@ Crie um Capability Map somente quando a feature/subsistema:
 - costuma exigir várias chamadas de Code Navigation apenas para recuperar compreensão básica;
 - continuará relevante ao longo de várias execuções;
 - pode ser descrita em uma representação significativamente menor que sua implementação.
+
+**Delimitação:** um Feature Map não é uma lista de ferramentas ou funções; agrupa capacidades pelo propósito da feature, mantém contexto necessário para orientação e deixa inventários extensos e source detalhado no canal sob demanda. Uma feature não vira mapa novo a cada capability. Um Feature Map por feature coerente é o padrão; atualize in-place.
 
 Não crie quando:
 
@@ -117,13 +119,13 @@ Não crie quando:
 
 Teste contrafactual:
 
-> Se este Capability Map já existisse, um agente novo conseguiria tomar decisões corretas sobre a feature com materialmente menos navegação, source e inferência?
+> Se este Feature Map já existisse, um agente novo conseguiria tomar decisões corretas sobre a feature com materialmente menos navegação, source e inferência?
 
 Se não, não crie.
 
 #### Conteúdo permitido
 
-Um Capability Map deve privilegiar:
+Um Feature Map deve privilegiar:
 
 - finalidade;
 - modelo conceitual;
@@ -162,11 +164,13 @@ Atualize quando mudança material alterar:
 
 Não atualize por refactor interno semanticamente neutro.
 
-Capability Map representa **o melhor modelo corrente da feature**, não seu changelog.
+Feature Map representa **o melhor modelo corrente da feature**, não seu changelog.
 
 Discovery recomendado:
 
-`list_artifacts(metadata: { livingArtifact: true, artifactRole: "CAPABILITY_MAP" })`
+`list_artifacts(metadata: { livingArtifact: true, artifactRole: "FEATURE_MAP" })`
+
+**Migração de mapas legados:** quando existir `artifactRole: CAPABILITY_MAP`, converta o Artifact canônico **in-place** para `FEATURE_MAP`, preservando `artifactId`, histórico, relações e conhecimento materialmente válido; alinhe título/description/corpo e revalide o vínculo `drills-down-to` do Architecture Map. Nunca delete/republique para mudar a taxonomia nem crie um Feature Map duplicado. `CAPABILITY_MAP` é apenas identificador legado para detectar e migrar, não papel para novas publicações.
 
 ### Semântica de manutenção
 

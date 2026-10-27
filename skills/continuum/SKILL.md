@@ -72,7 +72,7 @@ Vocabulário recomendado:
 - `implements`: implementação → plano/decisão executada;
 - `validates`: prova → Artifact cuja propriedade foi demonstrada;
 - `resolved-by`: Work Item → handoff que comprova resolução;
-- `drills-down-to`: Architecture Map → Capability Map que aprofunda um subsistema representado no mapa global.
+- `drills-down-to`: Architecture Map → Feature Map que aprofunda um subsistema representado no mapa global.
 
 Prefira a relação mais específica e evite sinônimos ou arestas redundantes. Crie uma relação quando o alvo puder mudar uma decisão de aquisição de contexto. Mesmo repositório, tema vago ou proximidade temporal não bastam.
 
@@ -94,7 +94,7 @@ Quando o ambiente oferecer **terminal autorizado, CLI funcional, Code Awareness 
 
 Se, ao consumir um resultado validado, detectar um Plano ou Work Item relacionado ainda `PENDING`, trate a divergência como **reconciliação de lifecycle**, não como evidência de trabalho inacabado. Quando houver responsabilidade pela atualização, autorização e prova de conclusão suficientes, use `continuum-publication` para conciliá-lo; caso contrário, comunique a pendência, sem editar por rotina de leitura. O procedimento canônico e as salvaguardas pertencem a `continuum-publication`, não a esta Skill de recuperação.
 
-Para publicação, edição, metadata de autoria e transporte offline, utilize `continuum-publication`. Para manutenção normativa de Living Artifacts e Capability Maps, utilize `continuum-living-artifacts`. Para gestão de trabalho futuro, utilize `continuum-work-items`. Não carregue estas capacidades para mera consulta.
+Para publicação, edição, metadata de autoria e transporte offline, utilize `continuum-publication`. Para manutenção normativa de Living Artifacts e Feature Maps, utilize `continuum-living-artifacts`. Para gestão de trabalho futuro, utilize `continuum-work-items`. Não carregue estas capacidades para mera consulta.
 
 ## Tags e Context Bundle sob solicitação
 

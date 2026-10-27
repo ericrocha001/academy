@@ -9,7 +9,7 @@ Use esta Skill quando precisar **criar, atualizar ou corrigir** o mapa arquitetu
 
 ## O que deve conter
 
-Preserve somente informação arquitetural que muda decisões:
+Preserve informação arquitetural **suficiente para orientar decisões sobre o sistema inteiro**, sem reduzir o Architecture Map a uma sinopse superficial:
 
 - finalidade do sistema;
 - grandes subsistemas/domínios;
@@ -22,10 +22,12 @@ Preserve somente informação arquitetural que muda decisões:
 - cross-cutting systems;
 - invariantes arquiteturais;
 - superfícies agent-facing/human-facing quando relevantes;
-- relações para Capability Maps;
+- relações para Feature Maps;
 - limites e elementos deliberadamente legados quando isso evita interpretação errada.
 
 ## O que não deve conter
+
+A profundidade é determinada pela função sistêmica, não por uma meta arbitrária de tamanho. Remeta ao Feature Map detalhes locais das features, mas preserve aqui as relações e fronteiras globais que permitem compreendê-las.
 
 Não transforme o mapa em:
 
@@ -37,10 +39,10 @@ Não transforme o mapa em:
 - plano;
 - handoff;
 - lista exaustiva de features;
-- duplicação do Capability Map;
+- duplicação do Feature Map;
 - documentação de detalhes locais.
 
-> **Architecture Map orients. Capability Maps contextualize. Code Navigation investigates. Source proves.**
+> **Architecture Map orients. Feature Maps contextualize. Code Navigation investigates. Source proves.**
 
 ## Gate de atualização
 
@@ -96,11 +98,11 @@ Se a discrepância vier de source stale versus runtime, resolva freshness antes 
 Antes de criar:
 
 1. confirme que não existe `ARCHITECTURE_MAP` canônico;
-2. use source atual e Capability Maps existentes como evidência;
+2. use source atual e Feature Maps existentes como evidência;
 3. adquira somente contexto suficiente para identificar domínios, boundaries e fluxos;
 4. não tente compreender toda implementação;
 5. publique como Living Artifact;
-6. relacione Capability Maps comprovadamente pertencentes ao sistema.
+6. relacione Feature Maps comprovadamente pertencentes ao sistema.
 
 O mapa inicial deve ser menor que a arquitetura que explica.
 
