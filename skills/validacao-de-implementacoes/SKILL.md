@@ -444,6 +444,8 @@ Quando uma criação/redesign de UI possui **direção visual aprovada** (Design
 3. Uma adaptação é legítima quando preserva ou melhora a intenção aprovada e é exigida ou sustentada pela verdade funcional, pelo Design System ou pelas restrições reais. Explique a divergência material e a evidência; **não use “mockup não é pixel-perfect” para dispensar decisões de composição**.
 4. **Divergência material não justificada, região obrigatória não inspecionada ou decisão sem evidência suficiente bloqueia `VALIDADO` visual**. Corrija e reinspecione somente as regiões/estados afetados; se a direção aprovada precisar mudar materialmente, obtenha a decisão adequada antes de declarar conformidade.
 
+**Gate qualitativo proporcional:** quando a direção visual exigir, verifique explicitamente legibilidade de escolhas prioritárias no tamanho real, descoberta de controles, ausência de texto redundante, acessibilidade da ajuda sob demanda, coerência da geometria e preservação da atmosfera estética. Avalie peso da renderização somente diante de risco material ou sintoma (scroll, animação, responsividade); não declare performance pela aparência de uma captura e não imponha benchmarks desnecessários. Uma captura de um estado não prova cobertura dos demais; selecione estados relevantes com honestidade, **sem exigir a futura UI Coverage**.
+
 A exigência é **fidelidade à intenção, não coincidência de pixels**. Concentre a prova nas decisões que poderiam tornar um redesign apenas cosmético apesar de testes, build e screenshots aprovados. Para estruturar experiência e interpretar referências de design, use `otimizacao-de-ui`; este gate governa apenas a suficiência da evidência.
 
 ## Escopo da Prova
