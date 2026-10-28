@@ -34,6 +34,16 @@ O critério é informacional.
 
 > **Enquanto a investigação reduz incerteza, ela continua sendo trabalho produtivo.**
 
+## Stop-loss informativo para tentativas caras
+
+Quando uma tentativa envolve preparação longa, consumo significativo de cota, runtime real, recursos nativos ou testes integrados custosos, **antes de repeti-la** determine qual hipótese nova ou mudança concreta justificará o custo. O critério não é quantas tentativas foram feitas, mas se o resultado pode **discriminar causas**.
+
+Use a progressão mais barata suficientemente forte: examinar receipt/log e código limitado → coletar proveniência tipada que falta → reproduzir evento/contrato em teste local dirigido → somente então repetir integração real. Não acrescente logs globais, suites ou instrumentação cara por hábito; respeite proibições do usuário. Um código genérico repetido sem identificar origem, condição material e fronteira não justifica outro cold start.
+
+**Pare o caminho caro e acione `blockage-handoff`** quando a mesma família de falha reaparecer e a próxima execução apenas repetiria o mecanismo ou alteraria hipóteses sem evidência nova. Registre fatos, hipóteses refutadas, custo relevante das tentativas, qual evidência falta, e a menor prova seguinte. Essa pausa pode ocorrer após **uma** tentativa quando a instrumentação já se mostrou incapaz de responder à pergunta. Continue trabalho independente de baixo risco, se houver.
+
+Se a arquitetura exigir ensaios caros sucessivos apenas para saber *qual observador ou fronteira falhou*, identifique uma deficiência de observabilidade do Harness e encaminhe posteriormente a `harness-improvement` **sem implementar ferramenta nova durante o bloqueio**. Não escale por uma falha tática que ainda possua prova barata discriminativa e esteja dentro da autonomia do Implementador.
+
 ## Sinais de Estagnação
 
 Considere que a investigação deixou de produzir progresso quando:
