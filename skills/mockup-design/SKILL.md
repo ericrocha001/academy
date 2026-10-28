@@ -240,7 +240,7 @@ Busque:
 - beleza intencional, acabamento refinado, atmosfera e ornamentos coerentes com a identidade visual.
 - tipografia proporcional à relevância: informação periférica pode ser pequena, escolhas centrais precisam de leitura confortável;
 - explicações curtas, com ajuda contextual acionável quando houver detalhe útil;
-- efeitos visuais plausíveis para implementação responsiva e leve, sem depender de blur/animacões caras.
+- efeitos visuais plausíveis para implementação responsiva e leve, sem depender de blur/animações caras.
 
 Evite:
 
