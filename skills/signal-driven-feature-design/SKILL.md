@@ -1,6 +1,6 @@
 ---
 name: signal-driven-feature-design
-description: Defina decisões, informações Pure Signal e ações necessárias a partir da necessidade real do consumidor antes de projetar uma feature, fluxo ou experiência. Use para concepção/redesign funcional ou quando uma otimização técnica mudar o esforço ou o sinal recebido pelo consumidor; não use para otimização puramente interna, decisão de investimento, layout ou planejamento executável.
+description: Defina decisões, informações Pure Signal e ações a partir da necessidade real do consumidor; reavalie fluxos com etapas, painéis ou compositores intermediários antes de otimizá-los. Use para concepção/redesign funcional e regressão de esforço; não use para otimização puramente interna, decisão de investimento, layout ou planejamento executável.
 ---
 
 # Signal-Driven Feature Design
@@ -19,6 +19,7 @@ Derivar **o que o consumidor precisa decidir, quais sinais permitem decidir corr
 - Quando uma feature já existente exige que o usuário investigue, filtre, correlacione ou interprete dados manualmente para atingir seu objetivo.
 - Antes de arquitetura/UI, quando não estiver resolvido **quais informações e ações** geram valor.
 - Para reorientar solução aparentemente funcional que falha em atender ao trabalho real do consumidor.
+- Quando uma interface, painel, prévia ou etapa intermediária produz atrito apesar de a intenção final do consumidor já ser conhecida; antes de planejar desempenho, correção ou redesign desse intermediário, avalie se ele é necessário.
 - Quando uma otimização técnica pretende retirar ou adiar trabalho automático **e pode alterar o resultado, as informações ou as ações exigidas do consumidor**.
 
 **Não acionar** para otimização puramente interna que preserva o contrato funcional, bug localizado com contrato conhecido, ajuste visual/scroll/tema, implementação de requisitos já definidos, validação de código, pesquisa exploratória sem decisão de produto ou configuração meramente operacional. Não tornar o procedimento obrigatório a toda tarefa.
@@ -38,6 +39,16 @@ Responda concretamente:
 - Que custos/restrições importam: atenção, tempo, erros, latência, confiança, autorização?
 
 Distinga **necessidade** (“ser avisado de interferência relevante”) de **solução antecipada** (“selecionar dois itens e comparar”). Não se comprometa com uma interface ou mecanismo antes de compreender a primeira.
+
+### Gate de necessidade do fluxo (condicional)
+
+**Antes de otimizar, corrigir ou redesenhar uma etapa intermediária**, quando o consumidor já conhece a ação que quer executar, confronte três opções: **eliminar a etapa**, **executar a intenção diretamente e manter detalhe sob demanda**, ou **preservar a etapa porque ela é necessária**. Não tome a existência de componente, preview, compositor ou confirmação atual como prova de necessidade.
+
+Pergunte: o que o consumidor realmente decide nessa etapa? A informação muda a decisão ou só repete o trabalho? Qual propriedade de segurança, consentimento, fidelidade, prevenção de perda ou escolha indispensável seria perdida com sua remoção? Uma etapa com custo técnico elevado e pouca contribuição decisória é candidata à **subtração**, não à otimização isolada.
+
+Escolha o fluxo mínimo que preserve o resultado, a autoridade humana e os contratos. Se a intenção for inequívoca e segura, **um acionamento deve executar a intenção**, com feedback e falhas recuperáveis; visualizações e parametrizações opcionais podem permanecer acessíveis sob demanda, sem passagem obrigatória. Não elimine revisão ou confirmação exigida por consequência irreversível, escolha material, segurança ou regulamentação. Não aplique este gate a todo bug local ou a ajustes meramente visuais.
+
+Na entrega, registre sucintamente **qual etapa foi mantida, removida ou tornada opcional e por qual necessidade verificável**. Confirme em cenário real que o resultado ocorre sem cliques preparatórios redundantes, sem perda de capacidade necessária. Menor número de cliques por si só não comprova melhor experiência.
 
 ### 2. Derive as decisões
 
