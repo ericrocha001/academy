@@ -166,6 +166,16 @@ Não determine:
 
 quando essas escolhas não alterarem arquitetura, contratos ou comportamento esperado.
 
+## Gate de incerteza e custo antes da execução
+
+Uma solução pode estar arquiteturalmente clara e ainda conter **fronteiras empíricas não comprovadas**. Antes de delegar implementação multissubsistema ou validação cara, identifique o que precisa ser verdadeiro para as Unidades posteriores funcionarem. Classifique cada pressuposto como **comprovado**, **plausível ainda não demonstrado** ou **bloqueador**; não trate uma estratégia de observação, cache, prewarm ou compatibilidade como comprovada por plausibilidade.
+
+Quando uma falha de uma fronteira destruir trabalho caro já realizado (por exemplo, observador invalidar sessão que levou dezenas de segundos para preparar), organize o caminho **da prova barata da fronteira para a execução integrada**: evidência existente ou inspeção literal → teste dirigido de contrato em fixture/isolamento → integração real somente quando ela demonstrar propriedade distinta. **Não é um rito obrigatório de Spike/benchmark**: use apenas quando o risco e a autorização justificarem; preserve explicitamente vetos de testes/medições do usuário.
+
+**Decisão de decomposição:** uma Unidade complexa só pode depender de outra fronteira se sua validade já estiver demonstrada ou se o Plano definir uma forma econômica de provar essa premissa **antes** de depender dela. Não agrupe, por conveniência de feature, mudanças de identidade/observação, ciclo de vida, performance, interface e economia de recursos na mesma aceitação se possam ser aprovadas independentemente. Ordene pelos riscos de invalidação em cascata, não pelo número de arquivos.
+
+**Orçamento de investigação:** explicite o que constitui progresso informativo, qual evidência nova justificará repetir uma operação cara e onde o agente deve chamar `escalonamento-de-bloqueios`. Um ensaio caro repetido sem hipótese diferenciadora não é validação adicional. Sempre que for viável, separe a capacidade de diagnosticar uma falha do mecanismo caro usado para reproduzi-la. Não transforme limite de cota em número arbitrário de tentativas, linhas de código ou tokens.
+
 ## Unidades de Implementação
 
 Quando a solução não puder ser executada com segurança como uma única unidade cognitiva, decomponha-a em **Unidades de Implementação**.
