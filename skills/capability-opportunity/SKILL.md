@@ -17,6 +17,10 @@ O objetivo não é registrar lições aprendidas.
 
 > Fricção é evidência. Generalize a causa. Converta dificuldade em capacidade somente quando houver ganho futuro relevante.
 
+## Diferencie oportunidade comprovada de ideia de feature
+
+Uma hipótese promissora que o agente imaginou durante análise, planejamento ou conversação **não é automaticamente uma Capability Opportunity**. Sem fricção observada e causa generalizável comprovável, use `feature-ideation` para qualificar uma proposta `FEATURE_IDEA` ou simplesmente mencionar uma possibilidade; não invente evidência para preencher este gate. Se uma ideia possuir ambas as naturezas, preserve a oportunidade fundamentada aqui e conecte a `FEATURE_IDEA` somente quando os objetos tiverem finalidades documentais diferentes; evite duas cópias da mesma proposta. O status `NOT_IMPLEMENTED`/`IMPLEMENTED` pertence à Feature Idea e não substitui a avaliação de oportunidade.
+
 ## Observe Durante o Trabalho
 
 Detecte oportunidades durante ou após a execução.
