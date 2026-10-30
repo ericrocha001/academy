@@ -242,8 +242,6 @@ A identidade visual e seus tokens pertencem ao **Design System do produto**, nã
 
 **Quando criar tela nova ou mudar materialmente hierarquia, alocação ou composição**, leia `references/gramatica-de-composicao.md` para decidir trade-offs espaciais, subtração, sofisticação gráfica e revisão crítica. Dispense esse aprofundamento para ajustes locais com solução inequívoca. Não copie a referência para esta Skill, nem crie templates fixos de telas.
 
-Para **seleção de cards, opções segmentadas, selects, popovers, drawers e modais**, use a gramática condicional daquela referência e os padrões normativos do Design System vigente. Não transforme preferência estética em veto universal; explicite a razão somente quando uma escolha material afetar descoberta, atenção ou consistência. Texto pequeno é legítimo quando realmente periférico; não miniaturize uma decisão importante para caber na grade.
-
 ## Densidade
 
 Interfaces profissionais não são necessariamente espaçosas; são **densas de forma controlada**.
@@ -412,8 +410,6 @@ Além da inspeção do runtime, confirme com cenários representativos:
 - **Subtração informacional:** cada dado e controle visível ajuda o usuário? O que pode sair sem perda funcional? Não classifique ornamentação como informação inútil.
 - **Ausência responsável:** detalhes rebaixados ainda são descobríveis quando necessários? Erros, incerteza, permissões e informações críticas permanecem perceptíveis?
 - **Composição e beleza:** regiões, espaçamentos, tipografia, cores, superfícies e ornamentos mantêm clareza **e** sofisticação? A proposta preservou ou elevou a aparência aprovada?
-- **Descoberta e concisão:** controles importantes estão visíveis e legíveis sem caça visual? A tela evita verborragia, deixando ajuda e detalhe sob demanda com trigger reconhecível?
-- **Custo visual:** gradientes, sombras e movimentos mantêm responsividade perceptível? Se houver indício de jank ou efeito caro, solicite verificação pontual antes de aprovar.
 - **Comparação:** no redesign, a tela ficou mais eficiente que a anterior para a finalidade, sem regressão funcional ou cognitiva?
 
 Se houver dúvida material, observe uma tarefa representativa com usuário ou evidência equivalente; não invente ganho de usabilidade a partir de gosto estético. Não use pontuação visual arbitrária ou critérios cosméticos para declarar validação.

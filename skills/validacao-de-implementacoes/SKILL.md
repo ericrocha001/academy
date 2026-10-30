@@ -265,6 +265,17 @@ Sem veto explícito, prefira a menor prova suficientemente forte para o risco re
 
 **Se a prova exigida estiver proibida e nenhuma evidência permitida for suficiente, não execute a prova, não invente aprovação e não rotule a implementação como VALIDADA.** Registre precisamente o que foi implementado, o que permanece sem verificação e a consequência para o status; se a fronteira impedir continuação segura, escale a decisão antes de prosseguir. A proteção permanente de bugs e contratos críticos não autoriza violar silenciosamente um veto: explicite o conflito e marque o trabalho afetado como não validado/bloqueado até autorização ou evidência adequada.
 
+## Política canônica — Testes cirúrgicos e econômicos
+
+**Padrão obrigatório em toda validação futura:** projetar testes **pequenos, precisos e discriminativos**, com o menor consumo possível de execução, contexto e tokens. O número de casos não é meta; a propriedade relevante e o risco determinam a menor prova suficiente.
+
+1. **Antes do teste:** identificar contrato, hipótese de falha e condição objetiva de aprovação. Selecionar um caso representativo real e um caso adversarial/fronteira somente quando materialmente necessários; preferir um teste que refute o defeito a muitos testes que apenas repitam sucesso.
+2. **Antes de executar:** aproveitar provas ainda aplicáveis, fixtures mínimas, testes já existentes e inspeção local. Evitar matrizes combinatórias, benchmarks de rotina, suítes inteiras, E2E extensos e repetição de testes verdes sem hipótese nova.
+3. **Durante a execução:** começar pelo escopo alterado e usar parada antecipada quando uma falha decisiva já bloqueia a decisão. Reexecutar só a prova afetada após correção; ampliar para integração/regressão apenas se a fronteira e o risco demonstrarem necessidade.
+4. **Na apresentação:** preservar recibos e logs completos fora do contexto, mas transmitir ao agente apenas resultado, contagens, critério, razão da falha e pequeno excerto relevante. Não despejar arquivos, snapshots, screenshots ou stdout integrais para demonstrar êxito.
+5. **No encerramento:** declarar exatamente o que ficou comprovado e o que não ficou. Economia **nunca** autoriza enfraquecer asserções, omitir proteção permanente de bugs, simular sucesso ou afirmar certeza universal a partir de amostra limitada. Se uma prova maior for realmente indispensável, justificar a propriedade e o custo incremental antes de executá-la.
+
+Esta regra é transversal a planejamento e implementação. As diretrizes especializadas abaixo de segurança, concorrência, responsividade e regressão continuam aplicáveis **somente quando o risco correspondente estiver presente**; não viram checklist universal.
 ## Economia de Canal Durante a Implementação
 
 Quando o Implementador possui acesso direto ao workspace e aos runners do projeto, a validação deve ocorrer **localmente por padrão**.
@@ -443,8 +454,6 @@ Quando uma criação/redesign de UI possui **direção visual aprovada** (Design
 2. Compare com o **runtime real inspecionado** cada região materialmente afetada. Registre de modo compacto: **região/decisão → evidência (captura/estado) → conforme, divergente ou não aplicável → justificativa quando necessária**. Um parágrafo curto ou tabela é suficiente; não crie matriz extensa para ajuste local simples.
 3. Uma adaptação é legítima quando preserva ou melhora a intenção aprovada e é exigida ou sustentada pela verdade funcional, pelo Design System ou pelas restrições reais. Explique a divergência material e a evidência; **não use “mockup não é pixel-perfect” para dispensar decisões de composição**.
 4. **Divergência material não justificada, região obrigatória não inspecionada ou decisão sem evidência suficiente bloqueia `VALIDADO` visual**. Corrija e reinspecione somente as regiões/estados afetados; se a direção aprovada precisar mudar materialmente, obtenha a decisão adequada antes de declarar conformidade.
-
-**Gate qualitativo proporcional:** quando a direção visual exigir, verifique explicitamente legibilidade de escolhas prioritárias no tamanho real, descoberta de controles, ausência de texto redundante, acessibilidade da ajuda sob demanda, coerência da geometria e preservação da atmosfera estética. Avalie peso da renderização somente diante de risco material ou sintoma (scroll, animação, responsividade); não declare performance pela aparência de uma captura e não imponha benchmarks desnecessários. Uma captura de um estado não prova cobertura dos demais; selecione estados relevantes com honestidade, **sem exigir a futura UI Coverage**.
 
 A exigência é **fidelidade à intenção, não coincidência de pixels**. Concentre a prova nas decisões que poderiam tornar um redesign apenas cosmético apesar de testes, build e screenshots aprovados. Para estruturar experiência e interpretar referências de design, use `otimizacao-de-ui`; este gate governa apenas a suficiência da evidência.
 

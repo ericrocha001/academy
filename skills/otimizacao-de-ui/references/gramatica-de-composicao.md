@@ -38,18 +38,6 @@ Destino possível: **foco principal**, **contexto visível discreto**, **alerta 
 
 Não transforme essas heurísticas em valores fixos de padding, proporção ou quantidade de elementos; valores são do Design System e restrições reais.
 
-## 4.1 Selecione componentes por necessidade, não por preferência cega
-
-Antes de optar por card, select, segmented, popover, drawer, modal ou expansão inline, decida: **a escolha é central ou auxiliar? É frequente? Quantas opções existem? Elas precisam ser comparadas simultaneamente? O usuário descobrirá como acessá-las?** Escolha a superfície que preserve descoberta, contexto e legibilidade com menor custo de atenção. Para estética e geometria, siga o Design System do produto; não crie um catálogo universal de componentes permitidos ou proibidos.
-
-- Cards oferecem identidade, agrupamento ou comparação; evite cardificação de cada metadado.
-- Opções segmentadas expõem poucas alternativas relevantes; selects compactam listas extensas e simples, não decisões importantes.
-- Popovers apresentam ajuda e ações curtas perto do objeto; drawers preservam o workspace durante inspeção/edição auxiliar; modais isolam tarefas temporárias que realmente exigem foco.
-- Ícones de informação revelam explicação breve e contextual **sem substituir labels claros**. Conteúdo interativo exige superfície acionável e acesso por teclado/toque; alertas essenciais não ficam escondidos.
-- A superfície principal carrega **sinal**, não verborragia. Exibição sob demanda deve manter caminhos evidentes de recuperação, sem transformar todo clique em interrupção.
-
-**Performance:** ornamentação visual aprovada continua válida, mas efeitos animados de blur, grandes sombras, gradientes em movimento e repaints devem ser avaliados proporcionalmente ao risco. Prefira alternativas estáticas leves e transições econômicas; não crie benchmarks por ritual nem sacrifique identidade por otimização presumida.
-
 ## 5. Faça duas passagens críticas
 
 **Passagem positiva:** finalidade perceptível? Informação decisória no momento certo? Ação possível? Contexto e limites reconhecíveis?

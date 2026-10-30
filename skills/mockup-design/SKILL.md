@@ -189,8 +189,6 @@ Não despeje toda a arquitetura no prompt visual.
 
 Comprima-a em relações espaciais e semânticas.
 
-Quando a escolha dos controles afetar o resultado, represente a **decisão de descoberta** no brief: opção central visível versus opções sob demanda, necessidade de comparação e caminho de acesso à ajuda contextual. Use a gramática condicional de `otimizacao-de-ui`, não um veto genérico a dropdowns ou exigência de cards. Não transforme conteúdo ilustrativo em ação real.
-
 ## Composição
 
 Prefira uma imagem canônica forte a muitas variações fracas.
@@ -238,9 +236,6 @@ Busque:
 - uso disciplinado de accent, gradiente e glow;
 - sensação de produto real, não concept art;
 - beleza intencional, acabamento refinado, atmosfera e ornamentos coerentes com a identidade visual.
-- tipografia proporcional à relevância: informação periférica pode ser pequena, escolhas centrais precisam de leitura confortável;
-- explicações curtas, com ajuda contextual acionável quando houver detalhe útil;
-- efeitos visuais plausíveis para implementação responsiva e leve, sem depender de blur/animações caras.
 
 Evite:
 
