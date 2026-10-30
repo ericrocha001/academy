@@ -31,7 +31,7 @@ Conteúdo durável.
 
 `description`: responda quando outro agente deveria abrir o Artifact. Indique problema, decisão, prova ou fronteira que encontrará. Não escreva um resumo longo nem frases vazias. Legados podem não possuir descrição; enriqueça-os por edição apenas quando houver conhecimento suficiente, sem inventar semântica histórica.
 
-`kind`: natureza durável da comunicação, não assunto, etapa, resultado de ferramenta ou rótulo de fluxo. **Vocabulário de referência para reutilização** (10 valores encontrados no Continuum; não é lista exaustiva):
+`kind`: natureza durável da comunicação, não assunto, etapa, resultado de ferramenta ou rótulo de fluxo. **Vocabulário de referência para reutilização** (catálogo aberto; não é lista exaustiva):
 
 | `kind` | Use quando o Artifact for... |
 |---|---|
@@ -42,7 +42,8 @@ Conteúdo durável.
 | `ARCHITECTURAL_DECISION` | decisão arquitetural normativa ou Architecture Map canônico com `artifactRole` apropriado. |
 | `INVESTIGATION` | investigação, diagnóstico ou análise que organiza evidências e conclusões sem representar por si uma decisão normativa. |
 | `OBSERVATION` | registro factual, retrospectiva, conclusão de integração/merge ou observação operacional sem lifecycle próprio. |
-| `CAPABILITY_OPPORTUNITY` | oportunidade material qualificada para avaliar capacidade futura; não é Plano executável nem Work Item por si só. |
+| `CAPABILITY_OPPORTUNITY` | oportunidade de capacidade qualificada por fricção/evidência real; não é uma ideia especulativa genérica. |
+| `FEATURE_IDEA` | hipótese ou proposta de feature/capacidade de produto a preservar para avaliação futura, sem aprovação de investimento ou execução. |
 | `DOCUMENT` | documento canônico cuja natureza é o próprio texto mantido (ex.: kernels AGENTS/ARCHITECT), diferenciado por `artifactRole`; não é fallback genérico. |
 | `VISUAL_REFERENCE` | referência de mídia visual realmente preservada com contexto/proveniência, não relatório sobre UI. |
 
@@ -52,7 +53,7 @@ Este vocabulário é uma **base de comparação, não uma whitelist**. Quando um
 
 `date`: obrigatório em todo Artifact novo. Use timestamp ISO 8601 completo com data, hora e offset de fuso, por exemplo `2026-10-06T04:05:00-03:00`. Ele representa quando a representação semântica corrente do documento foi produzida, não apenas quando o backend a persistiu. Ao atualizar materialmente conteúdo, status, decisão, prova ou relações do Artifact, atualize também `date` para o momento da nova representação. Não use data sem hora, hora sem fuso ou termos relativos como hoje/agora.
 
-`status`: **opcional** e reservado a lifecycle real. **Catálogo operacional compacto de status** — fonte de consulta barata para publicação e reutilização (6 valores observados até aqui; aberto a extensões com semântica nova):
+`status`: **opcional** e reservado a lifecycle real. **Catálogo operacional compacto de status** — fonte de consulta barata para publicação e reutilização (catálogo aberto a extensões com semântica nova):
 
 - `PENDING`: Plano ou Work Item ainda aberto; execução em andamento não exige status novo.
 - `COMPLETED`: Plano ou Work Item efetivamente concluído e validado; não significa PR merged nem sincronização local.
@@ -60,10 +61,14 @@ Este vocabulário é uma **base de comparação, não uma whitelist**. Quando um
 - `VALIDATED`: handoff/prova cuja validação exigida está comprovada; não autoriza merge.
 - `BLOCKED`: handoff interrompido por impedimento real não resolvido; preserve diagnóstico no corpo.
 - `ACTIVE`: somente política/decisão normativa cuja vigência explícita seja útil para descoberta; não significa que todo documento vivo precise de status.
+- `NOT_IMPLEMENTED`: `FEATURE_IDEA` preservada cuja capacidade descrita ainda não foi comprovadamente entregue por inteiro; inclui ideia adiada ou em desenvolvimento, sem definir decisão de investimento.
+- `IMPLEMENTED`: `FEATURE_IDEA` integralmente realizada com evidência verificável que corresponda ao seu escopo; não inferir pelo simples início do Plano, commit isolado ou relato parcial.
 
-Matriz padrão: `EXECUTABLE_PLAN` e `WORK_ITEM` → `PENDING | COMPLETED | CANCELLED`; `IMPLEMENTATION_HANDOFF` → `VALIDATED | BLOCKED`; `VALIDATION_PROOF` → `VALIDATED` quando efetivamente demonstrada; `ARCHITECTURAL_DECISION` → normalmente **sem status**, excepcionalmente `ACTIVE` para política vigente. `INVESTIGATION`, `OBSERVATION`, `CAPABILITY_OPPORTUNITY`, `DOCUMENT` e `VISUAL_REFERENCE` → normalmente **sem status**. Artifacts históricos sem status não precisam ser alterados só por essa matriz.
+Matriz padrão: `FEATURE_IDEA` → `NOT_IMPLEMENTED | IMPLEMENTED` (status de existência, não de investimento); `EXECUTABLE_PLAN` e `WORK_ITEM` → `PENDING | COMPLETED | CANCELLED`; `IMPLEMENTATION_HANDOFF` → `VALIDATED | BLOCKED`; `VALIDATION_PROOF` → `VALIDATED` quando efetivamente demonstrada; `ARCHITECTURAL_DECISION` → normalmente **sem status**, excepcionalmente `ACTIVE` para política vigente. `INVESTIGATION`, `OBSERVATION`, `CAPABILITY_OPPORTUNITY`, `DOCUMENT` e `VISUAL_REFERENCE` → normalmente **sem status**. Artifacts históricos sem status não precisam ser alterados só por essa matriz.
 
 **Reutilize antes de ampliar.** Para escolher `status`, consulte **somente o catálogo compacto acima** como referência de vocabulário; não enumere Artifacts nem leia frontmatters de vários documentos para descobrir quais status existem. Essa descoberta global é proibitivamente cara e desnecessária. Se o Artifact tiver lifecycle relevante, use o status existente que corresponda semanticamente. Não force um estado distinto a caber num rótulo inadequado. **O agente pode criar um `status` novo** quando representar uma etapa de lifecycle útil, claramente distinta e reutilizável, sem autorização prévia apenas por ser novo. Defina nome e significado curtos e estáveis. Se a informação for ortogonal ao lifecycle (ex.: publicação remota concluída, checkout local pendente), prefira o corpo ou metadata específica como `deploymentStatus`. O catálogo orienta, não bloqueia extensões justificadas. Não adicione status decorativo.
+
+**Ciclo de uma Feature Idea:** `FEATURE_IDEA` não substitui `WORK_ITEM`, `CAPABILITY_OPPORTUNITY`, `INVESTIGATION` ou `EXECUTABLE_PLAN`. `NOT_IMPLEMENTED` não significa aprovado, priorizado ou prometido. Atualize o mesmo Artifact para `IMPLEMENTED` somente após conferir a entrega real e o escopo integral, anexando relação `resolved-by` ou outra conexão de evidência pertinente, preservando a história. Decisões BUILD/DEFER/REJECT do `feature-investment-gate` não são novos status de construção. Para qualidade da ideação e captura proativa, use `feature-ideation`; esta Skill governa exclusivamente persistência e CAS.
 
 ### Manutenção incremental obrigatória do catálogo de status
 
