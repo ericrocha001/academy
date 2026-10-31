@@ -603,6 +603,8 @@ O Implementador produz:
 
 Uma prova que falha é informação.
 
+**Gate condicional de prontidão do ambiente:** quando a prova depende de pré-requisitos concretos (por exemplo, binário nativo gerado, recibo de integridade, fixture, permissão ou serviço), confira sua presença e validade pelo mecanismo mais barato, antes da execução quando esse requisito já é conhecido ou imediatamente após uma falha sugestiva de ausência. **Falha com pré-requisito não preparado não comprova defeito do código avaliado.** Se autorizado, prepare o ambiente uma única vez pela entrada canônica e repita somente o menor teste discriminativo; só então classifique falhas remanescentes e amplie provas conforme o risco. Não transforme essa checagem em build global, preflight universal ou autorização para mudar source/testes. Se a preparação não for possível, registre a prova como inconclusiva por ambiente e não declare PASS. Quando a mesma ausência se repetir, prefira corrigir deterministicamente o preflight do runner a criar outra Skill ou exigir que agentes memorizem o preparo.
+
 Não altere automaticamente a prova para fazer a implementação passar.
 
 Determine se a falha está em:
