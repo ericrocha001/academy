@@ -1,6 +1,6 @@
 ---
 name: cli-execution
-description: Execute comandos locais no projeto ativo pelo Code Awareness Channel via MCP com proposta, autorização nativa, saída paginada e cancelamento seguro. Use quando a tarefa realmente exigir processo local remoto; não use para navegação read-only, Git tipado, validação por profile ou operações que já tenham ferramenta especializada equivalente.
+description: Escolha o canal de CLI conforme a localização real do agente: use terminal direto quando há acesso local autorizado ao checkout, e CLI Execution MCP apenas quando um agente remoto precisa executar no host Code Awareness. Oriente a autorização nativa e o ciclo MCP; não roteie agentes locais com terminal pelo MCP nem substitua ferramentas especializadas.
 ---
 
 # CLI Execution — Code Awareness Channel
@@ -9,9 +9,20 @@ description: Execute comandos locais no projeto ativo pelo Code Awareness Channe
 
 CLI Execution é uma **capability própria do Channel**, não um terminal irrestrito nem parte de Code Navigation. Permite executar processos locais no checkout do **projeto ativo**, depois de resolução da proposta e consentimento nativo do operador. Use só quando o resultado exigir um comando local e quando o executor tiver autorização para os seus efeitos.
 
-Prefira capacidades mais específicas quando bastarem: `code-navigation` para leitura/navegação; `git-operations` para Git tipado e concorrência; `validacao-de-implementacoes` e `validation-evidence-channels` para provas por profiles; `continuum` para Artifacts. **Não use CLI para escapar de controles, autoridade, leases, quotas ou limitações de ferramentas tipadas.** Quando o executor autorizado já possui terminal no checkout correto, prefira-o se for equivalente e mais barato; o MCP serve especialmente a agentes externos sem acesso local.
+Prefira capacidades mais específicas quando bastarem: `code-navigation` para leitura/navegação; `git-operations` para Git tipado e concorrência; `validacao-de-implementacoes` e `validation-evidence-channels` para provas por profiles; `continuum` para Artifacts. **Não use CLI para escapar de controles, autoridade, leases, quotas ou limitações de ferramentas tipadas.** **Regra obrigatória:** se o agente tem terminal local autorizado no checkout correto, **use a CLI direta, nunca CLI Execution MCP como intermediário**. O MCP é destinado ao agente remoto que precisa executar no computador do Code Awareness sem acesso direto àquele checkout. Não confunda um terminal remoto de sandbox/cloud com um terminal no computador do usuário.
 
-## Pré-condições e autorização
+## Seleção obrigatória do canal — local versus nuvem
+
+**Decida pelo acesso efetivo ao checkout de destino, não pelo nome do agente.**
+
+- **Codex local, agente em IDE ou outro executor no computador com terminal e acesso autorizado ao checkout:** executar comandos pela **CLI local normal**, como já faz. **Não chamar** `prepare_cli_execution`, `start_cli_execution`, `get_cli_execution` ou `cancel_cli_execution` para esses comandos. Não exigir ativação do botão do Channel ou consentimento MCP para uma execução direta. Respeitar permissões e políticas do terminal local.
+- **Codex em ambiente de nuvem, ChatGPT.com ou outro agente remoto sem terminal no checkout do host:** quando realmente precisar executar um comando **na máquina em que o Code Awareness está rodando**, usar o **CLI Execution MCP** pelo Channel, com botão ativado, proposta e autorização nativa. Ter terminal na própria máquina virtual/cloud **não** é acesso ao checkout local do usuário.
+- **Agente remoto com terminal no próprio workspace remoto:** usar esse terminal para comandos **naquele workspace**, sem passar pelo MCP. Só recorrer ao MCP quando o alvo for o checkout local do host Code Awareness e a operação estiver autorizada.
+- **Local sem acesso/autoridade ao checkout ou remoto sem MCP funcional:** não tentar contornar permissões ou alternar de canal para obter privilégios. Declarar a dependência específica ou usar uma ferramenta tipada realmente autorizada.
+
+**A simples existência de CLI Execution MCP nunca justifica substituição da CLI direta.** Essa separação reduz chamadas, tokens, aprovações repetidas e dependência desnecessária do Channel.
+
+## Pré-condições e autorização — apenas MCP remoto
 
 - A capacidade precisa estar **ativada no Channel do Desktop**, pelo botão **Ativar execução CLI**. Se desativada, `prepare_cli_execution`/`start_cli_execution` retornam `CLI_EXECUTION_DISABLED`. Não tentar ativar por comando, mutação de configuração ou bypass; comunicar a dependência ao operador.
 - A preferência `cliExecutionEnabled` pertence às configurações locais persistidas do Desktop; o padrão de primeira instalação é **desativado**. Estado de um usuário/dispositivo não autoriza supor ativação em outro.
@@ -19,7 +30,7 @@ Prefira capacidades mais específicas quando bastarem: `code-navigation` para le
 - Autoridade MCP, consentimento nativo e autorização do responsável pela alteração são condições distintas. Não usar comando destrutivo, instalação, transmissão de dados, alteração de arquivos ou operação Git irreversível sem escopo expressamente autorizado.
 - O processo roda em Windows e exige supervisor nativo com ownership verificável. `NATIVE_OWNERSHIP_UNAVAILABLE_OR_INVALID` indica dependência de build/instalação do helper, não autorização para fallback desprotegido.
 
-## Fluxo padrão de quatro ferramentas
+## Fluxo MCP remoto — quatro ferramentas
 
 1. **Preparar:** `prepare_cli_execution({ executable, args?, relativeCwd? })`. Use `executable` real e `args` como vetor literal; não interpolar shell, concatenar comandos nem inserir `cmd /c` por conveniência. `relativeCwd` deve permanecer no checkout ativo. Leia `proposalId`, expiração, `repositoryId`, `command`, `cwd`, riscos e estado. Verifique se o comando resolvido corresponde exatamente à intenção; uma proposta pode expirar e não cria processo.
 2. **Iniciar:** `start_cli_execution({ proposalId, operationId })` com `operationId` estável e único para a operação. Início é assíncrono e normalmente retorna `AWAITING_APPROVAL`. O consentimento é recebido no Desktop; **não** confundir `start` aceito com processo executado. Se houver incerteza ou timeout de resposta, concilie pela **mesma** `operationId` antes de repetir qualquer mutação. Nunca criar outro ID para contornar resposta desconhecida.
@@ -36,4 +47,4 @@ Prefira capacidades mais específicas quando bastarem: `code-navigation` para le
 
 ## Fronteira com outras Skills
 
-Esta Skill governa **o uso seguro e econômico da CLI remota**. Não substitui políticas de domínio: para validação de software, use `validacao-de-implementacoes`; para Worktrees/PRs, use `worktree-execution` ou `git-operations`; para recuperar failures operacionais específicos, use `engineering-evidence-economy` somente quando a escolha da evidência ainda estiver aberta. Não criar um atalho universal `CLI` para tarefas que ferramentas tipadas resolvem melhor.
+Esta Skill governa **a seleção econômica entre terminal local direto e CLI Execution MCP remoto**, além do uso seguro da capability MCP quando ela for realmente necessária. Não substitui políticas de domínio: para validação de software, use `validacao-de-implementacoes`; para Worktrees/PRs, use `worktree-execution` ou `git-operations`; para recuperar failures operacionais específicos, use `engineering-evidence-economy` somente quando a escolha da evidência ainda estiver aberta. Não criar um atalho universal `CLI` para tarefas que ferramentas tipadas resolvem melhor.
