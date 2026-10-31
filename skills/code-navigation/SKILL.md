@@ -95,6 +95,8 @@ O Channel também expõe capacidades operacionais irmãs, como:
 
 Não trate essas capacidades como parte de Code Navigation. Elas compartilham o Channel, mas possuem responsabilidades próprias.
 
+**Ponte com sessões agentivas:** se a dúvida for **por que um agente tomou determinada decisão ou o que ocorreu na sessão que produziu uma mudança**, use a Skill `agent-session-context` para recuperar seletivamente esse histórico (somente no repositório ativo). Não carregue transcrições para explicar o comportamento do código atual quando Code Navigation e Git já bastarem. Sessão relata intenção/execução, não substitui prova de diff, commit ou validação.
+
 Cada ferramenta ou capability responde uma pergunta diferente.
 
 Não use uma representação mais profunda quando uma mais barata já resolver a decisão.
