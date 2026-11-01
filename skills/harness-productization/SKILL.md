@@ -57,27 +57,30 @@ capacidade ausente: detecção automática
 produto provável: lint ou structural test
 ```
 
-## Classes de Produto
+## Classes de Produto — taxonomia aberta
 
-Use como heurística:
+**Classifique pela função que precisa melhorar, não pelo nome da tecnologia.** O Harness compreende qualquer mecanismo reutilizável que aumente a capacidade do agente ou do ambiente de saber, decidir, executar, observar, validar ou impedir. A lista é um mapa de opções, não uma checklist de artefatos a criar.
 
-|Capacidade necessária|Produto provável|
+|Capacidade necessária|Representações candidatas|
 |---|---|
-|Conhecimento estável|documentação / referência|
-|Procedimento com julgamento|Skill|
-|Execução determinística|script / ferramenta|
-|Comportamento que deve permanecer correto|teste|
-|Bug que não deve retornar|teste de regressão|
-|Regra estrutural|lint / structural test|
-|Violação que deve ser impedida|guardrail / hook|
-|Estrutura difícil de descobrir|mapa / índice|
-|Estado difícil de observar|observabilidade|
-|Comportamento agentic|eval|
-|Degradação recorrente|scanner / automação / manutenção|
+|Direcionar comportamento e critérios|Kernel, instruções/policies, prompts, Skills e Skill Chains, gates procedimentais|
+|Preservar normas e conhecimento|Documentação, Design System, ADRs, contratos, especificações, padrões e exemplos aprovados|
+|Descobrir e recuperar informação|Architecture/Capability Maps, índices, catálogos, busca/retrieval, conectores MCP|
+|Persistir continuidade e decisões|Memória, Living Artifacts, handoffs, registros de decisão, checkpoints|
+|Tornar o correto fácil de reutilizar|Componentes/primitives, bibliotecas, SDKs, templates, scaffolds, presets e defaults|
+|Executar tarefas previsíveis|Scripts, CLI, ferramentas, workflows e pipelines|
+|Isolar operação e limitar autoridade|Worktrees, sandboxes, escopos de permissão, contratos de autorização|
+|Comprovar comportamento de software|Testes, suites de regressão, assertions, validação de implementação|
+|Avaliar comportamento de agentes|Evals, casos adversariais, fixtures e oráculos de avaliação|
+|Detectar ou impedir violações|Guardrails, linters, structural tests, hooks, schemas e gates de CI|
+|Revisar decisões e entregas|Auditorias, revisões independentes, aprovação humana quando necessária|
+|Observar o que de fato ocorreu|Logs, traces, métricas, System Health, receipts e diagnósticos|
+|Capturar aprendizado de falhas|Handoffs, Capability Opportunities, análise de causa, feedback estruturado|
+|Evitar deterioração recorrente|Scanners, automações, reconciliação, regeneração e manutenção condicional|
 
-A matriz orienta.
+Essas representações **não são mutuamente exclusivas**: uma Skill pode chamar ferramenta que produz recibo verificado por teste e bloqueado por guardrail. O Design System é Harness quando serve como contrato canônico recuperável por agentes e/ou implementado em tokens e primitives; um PDF decorativo sem integração operacional não assegura qualidade. Logs e checklists informam, mas não são enforcement por si. `Evals` avaliam o comportamento agentic; testes/validações avaliam o software produzido.
 
-Não aplique mecanicamente.
+**Regra de seleção:** primeiro identifique a causa generalizável; depois escolha a representação com menor custo total que remove trabalho, evita a falha ou permite detectá-la. Não promova uma falha mecânica a Skill se um teste, default ou gate puder resolvê-la com mais confiabilidade. Não crie item apenas para completar a taxonomia.
 
 ## Quando Escolher uma Skill
 
