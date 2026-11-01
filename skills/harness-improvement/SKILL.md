@@ -141,6 +141,14 @@ O ganho esperado justifica criação e manutenção?
 
 Se não houver capacidade reutilizável com valor real, não produtize.
 
+## Princípio da reincidência evitável
+
+**A primeira falha relevante deve ser uma oportunidade de reduzir a probabilidade da próxima, não apenas um conserto local.** Trate “errar apenas uma vez” como meta de aprendizado acumulativo por **classe de causa**, não promessa literal de erro zero: modelos e ambientes podem falhar de maneiras novas ou não determinísticas.
+
+Após a primeira ocorrência material, determine a classe de causa, o custo e a recorrência previsível. Se houver capacidade reutilizável de ganho líquido, escolha entre fortalecer fonte canônica existente e criar o menor mecanismo adequado; encaminhe a decisão de representação a `harness-productization`. Exija evidência proporcional de que o mecanismo **ensinou, facilitou, detectou ou impediu** o problema futuro, deixando explícita a força real da proteção. Quando uma regra crítica puder ser executavelmente protegida, não pare por padrão em instrução textual.
+
+**Não existe obrigação de criar artefato para cada falha:** episódios únicos sem causa generalizável, custo baixo ou correção já coberta podem terminar sem produto novo. O Implementador registra evidência de campo; o Arquiteto qualifica a oportunidade. Sem autorização para ampliar o escopo, preserve a oportunidade para execução separada em vez de comprometer a tarefa corrente.
+
 ## Recorrência Pode Ser Antecipada
 
 Não é necessário esperar múltiplas ocorrências quando a recorrência for estruturalmente previsível.
