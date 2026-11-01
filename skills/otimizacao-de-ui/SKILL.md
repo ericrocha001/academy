@@ -472,6 +472,12 @@ Se a prova visual obrigatória não puder ser executada, o trabalho não é `VAL
 
 Use `validacao-de-implementacoes` para definir e produzir evidência proporcional.
 
+## Fechamento de falhas e não reincidência
+
+Se uma revisão visual identificar defeito material, **corrija a tela dentro do escopo autorizado** e classifique a causa repetível: norma visual ambígua (Design System do produto), escolha procedural ruim (otimizacao-de-ui), primitiva/default inadequado (componentes compartilhados), propriedade mecânica sem verificação (guardrail/teste) ou lacuna de aceitação visual (validação). Registre causa e destino no relato final, sem transformar cada falha local em nova Skill.
+
+Quando a falha indicar deficiência reutilizável de Harness, acione `harness-improvement` para avaliar a oportunidade e selecione a fonte canônica correta. Use `surgical-evals` somente se houver uma pergunta real sobre melhoria do **comportamento do agente**; a qualidade do **software** continua pertencendo a `validacao-de-implementacoes`. Depois da correção, demonstre que a falha original não se repete no menor cenário suficiente, sem promover screenshots legadas a exemplos de qualidade por conveniência.
+
 ## Quando planejar implementação
 
 Depois que:
