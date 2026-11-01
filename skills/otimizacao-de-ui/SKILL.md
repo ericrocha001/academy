@@ -50,6 +50,14 @@ Consequências:
 - não use o source atual como desculpa para preservar uma composição visual ruim quando o comportamento pode ser apresentado melhor;
 - diferenças entre mockup e runtime final são esperadas quando preservam melhor verdade funcional, Design System e arquitetura aprovada.
 
+## Gate de proveniência visual — não reproduza o legado
+
+Ao estudar uma tela, componente, CSS ou screenshot existente, **separe evidência funcional de autoridade estética**. Source/runtime comprovam dados, contratos, estados e ações; **não aprovam automaticamente** tipografia, geometria, densidade, layout ou microcopy. A frequência de um padrão antigo no repositório não demonstra sua qualidade.
+
+Antes de reutilizar a aparência, classifique a referência: **Design System/exemplar aprovado**, **mockup direcional**, **runtime validado para o aspecto pertinente** ou **legado sem validação estética**. Use os primeiros como evidência visual no limite do que comprovam. Use o último para preservar comportamento e descobrir restrições; recomponha sua apresentação conforme o Design System e a tarefa, mesmo se copiar estrutura ou handlers for eficiente. Na ausência de exemplar aprovado, derive a composição dos contratos e dos critérios canônicos; não eleja a tela mais parecida como padrão por conveniência.
+
+A cada nova UI ou redesign material, execute uma revisão adversarial breve: procure elementos que parecem herdados por imitação, sobretudo **microtipografia, seletores sem affordance, explicações permanentes, repetição de status saudáveis, controles sem superfície clara e cards sem responsabilidade**. Para cada ocorrência, escolha correção ou justifique a necessidade real. Preserve informação de risco, alerta e decisão que precise estar visível no momento apropriado; Progressive Disclosure não é ocultação de segurança.
+
 ## Fronteira com o desenho funcional
 
 Quando uma UI nova ou um redesign **ainda não tem clareza sobre o que o consumidor precisa decidir, quais sinais necessita e quais ações o sistema deve assumir**, use primeiro `signal-driven-feature-design` e receba seu Contrato de Sinal e Ação. Esta Skill continua responsável por **como organizar e representar** capacidades aprovadas em hierarquia, layout, estados, responsividade e Design System. Não recrie a descoberta do valor em cada ajuste visual nem invoque a Skill de sinal para um layout cujo contrato já esteja claro.
@@ -410,6 +418,8 @@ Além da inspeção do runtime, confirme com cenários representativos:
 - **Subtração informacional:** cada dado e controle visível ajuda o usuário? O que pode sair sem perda funcional? Não classifique ornamentação como informação inútil.
 - **Ausência responsável:** detalhes rebaixados ainda são descobríveis quando necessários? Erros, incerteza, permissões e informações críticas permanecem perceptíveis?
 - **Composição e beleza:** regiões, espaçamentos, tipografia, cores, superfícies e ornamentos mantêm clareza **e** sofisticação? A proposta preservou ou elevou a aparência aprovada?
+- **Descoberta e ajuda:** seletores e ações são visualmente reconhecíveis, legíveis e utilizáveis? Explicação secundária está recuperável por ajuda contextual acessível, sem encobrir aviso ou risco crítico?
+- **Não propagação:** a composição foi revista contra o Design System e exemplar pertinente, em vez de aprovar CSS/visual legado pela mera existência ou frequência?
 - **Comparação:** no redesign, a tela ficou mais eficiente que a anterior para a finalidade, sem regressão funcional ou cognitiva?
 
 Se houver dúvida material, observe uma tarefa representativa com usuário ou evidência equivalente; não invente ganho de usabilidade a partir de gosto estético. Não use pontuação visual arbitrária ou critérios cosméticos para declarar validação.
