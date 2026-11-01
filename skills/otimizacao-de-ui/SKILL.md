@@ -1,6 +1,6 @@
 ---
 name: otimizacao-de-ui
-description: Projete ou revise a interface real do produto: arquitetura da informação, hierarquia, layout, scroll, densidade, estados, responsividade e Design System. Use na criação ou redesign de UI e valide visualmente o runtime. Para produzir somente mockup ou referência visual use mockup-design; não decida se a feature deve existir.
+description: "Projete ou revise a interface real do produto: arquitetura da informação, hierarquia, layout, scroll, densidade, estados, responsividade e Design System. Use na criação ou redesign de UI e valide visualmente o runtime. Para produzir somente mockup ou referência visual use mockup-design; não decida se a feature deve existir."
 ---
 
 # Design e Otimização de UI
@@ -392,7 +392,7 @@ Preserve foco e responsabilidade em cada breakpoint.
 
 Testes, typecheck e build são necessários, mas não provam qualidade visual.
 
-Antes de declarar uma UI nova ou redesign concluído, inspecione o **runtime real**.
+Antes de encerrar qualquer alteração material de apresentação ou interação, inclusive correção local, acione `apresentacao-visual-de-ui`. Receba screenshot da própria Worktree **inspecionada e efetivamente apresentada ao responsável**, com proveniência e limitações, ou bloqueio explícito de revisão visual. Faça essa entrega antes de solicitar conclusão visual, PR ou merge. Mudanças sem efeito visual dispensam essa capacidade; PASS técnico e apresentação não constituem aceite humano. O procedimento operacional pertence à Skill chamada.
 
 Verifique estados representativos, incluindo quando aplicável:
 
