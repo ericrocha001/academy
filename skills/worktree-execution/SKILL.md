@@ -103,6 +103,10 @@ Use Git local autorizado quando disponível e `git-operations` apenas se exigir 
 
 ## Entrega validada via Pull Request — fluxo padrão
 
+**Gate de completude da sessão (antes de propor ou abrir PR):** reúna o conjunto exato de Planos validados que pertencem à sessão, com seus SHAs, branch de origem e restrições de publicação. Verifique no grafo Git que **cada commit de validação ainda pendente de integração é ancestral do HEAD publicado da branch proposta para o PR**, e que o diff contra o destino corresponde ao conjunto da sessão. Commit feito, push anterior, Handoff VALIDATED ou PR existente **não provam** inclusão. A mesma Worktree física pode ter branches ou sessões diferentes: não some trabalhos de outra sessão por coincidência de path, mas também não descarte silenciosamente os commits da sessão ao mudar de branch. Se houver commit da sessão em branch paralela, preserve as duas linhas, reconcilie a composição em branch autorizada e revalide o necessário antes da proposta; não reescreva histórico, não faça force-push e não declare PR completo com commit ausente.
+
+**Exceção de entrega somente local:** uma proibição explícita de push/PR prevalece no seu escopo, inclusive quando outro Plano da sessão permite publicação. Trate a entrega como **VALIDADA — PUBLICAÇÃO PENDENTE** e torne a pendência visível na revisão de fechamento; não marque a sessão como integralmente publicada nem alegue que o PR posterior contém essa entrega. Peça autorização para resolver a exceção quando a integração for desejada; nunca a contorne silenciosamente.
+
 **O PR só pode ser criado após a conclusão da sessão E a aprovação explícita do responsável para aquele PR.** A validação de cada Plano, o commit e o push não criam PR nem concedem aprovação. Prepare os dados do PR e solicite autorização; até lá, a sessão pode estar validada e publicada na branch com estado **PR AGUARDANDO APROVAÇÃO**, sem falha de entrega.
 
 - **Quem produz:** ao concluir a sessão, confere todos os Planos e commits, HEAD publicado, branch, base, composição e pendências; apresenta ao responsável título, objetivo, origem, destino e evidências do **PR proposto**. **Somente depois da aprovação explícita para abrir esse PR**, cria um único PR usando GitHub/CLI/API autorizado, verificando URL/número reais. A superfície MCP de Worktree não cria PR por si.
@@ -185,7 +189,7 @@ Não distribua automaticamente unidades do mesmo plano entre agentes apenas porq
 - começar implementação sem preparar e verificar as dependências da Worktree após vinculá-la à branch, ou presumir que as dependências de outro checkout servem;
 - tratar handoff VALIDATED como licença para mutações fora da branch validada, usar commit/push normal como pretexto para abrir PR ou fazer merge, ou considerar a autorização operacional contínua permissão universal para operações destrutivas;
 - criar Worktree por plano, misturar staged de autores/escopos diferentes ou dar push por checkpoint sem delegação;
-- abrir PR por teste, checkpoint ou Plano validado antes de concluir a sessão; criar múltiplos PRs dependentes na mesma sessão, acumular Planos alheios ao objetivo para reduzir PRs ou duplicar PR em revisão;
+- abrir PR por teste, checkpoint ou Plano validado antes de concluir a sessão; criar múltiplos PRs dependentes na mesma sessão, acumular Planos alheios ao objetivo para reduzir PRs ou duplicar PR em revisão; declarar PR de sessão completo sem verificar ancestralidade de todos os seus commits validados;
 - pedir autorização a cada commit/push de Plano validado apesar da política operacional contínua; abrir PR ou fazer merge sem as respectivas aprovações explícitas e distintas do responsável;
 - executar pull no checkout errado, com estado dirty, ou tratar merge remoto como atualização automática da main local;
 - encerrar ou limpar a Worktree após commit/merge sem solicitação específica;
@@ -194,7 +198,7 @@ Não distribua automaticamente unidades do mesmo plano entre agentes apenas porq
 
 **Validação de Plano:** propriedades obrigatórias demonstradas, **um commit e um push remoto verificados** correspondentes ao Plano validado, provas e handoff pertinente. Sem push verificado, mantenha estado **VALIDADO — PUBLICAÇÃO PENDENTE** e reporte impedimento; não implica PR.
 
-**Conclusão da sessão para revisão:** todos os Planos previstos validados e com commits/pushes rastreáveis, composição suficientemente verificada, branch/HEAD observados, proposta de **um PR aguardando aprovação explícita do responsável** ou PR aberto e verificável após essa aprovação, com handoff e proveniência. A espera pela aprovação do PR **não invalida os Planos já entregues** e não implica merge.
+**Conclusão da sessão para revisão:** todos os Planos previstos validados, commits da sessão alcançáveis pelo HEAD remoto da branch proposta (ou já presentes no destino, com evidência), pushes rastreáveis e exceções explícitas resolvidas; composição suficientemente verificada, branch/HEAD observados, proposta de **um PR aguardando aprovação explícita do responsável** ou PR aberto e verificável após essa aprovação, com handoff e proveniência. Se uma entrega permanecer somente local por restrição, a sessão não pode ser declarada integralmente publicada. A espera pela aprovação do PR **não invalida os Planos já entregues** e não implica merge.
 
 **Integração autorizada:** PR criado com aprovação explícita anterior, revisão efetiva, validação proporcional, **nova aprovação explícita do responsável para o merge**, autoridade de destino e merge observado (ou bloqueio documentado). Nenhuma dessas etapas encerra automaticamente a Worktree.
 
