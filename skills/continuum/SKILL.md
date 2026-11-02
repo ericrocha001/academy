@@ -40,6 +40,8 @@ O objetivo é contexto suficiente sem reconstruir a conversa original. Meça qua
 
 Continuum tells you what happened. Code Navigation tells you what exists now. Artifact histórico não prova source atual ou runtime fresco. Confirme essas propriedades pelas capacidades correspondentes.
 
+**Fronteira com execuções agentivas:** quando a pergunta exigir **quais sessões o Entire conhece agora, qual o estado de uma sessão ou quanto ela consumiu**, use a Skill `agent-session-context`: descoberta `discover_entire_sessions` → inspeção `inspect_entire_session` ou uso `get_entire_session_usage` com identidade provider/Worktree validada. Quando exigir eventos e transcrição, siga o fluxo de importação seletiva e opt-in dessa Skill, não os documentos do Continuum. Handoffs, decisões, planos e provas duráveis continuam aqui; registros live são evidência operacional, não Artifacts automaticamente. Não atribua autoria/commit pela mera presença de uma sessão.
+
 
 ## Leitura proporcional: escolher a profundidade
 
