@@ -148,13 +148,20 @@ Na conclusão, confirme a adequação semântica do nome da branch e eventual re
 **Commit, PR e merge são operações distintas.** O caminho padrão é revisar e integrar pelo PR, sem fazer merge direto na `main` a partir da Worktree produtora. Integre somente com autorização para destino e escopo; Git local pode integrar diretamente apenas sob exceção explícita. Se a operação realmente envolver Worktrees protegidas via MCP, use `worktree-mcp-operations`.
 
 Confirme estado e disponibilidade do destino, possíveis escritores concorrentes, alterações dirty, commit-base e drift. Resolva conflitos em ambiente isolado quando necessário, preserve ambas as linhas e não substitua o estado da `main` com arquivos antigos. Não confunda ausência de conflito textual com compatibilidade semântica. **Merge não autoriza fechar a Worktree de origem.**
-## Sincronização local após merge remoto
+## Sincronização local e prontidão do runtime após merge remoto
+
+**Fechamento padrão proposto:** ao solicitar autorização para o merge de um PR concreto, ofereça no mesmo pedido, de forma explícita, a sincronização por fast-forward do checkout local de destino e a verificação/renovação não destrutiva do runtime a ele associado, quando disponíveis. Se o responsável aprovar **esse escopo conjunto**, a sincronização e o refresh necessários podem seguir após o merge confirmado, sem terceira aprovação por ritual; aprovações nativas do host continuam obrigatórias. Uma autorização que mencione somente merge não autoriza mutações locais; autorização de PR também não autoriza merge. Não estenda a aprovação a cleanup, descarte, reset, processos alheios ou ações destrutivas.
+
 
 **Merge no provedor não atualiza automaticamente a branch local.** Após confirmar integração de um PR, quando houver delegação para sincronizar o checkout local de destino, identifique o repositório, a Worktree que realmente contém a branch de destino e a origem remota. Não execute o pull na Worktree produtora apenas porque ela originou o PR.
 
 No checkout correto, observe branch, HEAD, upstream, Git operation e alterações locais; obtenha freshness remota via fetch quando necessário. **Somente com destino correto, nenhuma operação Git ativa e Worktree limpa**, avance por fast-forward-only; nunca crie merge commit local, rebase, reset ou force para apenas sincronizar. Verifique a convergência do HEAD com o remoto antes de declarar a sincronização concluída. Se já estiver atualizado, nenhuma mutação é necessária.
 
 Se houver mudanças staged, unstaged ou untracked, **não faça stash/shelf, commit, descarte ou pull automático**. Preserve o estado, informe os paths e o bloqueio; o responsável deve resolver conscientemente a situação. Se o canal retornar outcome desconhecido, reconcilie com estado/receipts antes de tentar outra mutação. Ausência do checkout local, branch ocupada ou falta de delegação são limites explícitos, não motivo para trocar de Worktree ou agir em checkout alheio. Sincronizar a main local é diferente de validar a composição integrada; esta última requer evidência própria.
+
+**Runtime após sincronização comprovada:** identifique se existe runtime associado ao checkout de destino e confira sua revisão. Se o runtime em execução precisar ser atualizado e houver capacidade/autorização, use o mecanismo seguro do host para recarregá-lo ou renová-lo, verificando prontidão técnica na revisão atual. Não inicie aplicativo inexistente por rotina, não reinicie nem encerre processos ou sessões de preview de outro agente, não reinstale dependências desnecessariamente. Git atualizado não comprova runtime renovado, validação funcional ou aceitação humana. Na ausência de runtime ou de ferramenta autorizada, registre `NÃO APLICÁVEL` ou `PENDENTE`, sem alegar prontidão.
+
+**Relato de fechamento:** informe PR, SHA do merge, checkout de destino, HEAD local/remoto, convergência por fast-forward (ou já sincronizado/bloqueado) e estado/prova do runtime separadamente. A integração remota pode estar concluída com sincronização local pendente; reporte essa distinção em vez de ocultar o bloqueio. Não peça aprovação repetida para etapas já abrangidas pela autorização concreta.
 
 ## Validação pós-integração
 
@@ -192,6 +199,7 @@ Não distribua automaticamente unidades do mesmo plano entre agentes apenas porq
 - abrir PR por teste, checkpoint ou Plano validado antes de concluir a sessão; criar múltiplos PRs dependentes na mesma sessão, acumular Planos alheios ao objetivo para reduzir PRs ou duplicar PR em revisão; declarar PR de sessão completo sem verificar ancestralidade de todos os seus commits validados;
 - pedir autorização a cada commit/push de Plano validado apesar da política operacional contínua; abrir PR ou fazer merge sem as respectivas aprovações explícitas e distintas do responsável;
 - executar pull no checkout errado, com estado dirty, ou tratar merge remoto como atualização automática da main local;
+- exigir terceira aprovação para sincronização expressamente incluída no merge, presumir sincronização sem autorização ou declarar runtime pronto somente porque HEAD convergiu;
 - encerrar ou limpar a Worktree após commit/merge sem solicitação específica;
 - supor que testes isolados validam a integração.
 ## Critério de conclusão
@@ -200,7 +208,7 @@ Não distribua automaticamente unidades do mesmo plano entre agentes apenas porq
 
 **Conclusão da sessão para revisão:** todos os Planos previstos validados, commits da sessão alcançáveis pelo HEAD remoto da branch proposta (ou já presentes no destino, com evidência), pushes rastreáveis e exceções explícitas resolvidas; composição suficientemente verificada, branch/HEAD observados, proposta de **um PR aguardando aprovação explícita do responsável** ou PR aberto e verificável após essa aprovação, com handoff e proveniência. Se uma entrega permanecer somente local por restrição, a sessão não pode ser declarada integralmente publicada. A espera pela aprovação do PR **não invalida os Planos já entregues** e não implica merge.
 
-**Integração autorizada:** PR criado com aprovação explícita anterior, revisão efetiva, validação proporcional, **nova aprovação explícita do responsável para o merge**, autoridade de destino e merge observado (ou bloqueio documentado). Nenhuma dessas etapas encerra automaticamente a Worktree.
+**Integração autorizada:** PR criado com aprovação explícita anterior, revisão efetiva, validação proporcional, **nova aprovação explícita do responsável para o merge**, autoridade de destino e merge observado (ou bloqueio documentado). Quando o pedido aprovado também incluir fechamento pós-merge, sincronização local e prontidão do runtime exigem comprovação específica ou pendência explícita. Nenhuma dessas etapas encerra automaticamente a Worktree.
 
 ## Regra final
 
