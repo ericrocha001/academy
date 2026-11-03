@@ -438,13 +438,13 @@ No caso com risco, registre `REQUIRED: sim / RUN`, resultado, checkout/HEAD real
 
 ## Evidência Visual em Electron
 
-Quando houver harness local equivalente de Electron real, prefira-o para evidência visual reproduzível, com perfil isolado, interações reais e captura nativa. No Code Awareness, utilize a lane `scripts/ui-visual-validation/` e seu contrato local, sem duplicar aqui sua documentação.
+Para encerrar alteração material de apresentação ou interação gráfica, acione `apresentacao-visual-de-ui`, mesmo sem referência aprovada. Receba screenshot do estado alterado **inspecionada e efetivamente apresentada ao responsável**, com proveniência da própria Worktree, receipt e limitações, ou bloqueio explícito. Falta dessa entrega obrigatória impede declarar revisão visual concluída e deve ser resolvida antes de solicitar conclusão visual, PR ou merge. Mudanças sem efeito visual dispensam a capacidade com justificativa causal curta.
 
-Computer Use continua útil para exploração interativa quando disponível. Sua indisponibilidade não impede `VALIDADO` quando uma prova visual local equivalente observa as propriedades exigidas com força suficiente.
+A Skill chamada é dona da seleção do cenário, captura e apresentação pelo Harness existente; não duplique o procedimento aqui. No Code Awareness, prefira a lane local de Electron isolado em `scripts/ui-visual-validation/` quando observar as propriedades exigidas. Computer Use pode ajudar na exploração; sua ausência não invalida prova local equivalente.
 
-Inspecione efetivamente as screenshots antes de aprovar a aparência. Arquivo PNG gerado ou receipt aprovado não substitui inspeção visual. Registre os estados e viewports observados e os limites da evidência: fixtures de renderer não provam backend, persistência ou integração remota.
+Mantenha separados PASS técnico, inspeção agentiva, apresentação e aceite humano efetivamente recebido. Uma fixture não prova backend, persistência ou integração remota; a apresentação não concede aprovação humana nem autorização de PR/merge. Rotinas automáticas sem consumidor não exigem aceite humano fictício.
 
-Quando for necessário preparar lado a lado/overlay de uma referência aprovada e uma captura real no **Code Awareness**, e o checkout contiver esse Harness, use a Skill operacional `comparacao-visual-de-ui`. Ela produz evidência para inspeção; **não** substitui este contrato de suficiência, aceitação visual e separação entre fixture e integração. Não imponha o comparador a projetos sem essa ferramenta, UI sem referência aprovada ou provas não visuais.
+Quando houver referência realmente aprovada e necessidade de lado a lado/overlay, utilize `comparacao-visual-de-ui` se o checkout contiver o comparador. A comparação complementa a prova e não substitui apresentação nem este contrato de suficiência. Não imponha comparador a capturas avulsas, projetos sem a ferramenta ou provas não visuais.
 
 ## Prova de Aderência à Intenção Visual
 
