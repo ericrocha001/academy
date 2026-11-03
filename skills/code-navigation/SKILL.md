@@ -95,7 +95,7 @@ O Channel também expõe capacidades operacionais irmãs, como:
 
 Não trate essas capacidades como parte de Code Navigation. Elas compartilham o Channel, mas possuem responsabilidades próprias.
 
-**Ponte com sessões agentivas:** se a dúvida for **por que um agente tomou determinada decisão ou o que ocorreu na sessão que produziu uma mudança**, use a Skill `agent-session-context` para recuperar seletivamente esse histórico (somente no repositório ativo). Não carregue transcrições para explicar o comportamento do código atual quando Code Navigation e Git já bastarem. Sessão relata intenção/execução, não substitui prova de diff, commit ou validação.
+**Ponte com proveniência e sessões agentivas:** quando a pergunta evoluir de *onde está este símbolo?* para *qual commit alterou esta região, qual checkpoint/sessão está associado e que prompt registrado pode esclarecer o trabalho?*, obtenha primeiro o menor arquivo/intervalo pelo Code Map e acione `agent-session-context`, responsável por `inspect_code_provenance` (Git-first, MAP/DETAIL), `inspect_entire_checkpoint` (INSPECT/DISAMBIGUATE/READ_FIELD) e recuperação de sessões. **Não repita o contrato dessas tools aqui.** Não carregue transcrições ou prompts por precaução quando Code Navigation/Git bastarem. Associação com checkpoint não comprova autoria exclusiva, causalidade ou validação; para provas use `validation-evidence-channels`.
 
 Cada ferramenta ou capability responde uma pergunta diferente.
 
