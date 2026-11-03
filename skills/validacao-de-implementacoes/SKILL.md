@@ -289,9 +289,9 @@ Use diretamente:
 - scripts de acceptance;
 - ferramentas locais equivalentes.
 
-Não roteie essas execuções pelo plugin do Code Awareness apenas para obter normalização, `proofId`, freshness ou registro automático no Validation Ledger.
+Não roteie **a execução** dos testes locais pelo plugin apenas para obter normalização, `proofId` ou registro automático. **Registro de metadados no Validation Ledger não é execução:** após prova material que sustenta uma Unidade/Plano, quando o Ledger compartilhado estiver acessível, use `validation-evidence-channels` para registrar uma prova consolidada com `evidenceFor` e estado real, sem repetir o teste. Handoff não substitui registro recuperável; se o canal não existir, relate a limitação sem invalidar prova local.
 
-Esses canais remotos existem principalmente para o Arquiteto produzir ou recuperar evidência independente sem possuir o mesmo ambiente local do Implementador.
+Os canais remotos de execução servem principalmente ao Arquiteto/revisor sem workspace local equivalente; o Ledger também recebe provas locais para recuperação independente.
 
 O Implementador deve recorrer ao canal remoto somente quando ele demonstrar algo que o ambiente local não consegue demonstrar ou quando o plano exigir explicitamente aquela superfície.
 
@@ -650,7 +650,7 @@ Como foi observado.
 
 PASS, FAIL, resultado medido ou conclusão equivalente.
 
-Não é obrigatório fornecer IDs do Validation Ledger para provas produzidas localmente pelo Implementador. O relato deve ser suficiente para permitir verificação posterior pelo Arquiteto quando necessário.
+Quando uma prova material estiver registrada no Validation Ledger, **referencie seu `proofId` e `evidenceFor` no Handoff**, permitindo ao Arquiteto recuperá-la e verificar freshness/identidade antes de repetir uma suíte. Se não houver canal acessível ou a prova não justificar registro independente, identifique o motivo e mantenha no relato a propriedade, o mecanismo, o resultado, escopo e receipt reais. Nunca invente IDs nem afirme que a ausência de registro invalida automaticamente um teste efetivamente executado.
 
 Não despeje por padrão:
 
