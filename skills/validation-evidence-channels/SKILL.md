@@ -1,6 +1,6 @@
 ---
 name: validation-evidence-channels  
-description: Selecione e interprete evidências remotas ou independentes do Code Awareness (Validation Ledger/Execution, runtime e outros canais) quando a prova local não bastar, estiver indisponível ou exigir verificação independente. Não use para executar testes locais equivalentes nem para definir genericamente o que valida uma implementação; use validacao-de-implementacoes.
+description: Selecione canais de validação e faça consulta/registro de evidências no Validation Ledger, distinguindo testes locais de persistência compartilhada, frescor, Runtime Identity e verificação independente. Para definir propriedades use validacao-de-implementacoes.
 ---
 
 # Validation Evidence Channels
@@ -45,11 +45,7 @@ Use diretamente os mecanismos disponíveis no ambiente de implementação para:
 - acceptance local;
 - inspeção de logs produzidos pela própria execução.
 
-Não use rotineiramente o plugin do Code Awareness para `list_validation_profiles`, `start_validation`, `get_validation_run`, `list_validation_proofs` ou `get_validation_proof` quando a mesma evidência pode ser produzida ou consultada localmente.
-
-Normalização, `proofId`, freshness e persistência no Ledger **não justificam por si só** trocar uma execução local barata por chamadas remotas.
-
-O Implementador deve preservar no handoff final evidência suficiente para que o Arquiteto saiba o que foi executado e qual foi o resultado.
+Não roteie testes locais equivalentes por `start_validation`, nem faça polling/consultas de Ledger por hábito. **Executar localmente não dispensa registrar a prova material no Ledger compartilhado quando o acesso existir.** Após o resultado real e estável, use `record_validation_proof` apenas para provas externas a Validation Execution que sustentam aceitação, decisão de integração ou contrato relevante, vinculando `evidenceFor` ao Plano/Unidade. Não registrar cada subteste ou repetição redundante. O Handoff referencia `proofId` e descreve limitações, sem substituir o registro. Se o Ledger for inacessível, mantenha a evidência local e declare explicitamente `LEDGER_NOT_RECORDED` com motivo; não reexecute testes só para gerar registros.
 
 ### Arquiteto ou revisor remoto
 
@@ -65,14 +61,16 @@ Nesse papel:
 
 ### Exceções para o Implementador
 
-O Implementador pode recorrer ao canal remoto somente quando:
+O Implementador deve usar o canal remoto de **execução** somente quando:
 
 - a capacidade necessária não possui equivalente local;
 - a superfície remota é a própria propriedade sendo validada;
 - existe necessidade explícita de verificação independente;
 - uma instrução arquitetural exige aquela evidência específica.
 
-> **Capacidade local equivalente → execução local. Canal remoto → somente quando acrescenta evidência que o ambiente local não fornece.**
+`record_validation_proof` é uma **operação de persistência de metadados**, não uma execução remota; não se enquadra nessa restrição. Nunca duplique automaticamente uma prova produzida por Validation Execution.
+
+> **Capacidade local equivalente → execução local. Prova material compartilhável → registro no Ledger disponível. Verificação remota → somente quando acrescentar evidência.**
 
 ---
 
@@ -125,9 +123,9 @@ O registro não executa a validação.
 
 Uma entrada prova apenas o que a execução registrada realmente demonstrou.
 
-Se uma execução for realizada por um canal capaz de registrar automaticamente no Ledger, prefira esse fluxo.
+Se uma execução for realizada por Validation Execution e já produzir `proofId`, reutilize-o sem chamar `record_validation_proof`.
 
-Caso contrário, registre a prova imediatamente após executá-la.
+Para prova material executada localmente e realmente concluída, registre seus metadados via `record_validation_proof` **quando o Ledger compartilhado estiver acessível e a prova for relevante ao Plano**. Informe `kind`, `producer`, `status` real (inclusive falhas úteis), horários/duração observados, escopo, `evidenceFor` (ID canônico do Plano ou Unidade), summary, métricas e identidade Git/runtime quando realmente conhecidas. Não invente `sourceFingerprint`, `runtimeInstanceId` ou aprovação a partir de Handoff; não grave stdout privado como summary. Evite duplicação por replays. Se não houver acesso, o Handoff preserva a evidência não registrada e o motivo.
 
 ## Validation Execution
 
@@ -450,9 +448,11 @@ Evite validação cerimonial.
 
 Toda prova material executada deve permanecer reutilizável.
 
-Para o Implementador, o handoff final é o registro normal das provas locais: propriedade, mecanismo, resultado e exceções relevantes. Não é necessário transformar cada execução local em uma chamada remota ao Ledger.
+Para o Implementador, a execução local continua canônica, mas **provas materiais que sustentam `VALIDADO` devem ser registradas no Ledger compartilhado quando acessível**. Consolidar testes equivalentes em uma prova por propriedade/execução, não uma chamada por teste. Depois referenciar `proofId` no Handoff; ausência do canal deve ser reportada como cobertura documental limitada, sem fingir que a prova desapareceu.
 
-Para o Arquiteto/revisor, quando houver Validation Ledger e a persistência compartilhada agregar valor:
+Para o Arquiteto/revisor, consultar preferencialmente `list_validation_proofs` filtrando `evidenceFor`/escopo do Plano, inspecionar `get_validation_proof` para a prova escolhida, conferir `freshness`/identidade e registrar a aceitação independente que ele próprio executou, quando material. Não tratar ausência de prova como falha do código nem um registro como validação automática.
+
+Ao registrar:
 
 - registre resultado;
 - preserve escopo;
