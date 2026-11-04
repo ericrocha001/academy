@@ -1,6 +1,6 @@
 ---
 name: system-modeling
-description: Modele a arquitetura de um sistema de software, sobretudo externo, em conhecimento de alto sinal e reutilizável, distinguindo evidências, mecanismos e condições de transferência; publique o modelo no Continuum. Não use para inspecionar só uma implementação (implementation-mining), manter Architecture Map do repositório (architecture-map-authoring) ou planejar uma implementação.
+description: Modele sistemas externos para extrair mecanismos arquiteturais transferíveis, inclusive para destravar impasses locais; diferencie evidências, condições de transferência e riscos; publique o modelo no Continuum. Não use para inspecionar só uma implementação (implementation-mining), manter Architecture Map do repositório (architecture-map-authoring) ou planejar uma implementação.
 ---
 
 # System Modeling — engenharia reversa de conhecimento arquitetural
@@ -62,6 +62,18 @@ Para cada mecanismo candidato a aprendizado, classifique:
 - **Não transferível:** pressuposto incompatível ou específico daquele produto.
 
 Sempre explicite **por que funciona**, **qual problema evita**, **quais pré-condições exige** e **como falharia ao transplantá-lo**. Faça o *Greenfield Check*: os requisitos locais justificariam a ideia se a referência nunca tivesse sido vista? Sem requisitos locais comprovados, registre oportunidade **condicional**, não recomendação de implementação.
+
+### Modelagem para destravar impasses — Intelligence Copy
+
+Quando uma arquitetura empacar, com tentativas que não reduzem incerteza ou contratos que continuam difíceis de cumprir, **procure deliberadamente arquiteturas existentes que resolvam melhor o mesmo problema**. Não se restrinja a concorrentes diretos: procure mecanismos inteligentes também em outros domínios. A referência é uma fonte de aprendizado, não autoridade para copiar uma solução inteira.
+
+1. **Delimite o impasse:** qual contrato falha, que evidência demonstra a dificuldade e qual melhoria concreta é necessária?
+2. **Encontre modelos superiores:** examine seletivamente poucos sistemas que já demonstram o mecanismo buscado; para um trecho pontual de implementação externa, chame `implementation-mining`.
+3. **Extraia a inteligência:** identifique o princípio causal, a estrutura mínima, as pré-condições e a razão pela qual a solução supera a abordagem atual. Distinga evidência de impressão de superioridade.
+4. **Transfira com critério:** aplique o *Greenfield Check* às restrições locais; reutilize o mecanismo inteligente sem copiar dependências, complexidade ou limitações que não agreguem valor.
+5. **Comprove ganho:** defina a menor prova capaz de comparar a solução candidata com o comportamento atual. Se nenhuma referência adequada surgir, continue aprimorando a arquitetura própria com a evidência disponível.
+
+Pare a busca quando novas referências não mudarem a decisão. O resultado deve ser **inteligência transferível e uma decisão justificada**, não um catálogo de arquiteturas consultadas.
 
 ### 5. Comprima para Pure Signal
 
