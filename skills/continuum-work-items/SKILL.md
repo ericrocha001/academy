@@ -125,7 +125,7 @@ Estados suportados:
 
 Trabalho ainda existente e não concluído.
 
-É o estado inicial.
+É o estado inicial materializado pelo backend em publicação nova quando omitido; não preencha `status: PENDING` por rotina.
 
 ## COMPLETED
 
@@ -256,7 +256,7 @@ Não crie fontes concorrentes da mesma tarefa.
 
 Um Work Item possui um `artifactId` estável durante seu lifecycle no Continuum daquele repositório.
 
-Use frontmatter com `name`, `description`, `kind: WORK_ITEM` e `status: PENDING`, `COMPLETED` ou `CANCELLED`.
+Forneça conteúdo semântico e `kind: WORK_ITEM` quando o contexto não o informar. Use o modo econômico de `continuum-publication` quando suficiente: título e introdução permitem derivar nome/descrição, e o backend materializa `PENDING`. YAML autoral é válido para relações deliberadas e campos não inferíveis; não redigite identidade, timestamps técnicos nem estado inicial.
 
 Quando um Work Item precisar ser atualizado:
 
@@ -275,7 +275,7 @@ Quando o trabalho for concluído:
 
 1. valide a implementação;
 2. publique o `IMPLEMENTATION_HANDOFF` normal usando `continuum-publication`;
-3. atualize o mesmo Work Item para `COMPLETED` com `expectedRevision`;
+3. solicite `transition_artifact_lifecycle` do mesmo Work Item para `COMPLETED`, `reasonCode: CLOSURE_ACCEPTED` e `expectedRevision` corrente, após o Handoff `implements` ser aprovado para essa revisão pelo fluxo de `continuum-publication`; evidência selecionada e aprovação de fechamento são verificadas no servidor, nunca inferidas de testes ou merge;
 4. preserve o `artifactId`;
 5. adicione relação `resolved-by` para o `artifactId` do handoff de resolução, preservando outras relações ainda válidas.
 
@@ -294,7 +294,7 @@ Atualize o mesmo Artifact para `CANCELLED` quando:
 - outra solução absorver o trabalho;
 - o custo deixar de justificar o valor.
 
-Explique a razão.
+Explique a razão e solicite a transição governada `CANCELLED` com `EXPLICIT_CANCELLATION`, CAS e ação expressa autorizada. Não substitua aprovação por YAML. Se o runtime não oferecer a primitive ou retornar `REVIEW_REQUIRED`, preserve a pendência sem declarar cancelamento concluído.
 
 Não apague silenciosamente trabalho anteriormente qualificado.
 
