@@ -11,15 +11,15 @@ Esta Skill governa autoria e persistência de Artifacts no Continuum do reposit�
 
 # Markdown e metadata
 
-Markdown é a fonte semântica única. Novos Artifacts exigem YAML frontmatter e corpo não vazio:
+Markdown é a fonte semântica única; o corpo deve ser não vazio. No formato econômico, forneça conteúdo semântico e `kind` apenas quando o conteúdo não o determinar com segurança; `name` e `description` podem ser omitidos quando deriváveis do título e da introdução. No contrato atual, publicação econômica nova exige `kind` explícito quando não fornecido por contexto confiável: o backend não infere natureza editorial de texto. O servidor gera o frontmatter canônico. Não redigite artifactId, revisão, timestamps técnicos, hash, sessão, Worktree, commit ou referências de provas que o serviço já consegue comprovar. Preserve decisões, critérios e informações cuja origem confiável o sistema não possui.
+
+O formato autoral/legado com YAML continua válido e é preservado literalmente. Use-o quando precisar de `date` semanticamente significativa, relações deliberadas ou metadata não inferível; não acrescente YAML por ritual. Exemplo com relação semântica intencional:
 
 ```markdown
 ---
 name: Migração de identidade do Continuum
 description: Abra para compreender o mapeamento do Store legado, as invariantes de isolamento e as provas de restart.
 kind: IMPLEMENTATION_HANDOFF
-date: 2026-10-06T04:05:00-03:00
-status: VALIDATED
 relations:
   - artifactId: artifact-id-do-plano
     kind: implements
@@ -51,9 +51,9 @@ Conteúdo durável.
 
 Este vocabulário é uma **base de comparação, não uma whitelist**. Quando um novo valor revelar capacidade reutilizável recorrente, incorpore-o posteriormente à referência canônica para promover convergência; não crie uma revisão da Skill a cada publicação inédita.
 
-`date`: obrigatório em todo Artifact novo. Use timestamp ISO 8601 completo com data, hora e offset de fuso, por exemplo `2026-10-06T04:05:00-03:00`. Ele representa quando a representação semântica corrente do documento foi produzida, não apenas quando o backend a persistiu. Ao atualizar materialmente conteúdo, status, decisão, prova ou relações do Artifact, atualize também `date` para o momento da nova representação. Não use data sem hora, hora sem fuso ou termos relativos como hoje/agora.
+`date`: opcional, documental e semanticamente significativa (por exemplo a data de vigência de uma decisão). Preserve valor e formato autorais; só altere quando o significado temporal mudar. Não gere ou atualize `date` para registrar publicação, revisão, teste ou transição: `createdAt` e `updatedAt` são fatos técnicos do backend.
 
-`status`: **opcional** e reservado a lifecycle real. **Catálogo operacional compacto de status** — fonte de consulta barata para publicação e reutilização (catálogo aberto a extensões com semântica nova):
+`status`: **opcional**, reservado a lifecycle real e único estado editorial do documento. Planos e Work Items novos recebem `PENDING` do backend quando omitido. Handoff/prova não recebe `VALIDATED` por existir ou conter um teste aprovado. Não escreva status para contornar aprovação; use o contrato governado abaixo. Status autoral legado permanece uma declaração, sem constituir aprovação verificada. **Catálogo operacional compacto de status** — fonte de consulta barata para publicação e reutilização (catálogo aberto a extensões com semântica nova):
 
 - `PENDING`: Plano ou Work Item ainda aberto; execução em andamento não exige status novo.
 - `COMPLETED`: Plano ou Work Item efetivamente concluído e validado; não significa PR merged nem sincronização local.
@@ -66,9 +66,9 @@ Este vocabulário é uma **base de comparação, não uma whitelist**. Quando um
 
 Matriz padrão: `FEATURE_IDEA` → `NOT_IMPLEMENTED | IMPLEMENTED` (status de existência, não de investimento); `EXECUTABLE_PLAN` e `WORK_ITEM` → `PENDING | COMPLETED | CANCELLED`; `IMPLEMENTATION_HANDOFF` → `VALIDATED | BLOCKED`; `VALIDATION_PROOF` → `VALIDATED` quando efetivamente demonstrada; `ARCHITECTURAL_DECISION` → normalmente **sem status**, excepcionalmente `ACTIVE` para política vigente. `INVESTIGATION`, `OBSERVATION`, `CAPABILITY_OPPORTUNITY`, `DOCUMENT` e `VISUAL_REFERENCE` → normalmente **sem status**. Artifacts históricos sem status não precisam ser alterados só por essa matriz.
 
-**Reutilize antes de ampliar.** Para escolher `status`, consulte **somente o catálogo compacto acima** como referência de vocabulário; não enumere Artifacts nem leia frontmatters de vários documentos para descobrir quais status existem. Essa descoberta global é proibitivamente cara e desnecessária. Se o Artifact tiver lifecycle relevante, use o status existente que corresponda semanticamente. Não force um estado distinto a caber num rótulo inadequado. **O agente pode criar um `status` novo** quando representar uma etapa de lifecycle útil, claramente distinta e reutilizável, sem autorização prévia apenas por ser novo. Defina nome e significado curtos e estáveis. Se a informação for ortogonal ao lifecycle (ex.: publicação remota concluída, checkout local pendente), prefira o corpo ou metadata específica como `deploymentStatus`. O catálogo orienta, não bloqueia extensões justificadas. Não adicione status decorativo.
+**Reutilize antes de ampliar.** Para escolher `status`, consulte **somente o catálogo compacto acima** como referência de vocabulário; não enumere Artifacts nem leia frontmatters de vários documentos para descobrir quais status existem. Essa descoberta global é proibitivamente cara e desnecessária. Se o Artifact tiver lifecycle relevante, use o status existente que corresponda semanticamente. Não force um estado distinto a caber num rótulo inadequado. O vocabulário documental pode ser estendido quando houver semântica nova, com nome e significado curtos e estáveis. Isso não cria uma política executável nem concede autoridade: transições formais dependem da política do backend e de seus gates; ausência da primitive resulta em `REVIEW_REQUIRED`, nunca bypass por YAML. Se a informação for ortogonal ao lifecycle (ex.: publicação remota concluída, checkout local pendente), prefira o corpo ou metadata específica como `deploymentStatus`. O catálogo orienta, não bloqueia extensões justificadas. Não adicione status decorativo.
 
-**Ciclo de uma Feature Idea:** `FEATURE_IDEA` não substitui `WORK_ITEM`, `CAPABILITY_OPPORTUNITY`, `INVESTIGATION` ou `EXECUTABLE_PLAN`. `NOT_IMPLEMENTED` não significa aprovado, priorizado ou prometido. Atualize o mesmo Artifact para `IMPLEMENTED` somente após conferir a entrega real e o escopo integral, anexando relação `resolved-by` ou outra conexão de evidência pertinente, preservando a história. Decisões BUILD/DEFER/REJECT do `feature-investment-gate` não são novos status de construção. Para qualidade da ideação e captura proativa, use `feature-ideation`; esta Skill governa exclusivamente persistência e CAS.
+**Ciclo de uma Feature Idea:** `FEATURE_IDEA` não substitui `WORK_ITEM`, `CAPABILITY_OPPORTUNITY`, `INVESTIGATION` ou `EXECUTABLE_PLAN`. `NOT_IMPLEMENTED` não significa aprovado, priorizado ou prometido. Solicite a transição governada do mesmo Artifact para `IMPLEMENTED` somente após conferir a entrega real e o escopo integral; mantenha relação `resolved-by` ou outra conexão semanticamente pertinente por edição CAS independente, preservando a história. Decisões BUILD/DEFER/REJECT do `feature-investment-gate` não são novos status de construção. Para qualidade da ideação e captura proativa, use `feature-ideation`; esta Skill governa exclusivamente persistência e CAS.
 
 ### Manutenção incremental obrigatória do catálogo de status
 
@@ -80,11 +80,11 @@ Matriz padrão: `FEATURE_IDEA` → `NOT_IMPLEMENTED | IMPLEMENTED` (status de ex
 
 Metadata adicional deve responder a uma necessidade concreta de seleção. **Antes de nomear nova chave ou valor**, consulte metadata já presente na tarefa/Artifact e os exemplos relevantes disponíveis, sem fazer varredura geral por ritual. Reutilize quando houver correspondência semântica; **se faltar uma dimensão ou distinção real, o agente pode introduzi-la**, com nome consistente, significado claro e formato JSON/YAML simples, sem aprovação prévia. Não reaproveite chave inadequada só para evitar novidade. Evite duplicar estado em `status`, corpo e metadata. `metadata` filtra igualdade exata por chave, inclusive objetos e arrays; ordem das chaves de objetos é irrelevante. Não transforme tags livres, sinônimos, provenance técnica, paths de armazenamento, hashes ou cópia do corpo em índice agentivo.
 
-Discovery metadata é a projeção do estado corrente do Artifact. Sempre que o conteúdo for materialmente atualizado, revise `name`, `description`, `kind`, `date`, `status`, relações e metadata relevante para impedir que a superfície de descoberta fique obsoleta, incompleta ou contradiga o documento corrente.
+Discovery metadata é a projeção do estado corrente do Artifact. Sempre que o conteúdo for materialmente atualizado, revise a coerência de `name`, `description`, `kind`, `date` documental quando existente, lifecycle, relações e metadata relevante para impedir que a superfície de descoberta fique obsoleta, incompleta ou contradiga o documento corrente.
 
 Quando a associação entre Artifacts da mesma execução ajudar descoberta, use um `executionId` estável e reutilize-o em todos os Artifacts da execução. Antes de criar um novo `executionId`, descubra Artifacts da execução e verifique se um identificador canônico já existe; reutilize-o sempre que existir. Só crie outro quando não houver associação anterior válida. Filtre por `metadata: {executionId: ...}` e solicite `metadataKeys: [executionId]` somente se necessário. Não crie sub-Continuum nem use nomes livres concorrentes para essa associação. Não acrescente executionId por rotina quando ele não alterar seleção.
 
-IDs, revisão e timestamps operacionais (`createdAt`, `updatedAt`) são atribuídos pelo backend. Eles não substituem `date` no documento: timestamps do backend descrevem persistência/revisão operacional; `date` preserva o tempo semântico da representação corrente dentro do próprio Artifact. Metadata livre não redefine identidade nem seleciona outro repositório. Não produza uma segunda representação semântica JSON do documento.
+IDs, revisão e timestamps operacionais (`createdAt`, `updatedAt`) são atribuídos pelo backend. Não exigem duplicação em `date`: timestamps do backend descrevem persistência/revisão operacional; `date` só preserva um tempo documental semanticamente relevante. Metadata livre não redefine identidade nem seleciona outro repositório. Não produza uma segunda representação semântica JSON do documento.
 
 # Publicar e editar
 
@@ -92,7 +92,7 @@ Com terminal, CLI local funcional e autorização, **prefira `continuum-local-cl
 
 **Referência entregue ao usuário:** após confirmar publicação, informe sempre o **name exato do frontmatter** junto do **artifactId** retornado. Apresente preferencialmente `Nome do Artifact — artifactId`, para que a pessoa identifique e encaminhe o documento a outro agente sem depender apenas do identificador opaco. Use o nome do documento efetivamente publicado; não acrescente chamadas de leitura apenas para repetir metadata já conhecida. Para atualização de Artifact existente, informe nome e artifactId quando comunicar a atualização. Em falha/QUEUED, não apresente o Artifact como publicado.
 
-Edite o Artifact existente quando identidade e finalidade lógica permanecerem: corrigir metadata, mudar status, resolver bloqueio, acrescentar contexto/prova ou ajustar relações. Crie novo Artifact para comunicação com finalidade independente, nunca apenas porque o documento evoluiu.
+Edite o Artifact existente quando identidade e finalidade lógica permanecerem: corrigir metadata, resolver bloqueio, acrescentar contexto/prova ou ajustar relações. Alterações formais de status usam o workflow governado, preservando a mesma identidade. Crie novo Artifact para comunicação com finalidade independente, nunca apenas porque o documento evoluiu.
 
 Fluxo de edição:
 
@@ -127,7 +127,7 @@ O fallback é **canal alternativo de entrega do mesmo Artifact**, não nova capa
 
 # Implementation Handoff
 
-O corpo do IMPLEMENTATION_HANDOFF é exatamente o Relato Final exigido pelo AGENTS.md. Materialize uma única fonte em Markdown UTF-8, preserve verbatim e acrescente somente frontmatter de descoberta. Não gere resumo, segundo relatório ou seções duplicadas. Confirme publicação e preserve artifactId.
+O corpo do IMPLEMENTATION_HANDOFF é exatamente o Relato Final exigido pelo AGENTS.md. Materialize uma única fonte em Markdown UTF-8 e preserve verbatim. Use o formato econômico quando suficiente; forneça `kind: IMPLEMENTATION_HANDOFF` quando necessário e a relação deliberada `implements` ao Plano. O backend fornece fatos técnicos, não a decisão de aceite. Não gere resumo, segundo relatório ou seções duplicadas. Confirme publicação e preserve artifactId.
 
 **Entrega por sessão e PR:** publique o Handoff de cada Plano validado sem exigir PR individual e sem adiar seu registro até a conclusão da sessão. **O PR representa a sessão consolidada, não um commit, Plano ou Handoff isolado.** Somente após concluir a sessão, verificar com `worktree-execution` que todos os commits validados pertencentes a ela estão alcançáveis pelo HEAD da branch proposta e receber aprovação específica do responsável, abra um PR único. No Handoff final da sessão, quando houver PR real, inclua URL/número, branch de origem/destino, HEAD, Planos/commits incluídos e evidências; os Handoffs intermediários preservam seus próprios recibos sem inventar PR. Se um Plano estiver validado mas a publicação Git for proibida ou pendente, registre a restrição e não declare que um PR posterior inclui o commit ausente. A escolha de PR, revisão e merge pertence a `worktree-execution`; este procedimento governa o relato, não autoriza Git. `VALIDATED` não significa `PR_OPEN` nem merge.
 
@@ -135,14 +135,16 @@ Nunca materialize Markdown através de argumentos de shell ou strings interpolad
 
 # Reconciliação de conclusão de execução
 
-Quando publicar um `IMPLEMENTATION_HANDOFF` validado **ou receber confirmação documentada de conclusão** de trabalho representado no Continuum, reconcilie **somente** os Artifacts de origem relacionados, sem varredura geral do corpus. Esta é uma responsabilidade de quem tiver a tarefa e a capacidade de escrita autorizada, não de um papel presumido.
+Quando houver conclusão comprovada, reconcilie somente os Artifacts diretamente relacionados no mesmo repositório. Verifique a operação `transition_artifact_lifecycle` anunciada no runtime; ausência de capacidade ou de autoridade não permite substituir o fluxo por escrita de `status` no Markdown.
 
-1. Confirme persistência do handoff (`PERSISTED` ou receipt equivalente), `status: VALIDATED`, relação `implements` ao Plano correto e `executionId` compatível quando existente. Confira se a evidência cobre **todo** o critério de conclusão do Artifact de origem; handoff parcial, `BLOCKED`, vínculo temático ou mesmo `executionId` isolado não bastam.
-2. Leia a revisão corrente do `EXECUTABLE_PLAN` vinculado e de eventual `WORK_ITEM` realmente resolvido pela mesma evidência. Se o lifecycle existente estiver `PENDING` e a conclusão estiver comprovada, atualize **o próprio Artifact** para `COMPLETED`, preservando corpo, identidade, metadata e relações válidas; acrescente `resolved-by` apontando para o handoff quando pertinente. Para a semântica particular de Work Items siga `continuum-work-items`.
-3. Execute a edição pelo transporte autorizado (MCP ou `continuum-local-cli`) com `expectedRevision`, atualize `date` semântico e confirme a persistência/estado final. Em `REVISION_CONFLICT`, releia e reavalie; nunca sobrescreva silenciosamente. Não crie novo Plano ou Work Item para corrigir status.
-4. Se o Artifact não tiver lifecycle aplicável, a validação for insuficiente, a escrita não estiver autorizada ou só existir `QUEUED`, **não declare a reconciliação concluída**. Informe a pendência específica para um executor com capacidade/autorização, sem inventar status.
+1. Publique o Handoff preservando o Relato Final e a relação intencional `implements`. Recupere a revisão corrente; publicação persistida não é aceite editorial.
+2. Use `transition_artifact_lifecycle({action:"ASSESS", artifactId, expectedRevision, toState:"VALIDATED", reasonCode:"CRITERIA_ACCEPTED"})` para diagnóstico. O backend seleciona até dez provas CURRENT por `evidenceFor` no alvo e em seu Plano inequívoco, verifica repositório/freshness e resolve revisões. `evidenceRefs` é opcional para seleção deliberada, sem redigitar provas já encontráveis; `supportingArtifactId` só desambigua alvo conhecido. Seleção limitada não demonstra cobertura integral.
+3. Quando a decisão estiver autorizada, solicite `action:"TRANSITION"`. O servidor exige revisão explícita de todo o conteúdo, dos critérios e da suficiência das provas. O cliente nunca envia `approved`, identidade do aprovador ou alegação de autoridade. Na confirmação nativa, Cancelar é o padrão e a revisão dos critérios precisa ser marcada; a identidade individual indisponível é registrada como tal.
+4. Após Handoff aprovado, solicite `COMPLETED` com `reasonCode:"CLOSURE_ACCEPTED"` para o Plano/Work Item na revisão atual. O backend exige Handoff `implements` validado para essa exata revisão e reutiliza suas provas; a decisão de fechamento tem aprovação independente. `CANCELLED` usa `EXPLICIT_CANCELLATION`, `BLOCKED` usa `BLOCKAGE_CONFIRMED`, `ACTIVE` usa `NORMATIVE_ACTIVATION` e `IMPLEMENTED|NOT_IMPLEMENTED` usa `IMPLEMENTATION_REVIEWED`, sempre sob política e autoridade pertinentes.
+5. Confirme `PERSISTED`, revisão e recibo. Repetição exata aceita não duplica revisão; CAS antigo conflitante exige releitura e reavaliação. `REVIEW_REQUIRED` não é conclusão: preserve o diagnóstico e encaminhe a decisão. Nunca promova `READY_FOR_REVIEW`, teste PASSED, PR integrado ou proveniência nativa isolada a aceite.
+6. Preserve relações semanticamente relevantes com edição CAS quando necessário, inclusive `resolved-by`; não acrescente backlinks por simetria. Alteração posterior do documento ou evidência revogada sinaliza freshness e exige reavaliação, preservando o status e a aprovação históricos. A projeção `lifecycle` é derivada de `metadata.status`, não outra autoridade.
 
-**Separação de estados:** implementação validada não prova commit, push nem integração Git. `COMPLETED` aqui registra conclusão do trabalho descrito no Artifact, nunca promoção à `main` por inferência. A verificação das relações e do estado deve ocorrer no Continuum do mesmo repositório, não por título semelhante.
+**Separação de estados:** `operationalActivity.IN_PROGRESS` é diagnóstico observado, não estado editorial ou lease. `VALIDATED` e `COMPLETED` não autorizam commit, PR ou merge nem comprovam distribuição da Academy; mantenha os gates independentes de `worktree-execution`. Não atualize `date` técnica ou Artifacts históricos em lote.
 
 # Compatibilidade offline
 
