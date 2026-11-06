@@ -133,6 +133,20 @@ O corpo do IMPLEMENTATION_HANDOFF é exatamente o Relato Final exigido pelo AGEN
 
 Nunca materialize Markdown através de argumentos de shell ou strings interpoladas: backticks, $, ${…}, $(…) e Unicode devem permanecer literais. Use escrita direta de arquivo.
 
+## Fallback por atestação revisada
+
+Metadata comum, conteúdo e relações continuam editáveis por `update_artifact` com CAS, preservando campos autorais, tags e status. Nunca escreva lifecycle no YAML para substituir uma transição. Campos técnicos (IDs, repositoryId, revisão, timestamps operacionais, hash e proveniência nativa) pertencem ao servidor.
+
+Quando faltar um fato que hooks não capturaram, registre a declaração em metadata documental `agentAttestations` ou no relato, identificada como `origin: AGENT_ATTESTED`, com atribuição declarada, escopo, referência inspecionável e limitações. Isso não comprova identidade nem vira `HOOK_OBSERVED`. Preserve observações nativas; apresente divergências explicitamente para revisão, sem sobrescrever a fonte oposta.
+
+Consulte o schema anunciado na conexão atual de `transition_artifact_lifecycle`. Comece por `ASSESS`; o padrão `AUTO_VERIFIED` mantém os gates P4 de provas CURRENT e aprovação independente. Se falhar a verificação automática e o runtime anunciar suporte, use explicitamente `evidenceMode: REVIEWED_ATTESTATION` com `attestation: {rationale, limitations, references}` (até dez referências). Cada referência deve ser `{type: ARTIFACT, repositoryId, artifactId, expectedRevision}` ou `{type: LEDGER_PROOF, repositoryId, proofId}`. Logs, commits e relatórios devem estar preservados em um Artifact revisionado e relacionado; não envie paths/URLs arbitrários, payloads privados de provas nem invente evidência. A referência deve existir no mesmo repositório e estar vinculada ao alvo ou suporte.
+
+Confira o diagnóstico read-only antes de solicitar `TRANSITION`. O servidor resolve conteúdo/hash/classificação das fontes, vincula digest e revisão, exige aprovação editorial independente e revalida após confirmação. Atestação não transforma PASSED/UNVERIFIABLE em CURRENT. Sem referências contextualizadas ou autoridade disponível, mantenha REVIEW_REQUIRED. Nunca informe approved ou principal no cliente.
+
+Handoff legado AUTHOR_DECLARED com status VALIDATED pode ser ratificado na mesma semântica sem edição direta do status. Primeiro obtenha seu receipt aprovado contra a revisão exata do Plano; depois solicite COMPLETED no Plano, com supportingArtifactId do Handoff e nova revisão editorial granular. Fechamento por Handoff ratificado requer também REVIEWED_ATTESTATION; não herda verificação automática. Mudança de referência/revisão exige nova avaliação, sem retry cego ou promoção em lote.
+
+Runtime que já anuncia a operação não precisa de outro contrato backend: renove a conexão/snapshot do consumidor e confira tools/list e ASSESS. Atualizar/distribuir a Skill não comprova recarga de plugins ou clientes; registre separadamente fonte confirmada, distribuição e texto efetivamente consumido.
+
 # Reconciliação de conclusão de execução
 
 Quando houver conclusão comprovada, reconcilie somente os Artifacts diretamente relacionados no mesmo repositório. Verifique a operação `transition_artifact_lifecycle` anunciada no runtime; ausência de capacidade ou de autoridade não permite substituir o fluxo por escrita de `status` no Markdown.
