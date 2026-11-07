@@ -39,6 +39,14 @@ Não use a estruturação do Plano para esconder decisões arquiteturais ainda a
 
 Se uma decisão relevante continua indefinida, resolva-a antes de transferir a solução ao executor.
 
+## Gate normativo do repositório — princípios arquiteturais
+
+Quando estiver planejando **mudança arquitetural material no Code Awareness** (autonomia agentiva, aprovação, workflow, performance, UI, contexto, boundaries ou serviços), consulte seletivamente o Living Artifact canônico `ARCHITECTURAL_PRINCIPLES` no Continuum do repositório ativo, via `continuum` / `continuum-living-artifacts`. **Não exija sua leitura para tarefas locais sem decisão arquitetural**, nem copie o documento integral para dentro do Plano. Extraia somente os princípios que limitam o espaço da solução, com referência à revisão consultada.
+
+**Gate de fricção obrigatório:** antes de introduzir diálogo, checkbox, consentimento repetido, etapa humana, painel, artefato redundante, processo em background ou ferramenta nova, demonstre o risco/consumidor concreto e compare com delegação agentiva autenticada, CAS, preconditions, recibos e automação já disponíveis. Priorize a via de **menor fricção e menor custo total**, sem inventar identidade, cobertura ou sucesso. Para o Code Awareness, autonomia de agente autorizado e velocidade são normas prioritárias; clique adicional por operação ordinária delegada exige justificativa material, não tradição do código atual.
+
+**Gatilho de manutenção:** caso o planejamento estabeleça princípio arquitetural **novo, generalizável e decidido**, e exista responsabilidade documental/autorização de escrita, use `continuum-living-artifacts` para atualizar o mesmo `ARCHITECTURAL_PRINCIPLES` por CAS **durante a execução atual, sem pedir outra tarefa**. Se apenas aplicou norma existente, não edite. Um descompasso entre norma e runtime pertence ao Plano como implementação pendente, não prova de que o comportamento atual já mudou.
+
 ## Gate de custo autorizado e restrições do usuário
 
 **Antes de publicar o Plano, preserve expressamente o orçamento e as exclusões indicadas pelo usuário.** "Sem testes", "sem medição", "sem benchmark", "sem Spike" ou limites de cota são restrições de execução, não preferências descartáveis. Registre-as no escopo e nos critérios de conclusão e confira que **nenhuma Unidade, Validação Global, etapa de aceitação ou handoff** reintroduz a atividade excluída sob outro nome.

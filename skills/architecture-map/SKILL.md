@@ -1,6 +1,6 @@
 ---
 name: architecture-map
-description: Consulte o Architecture Map canônico de um repositório para compreender topologia, subsistemas, ownership, dependências, runtime boundaries e invariantes globais antes de aprofundar seletivamente em Feature Maps ou source. Não use para navegar código rotineiramente, inspecionar detalhes de feature ou criar/revisar o mapa; para autoria e correções use architecture-map-authoring.
+description: Consulte o Architecture Map canônico para topologia, ownership e invariantes globais; para decisões normativas consulte também ARCHITECTURAL_PRINCIPLES quando existir. Navegue por Feature Maps e source seletivamente; para autoria e correções do mapa use architecture-map-authoring.
 ---
 
 # Architecture Map
@@ -54,6 +54,12 @@ Descubra por:
 Se existir um único mapa canônico, leia-o primeiro.
 
 Não use por rotina quando a tarefa já está confinada a uma feature e seu Feature Map ou source conhecido bastam.
+
+## Princípios arquiteturais normativos
+
+Quando a intenção for **decidir arquitetura e não apenas localizar domínios**, verifique se o repositório possui um Living Artifact canônico `{ livingArtifact: true, artifactRole: "ARCHITECTURAL_PRINCIPLES" }` e consulte os princípios aplicáveis à decisão. Esse Artifact governa regras transversais desejadas (inclusive autonomia, fricção e custo); o Architecture Map continua responsável pela topologia/estado arquitetural e source/runtime pela implementação comprovada. Não carregue o documento de princípios para mera navegação operacional nem duplique as regras no mapa.
+
+Mudança comprovada em princípio global pode exigir manutenção pelo `continuum-living-artifacts` e, se alterar a imagem sistêmica, por `architecture-map-authoring`.
 
 ## Drill-down
 

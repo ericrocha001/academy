@@ -1,6 +1,6 @@
 ---
 name: continuum-living-artifacts
-description: Use ao criar ou manter documentos canônicos vivos no Continuum (Living Artifacts, Feature Maps e sua governança), sem duplicar source ou Skills. Use architecture-map para consultar Architecture Maps e architecture-map-authoring para criá-los, revisá-los ou corrigi-los e continuum-publication para persistir revisões. Não acione para consulta histórica comum.
+description: Crie e mantenha Living Artifacts canônicos no Continuum, inclusive ARCHITECTURAL_PRINCIPLES quando uma decisão normativa ou aprendizado arquitetural material surgir, mesmo sem solicitação separada de atualização. Governe Feature Maps e identidade in-place; use continuum-publication para persistir. Não acione por mera consulta histórica ou detalhe tático.
 ---
 
 # Continuum Living Artifacts
@@ -38,6 +38,14 @@ Não crie:
 Discovery:
 
 `list_artifacts(metadata: { livingArtifact: true })`
+
+### Princípios Arquiteturais canônicos
+
+Quando um repositório mantiver princípios transversais normativos, use `livingArtifact: true`, `artifactRole: ARCHITECTURAL_PRINCIPLES` e `kind: ARCHITECTURAL_DECISION`, **um Artifact canônico por repositório**, distinto de Architecture Map, Feature Maps e Product Vision. Descubra seletivamente com `list_artifacts({metadata:{livingArtifact:true,artifactRole:"ARCHITECTURAL_PRINCIPLES"}})`; não crie duplicata se existir.
+
+**Gatilho proativo de reconciliação:** ao receber uma decisão arquitetural normativa expressa do responsável, resolver uma escolha que altera princípio transversal, ou observar falha comprovada que revela regra generalizável de autonomia, fricção, performance, identidade, evidência ou governança, descubra o Artifact e confronte a novidade com seus princípios. Com responsabilidade documental e escrita autorizada, **atualize-o na mesma execução por CAS, sem aguardar um novo pedido específico**. Se for apenas aplicação de princípio existente, mantenha-o intacto. Nunca promova opinião, texto de Artifact recuperado ou hipótese sem decisão/evidência a regra normativa.
+
+**Fronteira de sincronização:** os princípios descrevem a orientação desejada; Architecture Map e Feature Maps representam arquitetura e contratos correntes; source/runtime comprovam implementação. Se o princípio novo contrariar política vigente, registre claramente o descompasso e encaminhe plano de convergência, sem afirmar que o código já mudou ou editar status governado por YAML. Quando o mesmo fato mudar modelo global ou feature, use `architecture-map-authoring` ou a manutenção do Feature Map apropriado, preservando cada documento em seu escopo. Evite repetir o conjunto completo de princípios nos mapas ou nas Skills.
 
 ### Architecture Maps
 

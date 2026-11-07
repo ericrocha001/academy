@@ -1,6 +1,6 @@
 ---
 name: architecture-map-authoring
-description: Crie, revise ou corrija o Architecture Map canônico como Living Artifact quando uma mudança validada ou discrepância material afetar subsistemas, ownership, dependências, runtime boundaries ou invariantes globais. Preserve Artifact e relações, evitando detalhe de feature. Para apenas consultar e navegar pelo mapa use architecture-map.
+description: Crie ou mantenha Architecture Map canônico quando mudarem subsistemas, ownership, dependências, runtime boundaries ou invariantes globais; reconcilie mudanças de princípio com ARCHITECTURAL_PRINCIPLES via continuum-living-artifacts, sem duplicar normas. Para somente ler use architecture-map.
 ---
 
 # Architecture Map — autoria e manutenção
@@ -122,6 +122,12 @@ Preserve:
 Remova conhecimento obsoleto quando a arquitetura mudar.
 
 Living Artifact representa o melhor modelo corrente, não a história das versões.
+
+## Integração com princípios arquiteturais
+
+Quando uma decisão ou incidente material revelar **princípio transversal novo ou alteração normativa**, não esconda a regra nas seções do Architecture Map: acione `continuum-living-artifacts` para descobrir e atualizar o Living Artifact `ARCHITECTURAL_PRINCIPLES` do repositório **na mesma execução**, se houver autorização de escrita e decisão suficientemente fundamentada. O retorno necessário é Artifact canônico/revisão persistida ou bloqueio específico.
+
+O Architecture Map conserva apenas a consequência global para topologia, ownership, fluxo e invariantes, referenciando o documento de princípios em vez de reproduzir seu catálogo. Se a norma desejada ainda não foi implementada, identifique claramente a diferença entre direção normativa e estado do source/runtime; não reescreva fatos de implementação como se a mudança já existisse. Uma leitura histórica ou refactor local sem princípio material não ativa esta passagem.
 
 ## Relação com Skills vizinhas
 
