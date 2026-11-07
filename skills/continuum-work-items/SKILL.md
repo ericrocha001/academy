@@ -271,19 +271,7 @@ A projeção corrente representa o estado atual. Revisões internas preservam hi
 
 # Conclusão
 
-Quando o trabalho for concluído:
-
-1. valide a implementação;
-2. publique o `IMPLEMENTATION_HANDOFF` normal usando `continuum-publication`;
-3. solicite `transition_artifact_lifecycle` do mesmo Work Item para `COMPLETED`, `reasonCode: CLOSURE_ACCEPTED` e `expectedRevision` corrente, após o Handoff `implements` ser aprovado para essa revisão pelo fluxo de `continuum-publication`; evidência selecionada e aprovação de fechamento são verificadas no servidor, nunca inferidas de testes ou merge;
-4. preserve o `artifactId`;
-5. adicione relação `resolved-by` para o `artifactId` do handoff de resolução, preservando outras relações ainda válidas.
-
-O histórico deve permitir reconstruir:
-
-`PENDING → Implementation Handoff → COMPLETED`.
-
----
+Valide o trabalho e publique o Handoff com implements. Atualize o mesmo Work Item por update_artifact, com COMPLETED e relações pertinentes em uma edição CAS. AUTO_VERIFIED é prioritário; se a captura falhar, julgamento agentivo honesto pode usar lifecycle.attestation com referências existentes e limites. Handoff aprovado ou Ledger CURRENT não são requisitos universais. Não há confirmação humana por item. Preserve identidade/histórico e confirme status/recibo por readback. Incompleto continua PENDING; merge/teste isolado não prova todo o escopo.
 
 # Cancelamento
 
@@ -294,7 +282,7 @@ Atualize o mesmo Artifact para `CANCELLED` quando:
 - outra solução absorver o trabalho;
 - o custo deixar de justificar o valor.
 
-Explique a razão e solicite a transição governada `CANCELLED` com `EXPLICIT_CANCELLATION`, CAS e ação expressa autorizada. Não substitua aprovação por YAML. Se o runtime não oferecer a primitive ou retornar `REVIEW_REQUIRED`, preserve a pendência sem declarar cancelamento concluído.
+Explique a razão e atualize CANCELLED no mesmo Artifact por edição CAS autorizada. A transição e o recibo são internos ao lifecycle; não exija confirmação humana repetitiva. Se o runtime não oferecer o contrato, preserve o diagnóstico sem declarar efeito inexistente.
 
 Não apague silenciosamente trabalho anteriormente qualificado.
 
