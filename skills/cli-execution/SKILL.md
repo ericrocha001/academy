@@ -11,6 +11,14 @@ CLI Execution é uma **capability própria do Channel**, separada de Code Naviga
 
 Prefira capacidades mais específicas quando bastarem: `code-navigation` para leitura/navegação; `git-operations` para Git tipado e concorrência; `validacao-de-implementacoes` e `validation-evidence-channels` para provas por profiles; `continuum` para Artifacts. **Não use CLI para escapar de controles, autoridade, leases, quotas ou limitações de ferramentas tipadas.** **Regra obrigatória:** se o agente tem terminal local autorizado no checkout correto, **use a CLI direta, nunca CLI Execution MCP como intermediário**. O MCP é destinado ao agente remoto que precisa executar no computador do Code Awareness sem acesso direto àquele checkout. Não confunda um terminal remoto de sandbox/cloud com um terminal no computador do usuário.
 
+## Gate: CLI antes de solicitar trabalho manual ao responsável
+
+**Antes de pedir ao usuário uma ação operacional, verifique se você pode executá-la pelo canal programático já disponível e autorizado.** Essa verificação é acionada quando surgiria um pedido de intervenção humana, **não** a cada tarefa. Identifique a operação e o host de destino; procure primeiro a ferramenta especializada e, quando apropriado, a CLI local no checkout correto. Se o agente estiver remoto, avalie o canal MCP/CLI remoto autorizado. Se a capacidade for real e a autorização vigente cobrir o efeito, **execute e confira o resultado**, em vez de mandar o responsável abrir File Explorer, digitar comandos, copiar arquivos ou repetir testes.
+
+**Quando pedir intervenção:** acesso ao host inexistente; execução de CLI desativada ou negada; requisito de login/MFA, credencial, consentimento, decisão humana, aprovação nativa ou ação física; operação fora do escopo ou com risco que exige autorização adicional. Informe apenas a dependência específica e a ação mínima do operador. Não faça tentativas equivalentes em loop após uma negativa.
+
+**Não contornar governança:** CLI não é mecanismo para elevar privilégio, alterar grants, instalar dependências sem autorização, burlar aprovações, contornar tool/harness policies, escrever em Worktrees alheias ou abrir PR/merge sem consentimento exigido. Quando a CLI não for o canal mais seguro, use a ferramenta especializada com suas verificações nativas. Um shell remoto em sandbox não acessa automaticamente o computador do usuário.
+
 ## Seleção obrigatória do canal — local versus nuvem
 
 **Decida pelo acesso efetivo ao checkout de destino, não pelo nome do agente.**
